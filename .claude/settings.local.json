@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(node *)",
+      "Bash(curl -s \"http://localhost:3000/api/auth/test-smtp?email=info@fanmaker.eu&send=1\")",
+      "Bash(curl -s \"http://localhost:3000/api/jtl/diag?kKunde=250020\")",
+      "Bash(curl *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(grep -n \"kKunde\\\\|findKunde\" \"C:/Users/Administrator/edelzaun/app/api/auth/\"*.ts)",
+      "Read(//c//**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/**)",
+      "Bash(powershell -Command \"Get-ChildItem -Path 'C:\\\\' -Recurse -Filter 'Druckarchiv' -Directory -ErrorAction SilentlyContinue | Select-Object FullName | Format-List\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\([c['COLUMN_NAME'] for c in d['columns']]\\)\")",
+      "Bash(identify \"C:/Users/Administrator/edelzaun/public/logo.png\")",
+      "Bash(npx next *)",
+      "Bash(python -m json.tool)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\Administrator\\\\edelzaun\\\\app\\\\api\\\\jtl\\\\*.ts\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({'rechnungSample': d['zahlungsInfo']['rechnungSample'], 'lvSample': d['zahlungsInfo']['lvAuftragZahlungSample']}, indent=2\\)\\)\")",
+      "Bash(findstr *)"
+    ]
+  }
+}
