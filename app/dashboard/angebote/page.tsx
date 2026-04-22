@@ -44,7 +44,7 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
       const res = await fetch('/api/jtl/reject-angebot', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ kAngebot: angebot.kAuftrag }),
+        body:    JSON.stringify({ kAngebot: angebot.kAuftrag, cAngebotNr: angebot.belegnummer }),
       })
 
       if (res.ok) {

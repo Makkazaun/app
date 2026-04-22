@@ -941,43 +941,101 @@ export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
 
 export interface FarbeResult {
   rowsAffected: number
+  path?:        string   // welcher Tabellen-/Spaltenpfad tatsächlich genutzt wurde
   error?:       string
 }
 
 /**
- * Setzt die Vorgangsfarbe in der Wawi auf ROT (visuelles Feedback, kein Status-Update).
+ * Setzt in der Wawi Vorgangsfarbe ROT und Status-Text "abgelehnt".
  *
- * WHERE-Klausel: nur kAuftrag (kein nType/nStorno-Filter, damit ein bereits
- * in nType=1 konvertiertes Angebot dennoch eingefärbt wird).
- * Gibt immer ein FarbeResult zurück – wirft nie (das JTL-Update ist rein visuell).
+ * Identifikation über cAngebotNr (z.B. "A17807") – kein kAuftrag nötig.
+ *
+ * Reihenfolge der Versuche:
+ *   1. Verkauf.tAngebot  – nFarbe=1 + cStatus='abgelehnt'   (JTL-Standard Angebote-Tabelle)
+ *   2. Verkauf.tAngebot  – nur nFarbe=1                     (falls cStatus-Spalte fehlt)
+ *   3. Verkauf.tAuftrag  – nur nFarbe=1 (WHERE cAuftragsNr) (Fallback ältere JTL-Versionen)
+ *
+ * Wirft nie – gibt immer FarbeResult zurück (non-fatal da rein visuell).
  */
-export async function markAngebotAbgelehnt(kAuftrag: number): Promise<FarbeResult> {
-  const sqlText = `UPDATE [Verkauf].[tAuftrag] SET nFarbe = ${FARBE_ROT} WHERE kAuftrag = ${kAuftrag}`
-  console.log(`[markAngebotAbgelehnt] Sende SQL: ${sqlText}`)
+export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
+  console.log(`SQL Start: Update für ${cAngebotNr}`)
 
+  let pool: sql.ConnectionPool
+  try { pool = await getPool() }
+  catch (err) {
+    const msg = (err as Error).message.split('\n')[0]
+    console.warn(`[markAngebotAbgelehnt] DB-Verbindung fehlgeschlagen: ${msg}`)
+    return { rowsAffected: 0, error: msg }
+  }
+
+  // ── Versuch 1: tAngebot mit nFarbe + cStatus ─────────────────────────────────
   try {
-    const pool   = await getPool()
-    const result = await pool.request()
-      .input('kAuftrag', sql.Int, kAuftrag)
-      .input('nFarbe',   sql.Int, FARBE_ROT)
+    const r = await pool.request()
+      .input('nr',      sql.NVarChar(50), cAngebotNr)
+      .input('nFarbe',  sql.Int,          FARBE_ROT)
+      .input('cStatus', sql.NVarChar(50), 'abgelehnt')
+      .query(`
+        UPDATE [Verkauf].[tAngebot]
+        SET    nFarbe  = @nFarbe,
+               cStatus = @cStatus
+        WHERE  cAngebotNr = @nr
+      `)
+    const rows = r.rowsAffected?.[0] ?? 0
+    console.log(`Betroffene Zeilen: ${rows}`)
+    if (rows > 0) return { rowsAffected: rows, path: 'tAngebot/nFarbe+cStatus' }
+    console.warn(`[markAngebotAbgelehnt] tAngebot: 0 Zeilen für cAngebotNr='${cAngebotNr}'`)
+  } catch (e1) {
+    const m1 = (e1 as Error).message
+    if (/Invalid column name/i.test(m1)) {
+      // ── Versuch 2: tAngebot ohne cStatus ───────────────────────────────────
+      console.log(`[markAngebotAbgelehnt] cStatus-Spalte nicht vorhanden – nur nFarbe in tAngebot`)
+      try {
+        const r2 = await pool.request()
+          .input('nr',     sql.NVarChar(50), cAngebotNr)
+          .input('nFarbe', sql.Int,          FARBE_ROT)
+          .query(`
+            UPDATE [Verkauf].[tAngebot]
+            SET    nFarbe = @nFarbe
+            WHERE  cAngebotNr = @nr
+          `)
+        const rows2 = r2.rowsAffected?.[0] ?? 0
+        console.log(`Betroffene Zeilen: ${rows2}`)
+        if (rows2 > 0) return { rowsAffected: rows2, path: 'tAngebot/nFarbe' }
+        console.warn(`[markAngebotAbgelehnt] tAngebot (nur nFarbe): 0 Zeilen für '${cAngebotNr}'`)
+      } catch (e2) {
+        console.warn(`[markAngebotAbgelehnt] tAngebot/nFarbe Fehler: ${(e2 as Error).message.split('\n')[0]}`)
+      }
+    } else if (!/Invalid object name/i.test(m1)) {
+      // Kein "Tabelle nicht gefunden"-Fehler → unbekannt, sofort melden
+      const short = m1.split('\n')[0]
+      console.warn(`[markAngebotAbgelehnt] tAngebot unbekannter Fehler: ${short}`)
+      return { rowsAffected: 0, error: short }
+    } else {
+      console.log(`[markAngebotAbgelehnt] Tabelle tAngebot nicht gefunden – versuche tAuftrag`)
+    }
+  }
+
+  // ── Versuch 3: Fallback Verkauf.tAuftrag mit cAuftragsNr ─────────────────────
+  try {
+    const r3 = await pool.request()
+      .input('nr',     sql.NVarChar(50), cAngebotNr)
+      .input('nFarbe', sql.Int,          FARBE_ROT)
       .query(`
         UPDATE [Verkauf].[tAuftrag]
         SET    nFarbe = @nFarbe
-        WHERE  kAuftrag = @kAuftrag
+        WHERE  cAuftragsNr = @nr
+          AND  nType = 0
       `)
-
-    const rows = result.rowsAffected?.[0] ?? 0
-    console.log(`[markAngebotAbgelehnt] rowsAffected=${rows} (kAuftrag=${kAuftrag}, nFarbe=${FARBE_ROT})`)
-
-    if (rows === 0) {
-      console.warn(`[markAngebotAbgelehnt] 0 Zeilen betroffen – kAuftrag=${kAuftrag} in tAuftrag nicht gefunden?`)
+    const rows3 = r3.rowsAffected?.[0] ?? 0
+    console.log(`Betroffene Zeilen: ${rows3}`)
+    if (rows3 === 0) {
+      console.warn(`[markAngebotAbgelehnt] tAuftrag Fallback: 0 Zeilen für cAuftragsNr='${cAngebotNr}'`)
     }
-    return { rowsAffected: rows }
-
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.warn(`[markAngebotAbgelehnt] Fehler (non-fatal): ${msg.split('\n')[0]}`)
-    return { rowsAffected: 0, error: msg.split('\n')[0] }
+    return { rowsAffected: rows3, path: 'tAuftrag/cAuftragsNr' }
+  } catch (e3) {
+    const msg = (e3 as Error).message.split('\n')[0]
+    console.warn(`[markAngebotAbgelehnt] tAuftrag Fallback Fehler: ${msg}`)
+    return { rowsAffected: 0, error: msg }
   }
 }
 
