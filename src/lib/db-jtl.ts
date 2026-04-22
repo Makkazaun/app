@@ -939,33 +939,45 @@ export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
   }
 }
 
+export interface FarbeResult {
+  rowsAffected: number
+  error?:       string
+}
+
 /**
  * Setzt die Vorgangsfarbe in der Wawi auf ROT (visuelles Feedback, kein Status-Update).
  *
- * Schreibt ausschließlich nFarbe=1 in Verkauf.tAuftrag – keine weiteren Spalten.
- * Die Ablehnung selbst wird autoritativ in portal-db (SQLite) gespeichert.
- * Fehler (nFarbe nicht vorhanden, JTL nicht erreichbar) werden geloggt aber NICHT geworfen,
- * da das JTL-Update rein visuell ist und die portal-db den Status trägt.
+ * WHERE-Klausel: nur kAuftrag (kein nType/nStorno-Filter, damit ein bereits
+ * in nType=1 konvertiertes Angebot dennoch eingefärbt wird).
+ * Gibt immer ein FarbeResult zurück – wirft nie (das JTL-Update ist rein visuell).
  */
-export async function markAngebotAbgelehnt(kAuftrag: number): Promise<void> {
+export async function markAngebotAbgelehnt(kAuftrag: number): Promise<FarbeResult> {
+  const sqlText = `UPDATE [Verkauf].[tAuftrag] SET nFarbe = ${FARBE_ROT} WHERE kAuftrag = ${kAuftrag}`
+  console.log(`[markAngebotAbgelehnt] Sende SQL: ${sqlText}`)
+
   try {
-    const pool = await getPool()
-    await pool.request()
+    const pool   = await getPool()
+    const result = await pool.request()
       .input('kAuftrag', sql.Int, kAuftrag)
       .input('nFarbe',   sql.Int, FARBE_ROT)
       .query(`
         UPDATE [Verkauf].[tAuftrag]
         SET    nFarbe = @nFarbe
         WHERE  kAuftrag = @kAuftrag
-          AND  nType    = 0
-          AND  ISNULL(nStorno, 0) = 0
       `)
-    console.log(`[markAngebotAbgelehnt] kAuftrag=${kAuftrag} → nFarbe=${FARBE_ROT} (rot)`)
+
+    const rows = result.rowsAffected?.[0] ?? 0
+    console.log(`[markAngebotAbgelehnt] rowsAffected=${rows} (kAuftrag=${kAuftrag}, nFarbe=${FARBE_ROT})`)
+
+    if (rows === 0) {
+      console.warn(`[markAngebotAbgelehnt] 0 Zeilen betroffen – kAuftrag=${kAuftrag} in tAuftrag nicht gefunden?`)
+    }
+    return { rowsAffected: rows }
+
   } catch (err) {
-    console.warn(
-      '[markAngebotAbgelehnt] JTL-Farbmarkierung fehlgeschlagen (non-fatal):',
-      err instanceof Error ? err.message.split('\n')[0] : String(err),
-    )
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn(`[markAngebotAbgelehnt] Fehler (non-fatal): ${msg.split('\n')[0]}`)
+    return { rowsAffected: 0, error: msg.split('\n')[0] }
   }
 }
 
