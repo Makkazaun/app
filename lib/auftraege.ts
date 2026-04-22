@@ -119,10 +119,7 @@ function genAuftragsId(angebotId: string): string {
 }
 
 export function listAuftraege(): AuftragRecord[] {
-  const real = loadAll()
-  if (real.length > 0) return real
-  // Demo-Datensatz wenn noch kein echter Auftrag
-  return DEMO_AUFTRAEGE
+  return loadAll()
 }
 
 export function saveAuftrag(record: AuftragRecord): void {
@@ -176,40 +173,3 @@ export function createAuftragFromAngebot(params: {
   return record
 }
 
-// ─── Demo-Daten ──────────────────────────────────────────────────────────────
-
-export const DEMO_AUFTRAEGE: AuftragRecord[] = [
-  {
-    id: 'AUF-2025-0011', angebotId: 'ANG-2025-0019',
-    createdAt: '2025-02-10T14:00:00Z', updatedAt: '2025-02-10T14:00:00Z',
-    status: 'in_vorbereitung',
-    leistung: 'Gabionenzaun 22m inkl. Pfosten & Erdarbeiten',
-    betrag: '2.760,00 €', betragNum: 2760,
-    produkt: 'betonzaun',
-    modell: 'Naturstein Classic · Nr. 12',
-    hoehe: '150 cm', laenge: '22 m',
-    farbePlatten: 'Gobi 14',
-    farbePfeiler: 'Gleich wie Platten',
-    besonderheiten: 'Beidseitig sichtbar, 2 Eckpfosten, Mutterboden',
-    montagetermin: '2025-04-22',
-    signatur: '', signierAt: '2025-02-10T14:05:00Z',
-    rechnungsadresse: {
-      vorname: 'Max', nachname: 'Mustermann',
-      strasse: 'Musterstraße', hausnummer: '12',
-      plz: '12345', ort: 'Musterstadt', land: 'Deutschland',
-    },
-    lieferadresse: {
-      vorname: 'Max', nachname: 'Mustermann',
-      strasse: 'Musterstraße', hausnummer: '12',
-      plz: '12345', ort: 'Musterstadt', land: 'Deutschland',
-    },
-    jtlAuftragId: 'AUF-2025-0011',
-    phasen: [
-      { key: 'auftragsbestaetigung', label: 'Auftragsbestätigung', datum: '10.02.2025', beschreibung: 'Angebot digital unterschrieben und bestätigt.', status: 'done' },
-      { key: 'planung',              label: 'Planung & Material',  datum: '18.02.2025', beschreibung: 'Material bestellt, Lieferung in Kürze.', status: 'done' },
-      { key: 'lieferung',            label: 'Materiallieferung',   datum: '28.03.2025', beschreibung: 'Alle Elemente vor Ort geliefert.', status: 'active' },
-      { key: 'montage',              label: 'Montage',             datum: '22.04.2025', beschreibung: 'Montage durch Team Schulz (3 Monteure), ca. 1 Tag.', status: 'pending' },
-      { key: 'abnahme',              label: 'Abnahme & Übergabe',  datum: 'Nach Montage', beschreibung: 'Gemeinsame Abnahme und Übergabe aller Unterlagen.', status: 'pending' },
-    ],
-  },
-]

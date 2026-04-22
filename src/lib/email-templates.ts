@@ -144,11 +144,6 @@ export function generateEmailHtml({ title, content, preheader = '' }: WrapperPar
                 06369 Großwülknitz &nbsp;·&nbsp;
                 Deutschland
               </p>
-              <p style="margin:0 0 6px;font-size:10px;color:#3a3a3a;text-align:center;
-                         line-height:1.7;">
-                Geschäftsführer: Thomas Richter &nbsp;·&nbsp;
-                HRB: <span style="color:#3a3a3a;">beim zuständigen Amtsgericht</span>
-              </p>
               <p style="margin:0;font-size:10px;color:#2a2a2a;text-align:center;">
                 <a href="https://www.edelzaun-tor.de/impressum"
                   style="color:#3a3a3a;text-decoration:none;">Impressum</a>

@@ -34,6 +34,30 @@ async function resolveKKunde(): Promise<number | null> {
   return null
 }
 
+/**
+ * Liest den Fehlertext aus einer nicht-ok API-Antwort.
+ * Gibt bei 502 zusätzlich einen Hinweis auf fehlerhafte .env-Zugangsdaten aus.
+ */
+async function extractApiError(res: Response): Promise<string> {
+  let body: { error?: string; detail?: string } = {}
+  try { body = await res.json() } catch { /* kein JSON */ }
+
+  const detail = body.detail ?? body.error ?? ''
+
+  if (res.status === 502) {
+    const hint = detail
+      ? `Datenbankverbindung fehlgeschlagen: ${detail}`
+      : 'Datenbankverbindung fehlgeschlagen.'
+    return `${hint} – Bitte DB_SERVER, DB_USER und DB_PASSWORD in der .env prüfen.`
+  }
+
+  if (res.status === 400) {
+    return detail || 'Ungültige Anfrage – kKunde fehlt in der Session.'
+  }
+
+  return detail || `Serverfehler (HTTP ${res.status}).`
+}
+
 // ── Angebote ──────────────────────────────────────────────────────────────────
 
 export function useJtlAngebote(): JtlState<JtlAngebot[]> & { reload: () => void } {
@@ -47,11 +71,11 @@ export function useJtlAngebote(): JtlState<JtlAngebot[]> & { reload: () => void 
       const kKunde = await resolveKKunde()
       if (!kKunde) { setState({ data: [], loading: false, error: null }); return }
       const res = await fetch(`/api/jtl/angebote?kKunde=${kKunde}`)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (!res.ok) throw new Error(await extractApiError(res))
       const json = await res.json()
       setState({ data: json.angebote ?? [], loading: false, error: null })
     } catch (err) {
-      setState({ data: null, loading: false, error: String(err) })
+      setState({ data: null, loading: false, error: String(err instanceof Error ? err.message : err) })
     }
   }, [])
 
@@ -72,11 +96,11 @@ export function useJtlAuftraege(): JtlState<JtlAuftrag[]> & { reload: () => void
       const kKunde = await resolveKKunde()
       if (!kKunde) { setState({ data: [], loading: false, error: null }); return }
       const res = await fetch(`/api/jtl/auftraege?kKunde=${kKunde}`)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (!res.ok) throw new Error(await extractApiError(res))
       const json = await res.json()
       setState({ data: json.auftraege ?? [], loading: false, error: null })
     } catch (err) {
-      setState({ data: null, loading: false, error: String(err) })
+      setState({ data: null, loading: false, error: String(err instanceof Error ? err.message : err) })
     }
   }, [])
 
@@ -98,14 +122,14 @@ export function useJtlKunde(): JtlState<JtlKunde> {
         const session = getSession()
         if (!session?.email) { setState({ data: null, loading: false, error: null }); return }
         const res = await fetch(`/api/jtl/kunde?email=${encodeURIComponent(session.email)}`)
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        if (!res.ok) throw new Error(await extractApiError(res))
         const json = await res.json()
         if (json.found && json.kunde) {
           updateSessionJtl(json.kunde.kKunde, json.kunde.kundennummer)
         }
         setState({ data: json.found ? json.kunde : null, loading: false, error: null })
       } catch (err) {
-        setState({ data: null, loading: false, error: String(err) })
+        setState({ data: null, loading: false, error: String(err instanceof Error ? err.message : err) })
       }
     }
     load()
@@ -127,11 +151,11 @@ export function useJtlRechnungen(): JtlState<JtlRechnung[]> & { reload: () => vo
       const kKunde = await resolveKKunde()
       if (!kKunde) { setState({ data: [], loading: false, error: null }); return }
       const res = await fetch(`/api/jtl/rechnungen?kKunde=${kKunde}`)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (!res.ok) throw new Error(await extractApiError(res))
       const json = await res.json()
       setState({ data: json.rechnungen ?? [], loading: false, error: null })
     } catch (err) {
-      setState({ data: null, loading: false, error: String(err) })
+      setState({ data: null, loading: false, error: String(err instanceof Error ? err.message : err) })
     }
   }, [])
 

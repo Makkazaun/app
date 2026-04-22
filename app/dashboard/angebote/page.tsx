@@ -28,11 +28,11 @@ const STATUS_COLOR: Record<JtlAngebot['status'], string> = {
   abgelehnt:  '#c07070',
 }
 
-// ── Ablehnen-Button mit Inline-Bestätigung ────────────────────────────────────
+// ── Ablehnen-Button – dezenter Text-Link mit Inline-Bestätigung ───────────────
 
 function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess: () => void }) {
-  const [confirm, setConfirm]  = useState(false)
-  const [loading, setLoading]  = useState(false)
+  const [confirm, setConfirm] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   async function handleReject() {
     setLoading(true)
@@ -51,17 +51,23 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
 
   if (confirm) {
     return (
-      <div className="flex items-center gap-1.5">
-        <span className="text-[10px]" style={{ color: '#c07070' }}>Sicher?</span>
-        <button onClick={handleReject} disabled={loading}
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <span className="text-[10px]" style={{ color: '#c07070' }}>Wirklich ablehnen?</span>
+        <button
+          onClick={handleReject}
+          disabled={loading}
           className="px-2 py-1 rounded text-[10px] font-medium transition-opacity hover:opacity-80 disabled:opacity-40"
-          style={{ background: 'rgba(220,50,50,0.15)', color: '#e08080', border: '1px solid rgba(220,50,50,0.25)' }}>
+          style={{ background: 'rgba(220,50,50,0.15)', color: '#e08080', border: '1px solid rgba(220,50,50,0.25)' }}
+        >
           {loading ? '…' : 'Ja'}
         </button>
-        <button onClick={() => setConfirm(false)} disabled={loading}
+        <button
+          onClick={() => setConfirm(false)}
+          disabled={loading}
           className="px-2 py-1 rounded text-[10px] transition-opacity hover:opacity-80"
-          style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}>
-          Nein
+          style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}
+        >
+          Abbrechen
         </button>
       </div>
     )
@@ -70,18 +76,25 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
   return (
     <button
       onClick={() => setConfirm(true)}
-      className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:opacity-80"
-      style={{ background: 'rgba(220,50,50,0.08)', color: '#c07070', border: '1px solid rgba(220,50,50,0.20)' }}
-      title="Angebot ablehnen"
+      className="text-xs transition-opacity hover:opacity-100"
+      style={{
+        background: 'none',
+        border:     'none',
+        padding:    '0',
+        color:      'rgba(192,112,112,0.6)',
+        cursor:     'pointer',
+        textDecoration: 'underline',
+        textDecorationColor: 'rgba(192,112,112,0.3)',
+        textUnderlineOffset: '2px',
+      }}
     >
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-        <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
+      Ablehnen
     </button>
   )
 }
 
-// ── Aktionen-Zelle für offene Angebote ────────────────────────────────────────
+// ── Aktions-Gruppe für offene Angebote ────────────────────────────────────────
+// Gestapelte Darstellung: "Annehmen" oben (Gold-Button), "Ablehnen" unten (Text-Link)
 
 function AngebotAktionen({
   angebot,
@@ -93,14 +106,16 @@ function AngebotAktionen({
   onReload:   () => void
 }) {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex flex-col gap-2 items-start">
       <button
         onClick={() => onAnnehmen(angebot)}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-90"
+        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:opacity-90 active:scale-95"
         style={{
           background: 'linear-gradient(135deg, #7a5c10, #c9a84c)',
           color:      '#1a1a1a',
           boxShadow:  '0 1px 8px rgba(201,168,76,0.25)',
+          whiteSpace: 'nowrap',
+          minHeight:  '34px',
         }}
       >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -119,7 +134,7 @@ export default function AngebotePage() {
   const { data, loading, error, reload } = useJtlAngebote()
   const [signAngebot, setSignAngebot] = useState<JtlAngebot | null>(null)
 
-  const angebote  = data ?? []
+  const angebote   = data ?? []
   const offen      = angebote.filter((a) => a.status === 'offen').length
   const angenommen = angebote.filter((a) => a.status === 'angenommen').length
   const storniert  = angebote.filter((a) => a.status === 'storniert' || a.status === 'abgelehnt').length
@@ -164,9 +179,9 @@ export default function AngebotePage() {
       {!loading && angebote.length > 0 && (
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: 'Offen',      count: offen,      color: '#c9a84c', sub: 'Warten auf Unterschrift' },
-            { label: 'Angenommen', count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv' },
-            { label: 'Abgelehnt / Storniert', count: storniert, color: '#5a5a5a', sub: 'Nicht mehr gültig' },
+            { label: 'Offen',                    count: offen,      color: '#c9a84c', sub: 'Warten auf Unterschrift' },
+            { label: 'Angenommen',               count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv' },
+            { label: 'Abgelehnt / Storniert',    count: storniert,  color: '#5a5a5a', sub: 'Nicht mehr gültig' },
           ].map((item) => (
             <div key={item.label} className="rounded-xl p-4 text-center"
               style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}>
@@ -194,22 +209,22 @@ export default function AngebotePage() {
       {!loading && angebote.length > 0 && (
         <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
 
-          {/* Tabellenkopf – Desktop */}
+          {/* Tabellenkopf – nur Desktop */}
           <div
             className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
             style={{
-              background:    '#1e1e1e',
-              borderBottom:  '1px solid #2d2d2d',
-              color:         '#4a4a4a',
-              gridTemplateColumns: '130px 1fr 120px 110px 150px 70px',
-              gap:           '12px',
+              background:          '#1e1e1e',
+              borderBottom:        '1px solid #2d2d2d',
+              color:               '#4a4a4a',
+              gridTemplateColumns: '130px 1fr 120px 110px 160px 60px',
+              gap:                 '12px',
             }}
           >
             <span>Nummer</span>
             <span>Leistung</span>
             <span>Betrag</span>
             <span>Status</span>
-            <span>Aktionen</span>
+            <span>Aktion</span>
             <span className="text-right">PDF</span>
           </div>
 
@@ -226,10 +241,10 @@ export default function AngebotePage() {
                   opacity:      dimmed ? 0.55 : 1,
                 }}
               >
-                {/* Desktop */}
+                {/* ── Desktop ──────────────────────────────────────────────── */}
                 <div
-                  className="hidden sm:grid items-center px-5 py-4 gap-3"
-                  style={{ gridTemplateColumns: '130px 1fr 120px 110px 150px 70px' }}
+                  className="hidden sm:grid items-start px-5 py-4 gap-3"
+                  style={{ gridTemplateColumns: '130px 1fr 120px 110px 160px 60px' }}
                 >
                   <div>
                     <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
@@ -237,32 +252,35 @@ export default function AngebotePage() {
                     </p>
                     <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
                   </div>
-                  <p className="text-xs leading-snug" style={{ color: '#b0b0b0' }}>{a.betreff}</p>
-                  <p className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>
+                  <p className="text-xs leading-snug pt-0.5" style={{ color: '#b0b0b0' }}>{a.betreff}</p>
+                  <p className="text-sm font-semibold pt-0.5" style={{ color: '#e8e8e8' }}>
                     {formatEur(a.betragBrutto)}
                   </p>
-                  <span
-                    className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium w-fit"
-                    style={{ background: `${color}18`, color, border: `1px solid ${color}30` }}
-                  >
-                    {label}
-                  </span>
+                  <div className="pt-0.5">
+                    <span
+                      className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium"
+                      style={{ background: `${color}18`, color, border: `1px solid ${color}30` }}
+                    >
+                      {label}
+                    </span>
+                  </div>
                   <div>
-                    {a.status === 'offen' ? (
+                    {a.status === 'offen' && (
                       <AngebotAktionen
                         angebot={a}
                         onAnnehmen={setSignAngebot}
                         onReload={reload}
                       />
-                    ) : null}
+                    )}
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end pt-0.5">
                     <BelegButton type="angebot" belegnummer={a.belegnummer} />
                   </div>
                 </div>
 
-                {/* Mobile */}
+                {/* ── Mobile ───────────────────────────────────────────────── */}
                 <div className="sm:hidden px-4 py-4 space-y-2.5">
+                  {/* Kopfzeile: Nummer + Status */}
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
@@ -277,22 +295,28 @@ export default function AngebotePage() {
                       {label}
                     </span>
                   </div>
+
+                  {/* Betreff */}
                   <p className="text-xs" style={{ color: '#9a9a9a' }}>{a.betreff}</p>
+
+                  {/* Betrag + PDF-Button */}
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-bold" style={{ color: '#e8e8e8' }}>
                       {formatEur(a.betragBrutto)}
                     </p>
-                    <div className="flex items-center gap-2">
-                      {a.status === 'offen' && (
-                        <AngebotAktionen
-                          angebot={a}
-                          onAnnehmen={setSignAngebot}
-                          onReload={reload}
-                        />
-                      )}
-                      <BelegButton type="angebot" belegnummer={a.belegnummer} />
-                    </div>
+                    <BelegButton type="angebot" belegnummer={a.belegnummer} />
                   </div>
+
+                  {/* Aktionen (nur bei offenen Angeboten) – eigene Zeile */}
+                  {a.status === 'offen' && (
+                    <div className="pt-2" style={{ borderTop: '1px solid #252525' }}>
+                      <AngebotAktionen
+                        angebot={a}
+                        onAnnehmen={setSignAngebot}
+                        onReload={reload}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             )
@@ -306,7 +330,6 @@ export default function AngebotePage() {
         </p>
       )}
 
-      {/* Unterschriften-Modal */}
       {signAngebot && (
         <AngebotAnnehmenModal
           kAngebot={signAngebot.kAuftrag}

@@ -26,6 +26,6 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('[api/jtl/rechnungen] Fehler:', msg)
-    return NextResponse.json({ error: 'JTL-Datenbankfehler.' }, { status: 502 })
+    return NextResponse.json({ error: 'JTL-Datenbank nicht erreichbar.', detail: msg }, { status: 502 })
   }
 }
