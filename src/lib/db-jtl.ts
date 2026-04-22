@@ -169,6 +169,13 @@ export interface JtlAuftrag {
   lieferadresse:    JtlAdresse | null
 }
 
+// ── Farb-Konstanten (Windows COLORREF: 0x00BBGGRR) ───────────────────────────
+// nFarbe in Verkauf.tAuftrag – visuelle Markierung in der Wawi-Vorgangsliste.
+// Soft-Fallback wenn nFarbe in dieser JTL-Version nicht existiert.
+
+const FARBE_GRUEN = 65280  // RGB(  0, 255, 0) – Angenommen / unterschrieben
+const FARBE_ROT   = 255    // RGB(255,   0, 0) – Abgelehnt
+
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
 function toIso(d: Date | null | undefined): string {
@@ -888,44 +895,192 @@ export async function upsertKundeLieferadresse(
 /**
  * Markiert ein Angebot als "digital unterschrieben" durch den Kunden.
  *
- * Schreibt den Zeitstempel in cAnmerkung (Notizfeld).
- * Der JTL-Sachbearbeiter kann das Angebot danach in JTL-Wawi zum Auftrag wandeln.
- *
- * Kein nAuftragStatus-Update – das bleibt JTL-gesteuert.
- * WHERE nType=0 AND nStorno=0: verhindert versehentliches Schreiben auf Aufträge.
+ * Setzt nAuftragStatus=1 (→ mapAngebotStatus: 'angenommen'), schreibt Zeitstempel
+ * in cAnmerkung und färbt den Vorgang grün in der Wawi-Liste (nFarbe=65280).
+ * nFarbe-Fallback: wenn die Spalte in dieser JTL-Version fehlt, Update ohne Farbe.
  */
 export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
   const pool = await getPool()
   const ts   = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
+  const note = `[App] Vom Kunden digital unterschrieben am ${ts}`
 
-  await pool.request()
-    .input('kAuftrag',  sql.Int,         kAuftrag)
-    .input('anmerkung', sql.NVarChar(500), `[App] Vom Kunden digital unterschrieben am ${ts}`)
-    .query(`
-      UPDATE [Verkauf].[tAuftrag]
-      SET cAnmerkung = @anmerkung
-      WHERE kAuftrag = @kAuftrag
-        AND nType    = 0
-        AND ISNULL(nStorno, 0) = 0
-    `)
+  try {
+    await pool.request()
+      .input('kAuftrag',  sql.Int,           kAuftrag)
+      .input('anmerkung', sql.NVarChar(500), note)
+      .input('nFarbe',    sql.Int,           FARBE_GRUEN)
+      .query(`
+        UPDATE [Verkauf].[tAuftrag]
+        SET cAnmerkung     = @anmerkung,
+            nAuftragStatus = 1,
+            nFarbe         = @nFarbe
+        WHERE kAuftrag = @kAuftrag
+          AND nType    = 0
+          AND ISNULL(nStorno, 0) = 0
+      `)
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('nFarbe')) {
+      console.warn('[markAngebotAngenommen] nFarbe-Spalte nicht verfügbar – Update ohne Farbe')
+      await pool.request()
+        .input('kAuftrag',  sql.Int,           kAuftrag)
+        .input('anmerkung', sql.NVarChar(500), note)
+        .query(`
+          UPDATE [Verkauf].[tAuftrag]
+          SET cAnmerkung = @anmerkung, nAuftragStatus = 1
+          WHERE kAuftrag = @kAuftrag AND nType = 0 AND ISNULL(nStorno, 0) = 0
+        `)
+    } else {
+      throw err
+    }
+  }
 }
 
-/** Markiert ein Angebot als "abgelehnt" durch den Kunden (nAuftragStatus=99). */
+/**
+ * Markiert ein Angebot als "abgelehnt" durch den Kunden.
+ *
+ * Setzt nAuftragStatus=99 (→ mapAngebotStatus: 'abgelehnt'), Zeitstempel in cAnmerkung
+ * und färbt den Vorgang rot in der Wawi-Liste (nFarbe=255).
+ * nFarbe-Fallback: wenn die Spalte fehlt, Update ohne Farbe.
+ */
 export async function markAngebotAbgelehnt(kAuftrag: number): Promise<void> {
   const pool = await getPool()
   const ts   = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
+  const note = `[App] Vom Kunden abgelehnt am ${ts}`
 
-  await pool.request()
-    .input('kAuftrag',  sql.Int,           kAuftrag)
-    .input('anmerkung', sql.NVarChar(500), `[App] Vom Kunden abgelehnt am ${ts}`)
-    .query(`
-      UPDATE [Verkauf].[tAuftrag]
-      SET cAnmerkung     = @anmerkung,
-          nAuftragStatus = 99
-      WHERE kAuftrag = @kAuftrag
-        AND nType    = 0
-        AND ISNULL(nStorno, 0) = 0
-    `)
+  try {
+    await pool.request()
+      .input('kAuftrag',  sql.Int,           kAuftrag)
+      .input('anmerkung', sql.NVarChar(500), note)
+      .input('nFarbe',    sql.Int,           FARBE_ROT)
+      .query(`
+        UPDATE [Verkauf].[tAuftrag]
+        SET cAnmerkung     = @anmerkung,
+            nAuftragStatus = 99,
+            nFarbe         = @nFarbe
+        WHERE kAuftrag = @kAuftrag
+          AND nType    = 0
+          AND ISNULL(nStorno, 0) = 0
+      `)
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('nFarbe')) {
+      console.warn('[markAngebotAbgelehnt] nFarbe-Spalte nicht verfügbar – Update ohne Farbe')
+      await pool.request()
+        .input('kAuftrag',  sql.Int,           kAuftrag)
+        .input('anmerkung', sql.NVarChar(500), note)
+        .query(`
+          UPDATE [Verkauf].[tAuftrag]
+          SET cAnmerkung = @anmerkung, nAuftragStatus = 99
+          WHERE kAuftrag = @kAuftrag AND nType = 0 AND ISNULL(nStorno, 0) = 0
+        `)
+    } else {
+      throw err
+    }
+  }
+}
+
+// ── Kunden-Neuanlage ──────────────────────────────────────────────────────────
+
+export interface NewKundeData {
+  vorname:  string
+  nachname: string
+  email:    string
+  strasse?: string | null
+  plz?:     string | null
+  ort?:     string | null
+  land?:    string | null
+  tel?:     string | null
+}
+
+/**
+ * Legt einen neuen Kunden in JTL-Wawi an (dbo.tKunde + dbo.tAdresse).
+ *
+ * Kundennummer wird als nächste freie numerische Nr. ab 100001 generiert.
+ * Trigger auf beiden Tabellen werden temporär deaktiviert (wie bei updateKundeRechnungsadresse).
+ * Falls tAdresse-Insert fehlschlägt, wird der tKunde-Eintrag wieder gelöscht.
+ */
+export async function createKundeInJtl(
+  data: NewKundeData,
+): Promise<{ kKunde: number; kundennummer: string }> {
+  const pool  = await getPool()
+  const email = data.email.toLowerCase().trim()
+
+  // 1. Kundennummer: MAX(numerisch) + 1, Startwert 100001
+  const nrRes = await pool.request().query<{ nextNr: string }>(`
+    SELECT CAST(
+      ISNULL(MAX(TRY_CAST(cKundenNr AS BIGINT)), 100000) + 1
+    AS NVARCHAR(20)) AS nextNr
+    FROM dbo.tKunde
+    WHERE TRY_CAST(cKundenNr AS BIGINT) IS NOT NULL
+      AND LEN(cKundenNr) <= 10
+  `)
+  const kundennummer = nrRes.recordset[0]?.nextNr ?? '100001'
+
+  // 2. tKunde INSERT
+  let kKunde: number
+
+  try { await pool.request().query('ALTER TABLE dbo.tKunde DISABLE TRIGGER ALL') }
+  catch (e) { console.warn('[createKundeInJtl] DISABLE TRIGGER tKunde:', (e as Error).message) }
+
+  let kundeErr: unknown = null
+  try {
+    const ins = await pool.request()
+      .input('cKundenNr', sql.NVarChar(50), kundennummer)
+      .query<{ kKunde: number }>(`
+        INSERT INTO dbo.tKunde (cKundenNr)
+        OUTPUT INSERTED.kKunde
+        VALUES (@cKundenNr)
+      `)
+    kKunde = ins.recordset[0].kKunde
+  } catch (err) {
+    kundeErr = err
+    console.error('[createKundeInJtl] tKunde INSERT:\n%s', serializeSqlError(err))
+  } finally {
+    try { await pool.request().query('ALTER TABLE dbo.tKunde ENABLE TRIGGER ALL') }
+    catch (e) { console.warn('[createKundeInJtl] ENABLE TRIGGER tKunde:', (e as Error).message) }
+  }
+  if (kundeErr) { await resetPool(); throw kundeErr }
+
+  // 3. tAdresse INSERT
+  try { await pool.request().query('ALTER TABLE dbo.tAdresse DISABLE TRIGGER ALL') }
+  catch (e) { console.warn('[createKundeInJtl] DISABLE TRIGGER tAdresse:', (e as Error).message) }
+
+  let adresseErr: unknown = null
+  try {
+    await pool.request()
+      .input('kKunde',   sql.Int,          kKunde!)
+      .input('vorname',  sql.NVarChar(255), data.vorname.trim())
+      .input('nachname', sql.NVarChar(255), data.nachname.trim())
+      .input('email',    sql.NVarChar(255), email)
+      .input('strasse',  sql.NVarChar(255), data.strasse?.trim() ?? '')
+      .input('plz',      sql.NVarChar(10),  data.plz?.trim()     ?? '')
+      .input('ort',      sql.NVarChar(255), data.ort?.trim()      ?? '')
+      .input('land',     sql.NVarChar(255), data.land?.trim()     ?? 'Deutschland')
+      .input('tel',      sql.NVarChar(50),  data.tel?.trim()      ?? null)
+      .query(`
+        INSERT INTO dbo.tAdresse
+          (kKunde, nTyp, nStandard, cVorname, cName, cMail,
+           cStrasse, cPLZ, cOrt, cLand, cTel)
+        VALUES
+          (@kKunde, 1, 1, @vorname, @nachname, @email,
+           @strasse, @plz, @ort, @land, @tel)
+      `)
+  } catch (err) {
+    adresseErr = err
+    console.error('[createKundeInJtl] tAdresse INSERT:\n%s', serializeSqlError(err))
+    // Rollback: tKunde-Zeile wieder löschen
+    try {
+      await pool.request().input('kKunde', sql.Int, kKunde!).query('DELETE FROM dbo.tKunde WHERE kKunde = @kKunde')
+    } catch (delErr) {
+      console.error('[createKundeInJtl] Rollback tKunde fehlgeschlagen:', (delErr as Error).message)
+    }
+  } finally {
+    try { await pool.request().query('ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL') }
+    catch (e) { console.warn('[createKundeInJtl] ENABLE TRIGGER tAdresse:', (e as Error).message) }
+  }
+  if (adresseErr) { await resetPool(); throw adresseErr }
+
+  console.log(`[createKundeInJtl] kKunde=${kKunde!} Nr=${kundennummer} angelegt`)
+  return { kKunde: kKunde!, kundennummer }
 }
 
 /** Lädt den Namen des Kunden für ein Angebot (für E-Mail-Betreff). */

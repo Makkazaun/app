@@ -17,7 +17,12 @@ function LoginForm() {
   const [tab,      setTab]      = useState<'login' | 'register'>(defaultTab)
   const [email,    setEmail]    = useState(prefillEmail)
   const [password, setPassword] = useState('')
-  const [name,     setName]     = useState('')
+  const [vorname,  setVorname]  = useState('')
+  const [nachname, setNachname] = useState('')
+  const [strasse,  setStrasse]  = useState('')
+  const [plz,      setPlz]      = useState('')
+  const [ort,      setOrt]      = useState('')
+  const [tel,      setTel]      = useState('')
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')
 
@@ -94,12 +99,41 @@ function LoginForm() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    if (!name.trim())          { setError('Bitte Ihren Namen eingeben.');                    return }
-    if (!email.includes('@'))  { setError('Ungültige E-Mail-Adresse.');                       return }
-    if (password.length < 6)   { setError('Passwort muss mindestens 6 Zeichen haben.');       return }
+    if (!vorname.trim())         { setError('Bitte Vorname eingeben.');                         return }
+    if (!nachname.trim())        { setError('Bitte Nachname eingeben.');                        return }
+    if (!email.includes('@'))    { setError('Ungültige E-Mail-Adresse.');                       return }
+    if (password.length < 6)    { setError('Passwort muss mindestens 6 Zeichen haben.');       return }
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 800))
-    await afterAuth(email)
+    try {
+      const res  = await fetch('/api/auth/register', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          vorname, nachname, email, password,
+          strasse: strasse || undefined,
+          plz:     plz     || undefined,
+          ort:     ort     || undefined,
+          tel:     tel     || undefined,
+        }),
+      })
+      const data = await res.json()
+
+      if (res.ok && data.ok) {
+        setSession(data.email)
+        claimPendingAnfrage(data.email)
+        if (data.kKunde) updateSessionJtl(data.kKunde, data.kundennummer ?? '')
+        router.push('/dashboard')
+      } else if (res.status === 409) {
+        setError('Diese E-Mail-Adresse ist bereits registriert. Bitte anmelden.')
+        setLoading(false)
+      } else {
+        setError(data.error ?? 'Registrierung fehlgeschlagen.')
+        setLoading(false)
+      }
+    } catch {
+      setError('Verbindungsfehler. Bitte erneut versuchen.')
+      setLoading(false)
+    }
   }
 
   // Passwort-vergessen: prüft JTL und versendet echte Reset-Mail (server-side)
@@ -328,12 +362,36 @@ function LoginForm() {
               <p className="text-xs mb-6" style={{ color: '#7a7a7a' }}>Kostenlos und unverbindlich – Angebote & Status online verfolgen.</p>
 
               <form onSubmit={handleRegister} className="space-y-4">
-                <Field label="Ihr Name" id="name" type="text" value={name}
-                  onChange={setName} placeholder="Max Mustermann" required />
+                {/* Name */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Vorname" id="vorname" type="text" value={vorname}
+                    onChange={setVorname} placeholder="Max" required />
+                  <Field label="Nachname" id="nachname" type="text" value={nachname}
+                    onChange={setNachname} placeholder="Mustermann" required />
+                </div>
+
+                {/* Zugangsdaten */}
                 <Field label="E-Mail" id="reg-email" type="email" value={email}
                   onChange={setEmail} placeholder="max@beispiel.de" required />
                 <Field label="Passwort" id="reg-password" type="password" value={password}
                   onChange={setPassword} placeholder="Mindestens 6 Zeichen" required />
+
+                {/* Adressdaten (optional) */}
+                <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #2d2d2d' }}>
+                  <p className="text-[11px] uppercase tracking-wider" style={{ color: '#4a4a4a' }}>
+                    Adressdaten <span style={{ color: '#3a3a3a' }}>(optional)</span>
+                  </p>
+                  <Field label="Straße & Hausnummer" id="strasse" type="text" value={strasse}
+                    onChange={setStrasse} placeholder="Musterstraße 1" />
+                  <div className="grid grid-cols-2 gap-3">
+                    <Field label="PLZ" id="plz" type="text" value={plz}
+                      onChange={setPlz} placeholder="06369" />
+                    <Field label="Ort" id="ort" type="text" value={ort}
+                      onChange={setOrt} placeholder="Großwülknitz" />
+                  </div>
+                  <Field label="Telefon" id="tel" type="tel" value={tel}
+                    onChange={setTel} placeholder="+49 3496 …" />
+                </div>
 
                 {error && <ErrorMsg>{error}</ErrorMsg>}
 

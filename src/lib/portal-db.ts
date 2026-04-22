@@ -103,6 +103,20 @@ export function upsertUserJtl(
   return findUserByEmail(mail)!
 }
 
+/**
+ * Legt einen Portal-Nutzer ohne JTL-Verknüpfung an.
+ * Wird bei der Registrierung genutzt wenn JTL gerade nicht erreichbar ist.
+ * kKunde kann später via /api/jtl/kunde nachgezogen werden.
+ */
+export function createPortalUser(email: string): void {
+  const db  = getDb()
+  const now = Date.now()
+  db.prepare(`
+    INSERT OR IGNORE INTO users (email, created_at, updated_at)
+    VALUES (?, ?, ?)
+  `).run(email.trim().toLowerCase(), now, now)
+}
+
 /** Setzt den Passwort-Hash für einen Nutzer (der vorher via JTL bekannt sein muss). */
 export function setPasswordHash(email: string, hash: string): void {
   const db  = getDb()
