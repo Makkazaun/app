@@ -21,10 +21,14 @@ export async function POST(req: NextRequest) {
 
   try {
     await markAngebotAbgelehnt(kAngebot)
-    return NextResponse.json({ success: true })
+    console.log(`[jtl/reject-angebot] kAngebot=${kAngebot} auf nAuftragStatus=99 gesetzt`)
+    return NextResponse.json({ success: true, kAngebot })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('[jtl/reject-angebot]', msg)
-    return NextResponse.json({ error: 'Ablehnung fehlgeschlagen.', detail: msg }, { status: 502 })
+    console.error('[jtl/reject-angebot] Fehler:', msg)
+    return NextResponse.json(
+      { error: 'Ablehnung fehlgeschlagen.', detail: msg },
+      { status: 502 }
+    )
   }
 }

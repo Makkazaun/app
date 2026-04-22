@@ -31,44 +31,66 @@ const STATUS_COLOR: Record<JtlAngebot['status'], string> = {
 // ── Ablehnen-Button – dezenter Text-Link mit Inline-Bestätigung ───────────────
 
 function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess: () => void }) {
-  const [confirm, setConfirm] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [confirm,  setConfirm]  = useState(false)
+  const [loading,  setLoading]  = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   async function handleReject() {
     setLoading(true)
+    setErrorMsg(null)
+    let succeeded = false
+
     try {
-      await fetch('/api/jtl/reject-angebot', {
+      const res = await fetch('/api/jtl/reject-angebot', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ kAngebot: angebot.kAuftrag }),
       })
-      onSuccess()
+
+      if (res.ok) {
+        succeeded = true
+      } else {
+        const body = await res.json().catch(() => ({}))
+        setErrorMsg(body.detail ?? body.error ?? 'Ablehnung fehlgeschlagen.')
+      }
+    } catch {
+      setErrorMsg('Verbindungsfehler. Bitte erneut versuchen.')
     } finally {
       setLoading(false)
-      setConfirm(false)
+      if (succeeded) setConfirm(false)
     }
+
+    // onSuccess() außerhalb von finally, damit setState abgeschlossen ist
+    if (succeeded) onSuccess()
   }
 
   if (confirm) {
     return (
-      <div className="flex items-center gap-1.5 flex-wrap">
-        <span className="text-[10px]" style={{ color: '#c07070' }}>Wirklich ablehnen?</span>
-        <button
-          onClick={handleReject}
-          disabled={loading}
-          className="px-2 py-1 rounded text-[10px] font-medium transition-opacity hover:opacity-80 disabled:opacity-40"
-          style={{ background: 'rgba(220,50,50,0.15)', color: '#e08080', border: '1px solid rgba(220,50,50,0.25)' }}
-        >
-          {loading ? '…' : 'Ja'}
-        </button>
-        <button
-          onClick={() => setConfirm(false)}
-          disabled={loading}
-          className="px-2 py-1 rounded text-[10px] transition-opacity hover:opacity-80"
-          style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}
-        >
-          Abbrechen
-        </button>
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-[10px]" style={{ color: '#c07070' }}>Wirklich ablehnen?</span>
+          <button
+            onClick={handleReject}
+            disabled={loading}
+            className="px-2 py-1 rounded text-[10px] font-medium transition-opacity hover:opacity-80 disabled:opacity-40"
+            style={{ background: 'rgba(220,50,50,0.15)', color: '#e08080', border: '1px solid rgba(220,50,50,0.25)' }}
+          >
+            {loading ? '…' : 'Ja, ablehnen'}
+          </button>
+          <button
+            onClick={() => { setConfirm(false); setErrorMsg(null) }}
+            disabled={loading}
+            className="px-2 py-1 rounded text-[10px] transition-opacity hover:opacity-80"
+            style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}
+          >
+            Abbrechen
+          </button>
+        </div>
+        {errorMsg && (
+          <p className="text-[10px] leading-snug" style={{ color: '#e08080', maxWidth: '180px' }}>
+            ⚠ {errorMsg}
+          </p>
+        )}
       </div>
     )
   }
@@ -78,12 +100,12 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
       onClick={() => setConfirm(true)}
       className="text-xs transition-opacity hover:opacity-100"
       style={{
-        background: 'none',
-        border:     'none',
-        padding:    '0',
-        color:      'rgba(192,112,112,0.6)',
-        cursor:     'pointer',
-        textDecoration: 'underline',
+        background:          'none',
+        border:              'none',
+        padding:             '0',
+        color:               'rgba(192,112,112,0.6)',
+        cursor:              'pointer',
+        textDecoration:      'underline',
         textDecorationColor: 'rgba(192,112,112,0.3)',
         textUnderlineOffset: '2px',
       }}

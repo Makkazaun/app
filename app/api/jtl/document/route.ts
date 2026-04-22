@@ -30,10 +30,16 @@ const VALID_TYPES = new Set(['rechnung', 'angebot', 'auftrag'])
 
 // ── Dateisystem-Suche in private/documents/ ───────────────────────────────────
 
-function findLocalPdf(id: string): string | null {
+function findLocalPdf(id: string, type?: string): string | null {
   if (!fs.existsSync(DOCS_DIR)) return null
 
   const norm = id.replace(/\//g, '-').toLowerCase()
+
+  // For angebote: always prefer the signed version if it exists
+  if (type === 'angebot') {
+    const signed = path.join(DOCS_DIR, `${id}_unterschrieben.pdf`)
+    if (fs.existsSync(signed)) return signed
+  }
 
   // 1. Exakter Treffer: <id>.pdf
   const exact = path.join(DOCS_DIR, `${id}.pdf`)
@@ -177,7 +183,7 @@ export async function GET(req: NextRequest) {
   }
 
   // ── 1. Lokales Verzeichnis private/documents/ ─────────────────────────────
-  const localPath = findLocalPdf(id)
+  const localPath = findLocalPdf(id, type)
   if (localPath) {
     try {
       const buf      = fs.readFileSync(localPath)

@@ -19,9 +19,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs   from 'fs'
 import path from 'path'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { markAngebotAngenommen, getKundeNameByAuftrag } from '@/src/lib/db-jtl'
 import { sendMail } from '@/src/lib/mailer'
+import { generateEmailHtml, getLogoAttachment } from '@/src/lib/email-templates'
 
 const DOCS_DIR = path.join(process.cwd(), 'private', 'documents')
 
@@ -47,7 +48,7 @@ function findPdf(id: string): string | null {
 
 // ── Unterschrift in PDF einbetten ─────────────────────────────────────────────
 
-async function embedSignature(pdfPath: string, signaturePng: Buffer): Promise<Buffer> {
+async function embedSignature(pdfPath: string, signaturePng: Buffer, dateStr: string): Promise<Buffer> {
   const pdfBytes = fs.readFileSync(pdfPath)
   const pdfDoc   = await PDFDocument.load(pdfBytes)
 
@@ -55,15 +56,30 @@ async function embedSignature(pdfPath: string, signaturePng: Buffer): Promise<Bu
   const last  = pages[pages.length - 1]
   const { width } = last.getSize()
 
+  // Signature image – centered over the signature line area near the bottom
   const sigImg = await pdfDoc.embedPng(signaturePng)
   const sigW   = Math.min(180, width * 0.35)
   const sigH   = sigW * (sigImg.height / sigImg.width)
+  const sigY   = 95  // bottom of image from page bottom (sits just above the "Unterschrift" line)
 
   last.drawImage(sigImg, {
     x:      width / 2 - sigW / 2,
-    y:      40,
+    y:      sigY,
     width:  sigW,
     height: sigH,
+  })
+
+  // Date text centered below the signature image
+  const font      = await pdfDoc.embedFont(StandardFonts.Helvetica)
+  const fontSize  = 9
+  const textWidth = font.widthOfTextAtSize(dateStr, fontSize)
+
+  last.drawText(dateStr, {
+    x:    width / 2 - textWidth / 2,
+    y:    sigY - 14,
+    size: fontSize,
+    font,
+    color: rgb(0.35, 0.35, 0.35),
   })
 
   return Buffer.from(await pdfDoc.save())
@@ -96,14 +112,17 @@ export async function POST(req: NextRequest) {
     const base64    = sigDataUrl.includes(',') ? sigDataUrl.split(',')[1] : sigDataUrl
     const sigBuffer = Buffer.from(base64, 'base64')
 
-    // 3. PDF suchen, Unterschrift einbetten, speichern
+    const when    = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
+    const dateStr = `Unterschrieben am ${when} Uhr`
+
+    // 3. PDF suchen, Unterschrift + Datum einbetten, speichern
     let attachmentBuffer: Buffer | null = null
     let savedFilename: string | null = null
 
     const pdfPath = findPdf(belegnummer)
     if (pdfPath) {
       try {
-        attachmentBuffer = await embedSignature(pdfPath, sigBuffer)
+        attachmentBuffer = await embedSignature(pdfPath, sigBuffer, dateStr)
         savedFilename    = `${belegnummer}_unterschrieben.pdf`
         fs.mkdirSync(DOCS_DIR, { recursive: true })
         fs.writeFileSync(path.join(DOCS_DIR, savedFilename), attachmentBuffer)
@@ -114,48 +133,96 @@ export async function POST(req: NextRequest) {
       console.warn(`[sign] Kein PDF für "${belegnummer}" in ${DOCS_DIR}`)
     }
 
-    // 4. E-Mail senden
-    const subject = `Angebot angenommen: ${belegnummer} - ${kundenName}`
-    const when    = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
+    // 4. E-Mail mit Branded Template senden
+    const subject    = `Angebot angenommen: ${belegnummer} – ${kundenName}`
+    const logoAttach = getLogoAttachment()
+
+    const esc = (s: string) =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+    const emailContent = `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:32px 36px 28px;">
+            <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#e8e8e8;letter-spacing:-0.01em;">
+              Angebot digital angenommen
+            </h1>
+            <p style="margin:0 0 24px;font-size:13px;color:#8a7a4a;">${esc(kundenName)}</p>
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+              <tr>
+                <td style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:16px 20px;">
+                  <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
+                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Angebotsnummer</span>
+                    <strong style="color:#c9a84c;font-family:monospace;">${esc(belegnummer)}</strong>
+                  </p>
+                  <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
+                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Kundenname</span>
+                    <strong style="color:#e8e8e8;">${esc(kundenName)}</strong>
+                  </p>
+                  <p style="margin:0;font-size:13px;line-height:1.5;">
+                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Zeitpunkt</span>
+                    <span style="color:#b0b0b0;">${esc(when)}</span>
+                  </p>
+                </td>
+              </tr>
+            </table>
+
+            ${attachmentBuffer
+              ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+                  <td style="background:#111c10;border:1px solid #2a3d20;border-radius:10px;padding:12px 16px;">
+                    <p style="margin:0;font-size:13px;color:#5bc97a;line-height:1.5;">
+                      ✓&nbsp; Das unterschriebene Angebot ist als PDF-Anhang beigefügt.
+                    </p>
+                  </td>
+                </tr></table>`
+              : `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+                  <td style="background:#1c1010;border:1px solid #3d2020;border-radius:10px;padding:12px 16px;">
+                    <p style="margin:0;font-size:13px;color:#e08080;line-height:1.5;">
+                      ⚠&nbsp; Kein Original-PDF vorhanden – Unterschrift ohne Anhang übermittelt.
+                    </p>
+                  </td>
+                </tr></table>`
+            }
+          </td>
+        </tr>
+      </table>`
+
+    const html = generateEmailHtml({
+      title:     `Angebot angenommen: ${belegnummer}`,
+      preheader: `${kundenName} hat Angebot ${belegnummer} digital unterschrieben.`,
+      content:   emailContent,
+    })
+
+    const text = [
+      'ANGEBOT DIGITAL ANGENOMMEN',
+      '═'.repeat(40),
+      '',
+      `Angebotsnummer: ${belegnummer}`,
+      `Kundenname:     ${kundenName}`,
+      `Zeitpunkt:      ${when}`,
+      '',
+      attachmentBuffer
+        ? 'Das unterschriebene Angebot ist als PDF-Anhang beigefügt.'
+        : 'Hinweis: Kein Original-PDF vorhanden – Unterschrift ohne Anhang übermittelt.',
+      '',
+      '─'.repeat(40),
+      'TR Edelzaun & Tor GmbH · Kastanienplatz 2 · 06369 Großwülknitz',
+    ].join('\n')
 
     await sendMail({
       to:      'info@edelzaun-tor.de',
       subject,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;color:#333">
-          <h2 style="color:#8a6914;margin-bottom:16px">Angebot digital angenommen</h2>
-          <p>Ein Kunde hat das folgende Angebot digital unterschrieben und angenommen.</p>
-          <table style="border-collapse:collapse;width:100%;margin:20px 0;font-size:14px">
-            <tr>
-              <td style="padding:8px 14px;background:#f8f4e8;font-weight:bold;width:160px;border:1px solid #e8ddb4">Angebotsnummer</td>
-              <td style="padding:8px 14px;border:1px solid #e8ddb4">${belegnummer}</td>
-            </tr>
-            <tr>
-              <td style="padding:8px 14px;background:#f8f4e8;font-weight:bold;border:1px solid #e8ddb4">Kundenname</td>
-              <td style="padding:8px 14px;border:1px solid #e8ddb4">${kundenName}</td>
-            </tr>
-            <tr>
-              <td style="padding:8px 14px;background:#f8f4e8;font-weight:bold;border:1px solid #e8ddb4">Zeitpunkt</td>
-              <td style="padding:8px 14px;border:1px solid #e8ddb4">${when}</td>
-            </tr>
-          </table>
-          ${attachmentBuffer
-            ? '<p>Das unterschriebene Angebot ist als PDF-Anhang beigefügt.</p>'
-            : '<p style="color:#c04040"><strong>Hinweis:</strong> Kein Original-PDF im System vorhanden. Unterschrift wurde ohne Anhang übermittelt.</p>'
-          }
-          <p style="color:#999;font-size:11px;margin-top:28px;border-top:1px solid #eee;padding-top:12px">
-            Automatisch gesendet von der Edelzaun App
-          </p>
-        </div>
-      `,
-      text: `Angebot digital angenommen\n\nAngebotsnummer: ${belegnummer}\nKundenname: ${kundenName}\nZeitpunkt: ${when}\n${attachmentBuffer ? 'Unterschriebenes PDF im Anhang.' : 'Kein Original-PDF vorhanden.'}`,
-      ...(attachmentBuffer && {
-        attachments: [{
+      html,
+      text,
+      attachments: [
+        logoAttach,
+        ...(attachmentBuffer ? [{
           filename:    savedFilename ?? `${belegnummer}_unterschrieben.pdf`,
           content:     attachmentBuffer,
           contentType: 'application/pdf',
-        }],
-      }),
+        }] : []),
+      ],
     })
 
     // 5. In JTL markieren
