@@ -169,12 +169,16 @@ export interface JtlAuftrag {
   lieferadresse:    JtlAdresse | null
 }
 
-// ── Farb-Konstanten (Windows COLORREF: 0x00BBGGRR) ───────────────────────────
-// nFarbe in Verkauf.tAuftrag – visuelle Markierung in der Wawi-Vorgangsliste.
-// Soft-Fallback wenn nFarbe in dieser JTL-Version nicht existiert.
+// ── Farb-Konstanten für nFarbe in Verkauf.tAuftrag ───────────────────────────
+// JTL-Wawi speichert Vorgangsfarben als Integer-Index (nicht COLORREF).
+// Typische Werte: 0=keine, 1=Rot, 2=Gelb, 3=Grün, 4=Blau.
+// Falls Ihre Wawi andere Werte nutzt, passen Sie die Konstanten an.
+//
+// Für Annahme (grün) wird FARBE_GRUEN aktuell als COLORREF 65280 gesetzt –
+// falls das in Ihrer JTL-Version nicht funktioniert, auf 3 ändern.
 
-const FARBE_GRUEN = 65280  // RGB(  0, 255, 0) – Angenommen / unterschrieben
-const FARBE_ROT   = 255    // RGB(255,   0, 0) – Abgelehnt
+const FARBE_GRUEN = 65280  // COLORREF RGB(0,255,0) – ggf. auf 3 (Index) ändern
+const FARBE_ROT   = 1      // JTL-Index 1 = Rot (Alternativwert: 5)
 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
@@ -936,45 +940,32 @@ export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
 }
 
 /**
- * Markiert ein Angebot als "abgelehnt" durch den Kunden.
+ * Setzt die Vorgangsfarbe in der Wawi auf ROT (visuelles Feedback, kein Status-Update).
  *
- * Setzt nAuftragStatus=99 (→ mapAngebotStatus: 'abgelehnt'), Zeitstempel in cAnmerkung
- * und färbt den Vorgang rot in der Wawi-Liste (nFarbe=255).
- * nFarbe-Fallback: wenn die Spalte fehlt, Update ohne Farbe.
+ * Schreibt ausschließlich nFarbe=1 in Verkauf.tAuftrag – keine weiteren Spalten.
+ * Die Ablehnung selbst wird autoritativ in portal-db (SQLite) gespeichert.
+ * Fehler (nFarbe nicht vorhanden, JTL nicht erreichbar) werden geloggt aber NICHT geworfen,
+ * da das JTL-Update rein visuell ist und die portal-db den Status trägt.
  */
 export async function markAngebotAbgelehnt(kAuftrag: number): Promise<void> {
-  const pool = await getPool()
-  const ts   = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
-  const note = `[App] Vom Kunden abgelehnt am ${ts}`
-
   try {
+    const pool = await getPool()
     await pool.request()
-      .input('kAuftrag',  sql.Int,           kAuftrag)
-      .input('anmerkung', sql.NVarChar(500), note)
-      .input('nFarbe',    sql.Int,           FARBE_ROT)
+      .input('kAuftrag', sql.Int, kAuftrag)
+      .input('nFarbe',   sql.Int, FARBE_ROT)
       .query(`
         UPDATE [Verkauf].[tAuftrag]
-        SET cAnmerkung     = @anmerkung,
-            nAuftragStatus = 99,
-            nFarbe         = @nFarbe
-        WHERE kAuftrag = @kAuftrag
-          AND nType    = 0
-          AND ISNULL(nStorno, 0) = 0
+        SET    nFarbe = @nFarbe
+        WHERE  kAuftrag = @kAuftrag
+          AND  nType    = 0
+          AND  ISNULL(nStorno, 0) = 0
       `)
+    console.log(`[markAngebotAbgelehnt] kAuftrag=${kAuftrag} → nFarbe=${FARBE_ROT} (rot)`)
   } catch (err) {
-    if (err instanceof Error && err.message.includes('nFarbe')) {
-      console.warn('[markAngebotAbgelehnt] nFarbe-Spalte nicht verfügbar – Update ohne Farbe')
-      await pool.request()
-        .input('kAuftrag',  sql.Int,           kAuftrag)
-        .input('anmerkung', sql.NVarChar(500), note)
-        .query(`
-          UPDATE [Verkauf].[tAuftrag]
-          SET cAnmerkung = @anmerkung, nAuftragStatus = 99
-          WHERE kAuftrag = @kAuftrag AND nType = 0 AND ISNULL(nStorno, 0) = 0
-        `)
-    } else {
-      throw err
-    }
+    console.warn(
+      '[markAngebotAbgelehnt] JTL-Farbmarkierung fehlgeschlagen (non-fatal):',
+      err instanceof Error ? err.message.split('\n')[0] : String(err),
+    )
   }
 }
 

@@ -3,12 +3,16 @@
  *
  * Body: { kAngebot: number }
  *
- * Markiert ein Angebot als "abgelehnt" durch den Kunden
- * (setzt nAuftragStatus=99 + schreibt Zeitstempel in cAnmerkung).
+ * Ablehnung eines Angebots durch den Kunden:
+ *   1. Autoritativer Eintrag in portal-db (angebot_rejections) → Status "abgelehnt" in der App
+ *   2. Visuell: nFarbe=ROT in JTL-Wawi (non-fatal, rein optisch)
+ *
+ * Es werden KEINE weiteren Spalten in JTL beschrieben (kein cAnmerkung, kein nAuftragStatus).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { markAngebotAbgelehnt } from '@/src/lib/db-jtl'
+import { rejectAngebotInPortal } from '@/src/lib/portal-db'
 
 export async function POST(req: NextRequest) {
   let body: { kAngebot?: unknown }
@@ -19,16 +23,12 @@ export async function POST(req: NextRequest) {
   if (!kAngebot || isNaN(kAngebot) || kAngebot <= 0)
     return NextResponse.json({ error: 'kAngebot fehlt oder ungültig.' }, { status: 400 })
 
-  try {
-    await markAngebotAbgelehnt(kAngebot)
-    console.log(`[jtl/reject-angebot] kAngebot=${kAngebot} auf nAuftragStatus=99 gesetzt`)
-    return NextResponse.json({ success: true, kAngebot })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('[jtl/reject-angebot] Fehler:', msg)
-    return NextResponse.json(
-      { error: 'Ablehnung fehlgeschlagen.', detail: msg },
-      { status: 502 }
-    )
-  }
+  // 1. Portal-DB – autoritativer Ablehnungs-Eintrag (synchron, schnell)
+  rejectAngebotInPortal(kAngebot)
+  console.log(`[jtl/reject-angebot] kAngebot=${kAngebot} in portal-db als abgelehnt markiert`)
+
+  // 2. JTL-Wawi – nur Farbmarkierung (non-fatal, markAngebotAbgelehnt wirft nie)
+  await markAngebotAbgelehnt(kAngebot)
+
+  return NextResponse.json({ success: true, kAngebot })
 }

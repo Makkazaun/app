@@ -52,6 +52,13 @@ function getDb(): Database.Database {
       created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
     );
 
+    -- Vom Kunden abgelehnte Angebote – autoritativer Status (JTL bekommt nur Farbe).
+    -- kAuftrag = Verkauf.tAuftrag.kAuftrag (JTL-PK)
+    CREATE TABLE IF NOT EXISTS angebot_rejections (
+      k_auftrag   INTEGER PRIMARY KEY,
+      rejected_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
+    );
+
     CREATE INDEX IF NOT EXISTS idx_reset_tokens_email ON reset_tokens(email);
   `)
 
@@ -128,6 +135,24 @@ export function setPasswordHash(email: string, hash: string): void {
   if (rows.changes === 0) {
     throw new Error(`Nutzer "${email}" nicht in Portal-DB gefunden – zuerst upsertUserJtl() aufrufen.`)
   }
+}
+
+// ── Angebot-Ablehnungen ───────────────────────────────────────────────────────
+
+/** Trägt eine Angebotsablehnung in die lokale DB ein (idempotent). */
+export function rejectAngebotInPortal(kAuftrag: number): void {
+  getDb().prepare(`
+    INSERT OR REPLACE INTO angebot_rejections (k_auftrag, rejected_at)
+    VALUES (?, unixepoch() * 1000)
+  `).run(kAuftrag)
+}
+
+/** Gibt alle abgelehnten kAuftrag-IDs als Set zurück (für Merge in der Angebote-API). */
+export function getRejectedAuftragIds(): Set<number> {
+  const rows = getDb()
+    .prepare('SELECT k_auftrag FROM angebot_rejections')
+    .all() as { k_auftrag: number }[]
+  return new Set(rows.map((r) => r.k_auftrag))
 }
 
 // ── Reset-Tokens ──────────────────────────────────────────────────────────────
