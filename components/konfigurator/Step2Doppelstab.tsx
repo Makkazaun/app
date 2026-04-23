@@ -1,4 +1,4 @@
-﻿import SelectCard from './SelectCard'
+import SelectCard from './SelectCard'
 import FieldLabel, { inputStyle } from './FieldLabel'
 import type { FormData } from './types'
 
@@ -22,10 +22,10 @@ export default function Step2Doppelstab({ data, update }: Props) {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
+        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
           Schritt 2 · Doppelstabmatte
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Konfiguration</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Konfiguration</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ export default function Step2Doppelstab({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '44px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#C08898' }}>cm</span>
+              style={{ color: '#5a5a5a' }}>cm</span>
           </div>
         </div>
         <div>
@@ -52,7 +52,7 @@ export default function Step2Doppelstab({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '36px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#C08898' }}>m</span>
+              style={{ color: '#5a5a5a' }}>m</span>
           </div>
         </div>
       </div>

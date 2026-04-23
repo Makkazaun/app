@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import FieldLabel, { inputStyle } from './FieldLabel'
@@ -42,11 +42,11 @@ export default function Step5Kontakt({ data, update }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
+        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
           Schritt 5
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Ihre Kontaktdaten</h2>
-        <p className="text-sm mt-1" style={{ color: '#C08898' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Ihre Kontaktdaten</h2>
+        <p className="text-sm mt-1" style={{ color: '#5a5a5a' }}>
           Damit wir Ihnen ein persönliches Angebot zusenden können.
         </p>
       </div>
@@ -104,23 +104,23 @@ export default function Step5Kontakt({ data, update }: Props) {
           <div
             className="w-5 h-5 rounded flex items-center justify-center transition-all duration-150"
             style={{
-              background: k.datenschutz ? '#800020' : '#080002',
-              border: `2px solid ${k.datenschutz ? '#800020' : '#1A0005'}`,
+              background: k.datenschutz ? '#c9a84c' : '#1a1a1a',
+              border: `2px solid ${k.datenschutz ? '#c9a84c' : '#3d3d3d'}`,
             }}
           >
-            {k.datenschutz && <span style={{ color: '#ffffff', fontSize: '11px', fontWeight: 'bold' }}>✓</span>}
+            {k.datenschutz && <span style={{ color: '#1a1a1a', fontSize: '11px', fontWeight: 'bold' }}>✓</span>}
           </div>
         </div>
-        <p className="text-xs leading-relaxed" style={{ color: '#C88090' }}>
+        <p className="text-xs leading-relaxed" style={{ color: '#6a6a6a' }}>
           Ich habe die{' '}
           <a href="/datenschutz" target="_blank"
             className="underline hover:opacity-80 transition-opacity"
-            style={{ color: '#800020' }}
+            style={{ color: '#c9a84c' }}
           >
             Datenschutzerklärung
           </a>{' '}
           gelesen und stimme der Verarbeitung meiner Daten zur Angebotserstellung zu.{' '}
-          <span style={{ color: '#800020' }}>*</span>
+          <span style={{ color: '#c9a84c' }}>*</span>
         </p>
       </label>
     </div>

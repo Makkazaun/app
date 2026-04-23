@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
@@ -55,16 +55,16 @@ function KompaktPicker({
   const modelle = BETONZAUN_MODELLE.filter((m) => m.kategorie === kat)
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #1A0005', background: '#33000D' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #3d3d3d', background: '#1c1c1c' }}>
       {/* Kategorie-Tabs */}
-      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #440011' }}>
+      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #2a2a2a' }}>
         {KATEGORIEN.map((k) => (
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all"
             style={{
-              background: kat === k ? 'rgba(128,0,32,0.15)' : 'transparent',
-              border: kat === k ? '1px solid #800020' : '1px solid transparent',
-              color: kat === k ? '#800020' : '#C08898',
+              background: kat === k ? 'rgba(201,168,76,0.15)' : 'transparent',
+              border: kat === k ? '1px solid #c9a84c' : '1px solid transparent',
+              color: kat === k ? '#c9a84c' : '#5a5a5a',
             }}
           >
             {k}
@@ -80,22 +80,22 @@ function KompaktPicker({
             <button key={m.nr} type="button" onClick={() => { onSelect(m); onClose() }}
               className="rounded-lg overflow-hidden transition-all active:scale-95"
               style={{
-                border: sel ? '2px solid #800020' : '1px solid #440011',
-                background: '#080002',
+                border: sel ? '2px solid #c9a84c' : '1px solid #2d2d2d',
+                background: '#141414',
               }}
             >
-              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#1A0005' }}>
+              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#222' }}>
                 <Image src={m.imageUrl} alt={m.name} fill sizes="100px" className="object-cover"
                   onError={() => {}} />
                 {sel && (
                   <div className="absolute inset-0 flex items-center justify-center"
-                    style={{ background: 'rgba(128,0,32,0.2)' }}
+                    style={{ background: 'rgba(201,168,76,0.2)' }}
                   >
-                    <span className="text-sm font-bold" style={{ color: '#800020' }}>✓</span>
+                    <span className="text-sm font-bold" style={{ color: '#c9a84c' }}>✓</span>
                   </div>
                 )}
               </div>
-              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#800020' : '#C88090' }}>
+              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#c9a84c' : '#7a7a7a' }}>
                 {m.name}
               </p>
             </button>
@@ -106,7 +106,7 @@ function KompaktPicker({
       <div className="px-3 pb-2 flex justify-end">
         <button type="button" onClick={onClose}
           className="text-xs px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
-          style={{ background: '#1A0005', color: '#C08898' }}
+          style={{ background: '#2a2a2a', color: '#5a5a5a' }}
         >
           Schließen
         </button>
@@ -137,39 +137,39 @@ function ReihenZeile({
     <div>
       <div className="flex items-center gap-3 p-3 rounded-xl transition-all"
         style={{
-          background: '#33000D',
-          border: open ? '1px solid #800020' : '1px solid #440011',
+          background: '#1e1e1e',
+          border: open ? '1px solid #c9a84c' : '1px solid #2d2d2d',
           borderRadius: open ? '12px 12px 0 0' : '12px',
         }}
       >
         {/* Reihen-Badge */}
         <div className="flex-shrink-0 w-16 text-center">
-          <span className="block text-xs font-bold" style={{ color: '#C08898' }}>{label}</span>
-          {isTop && <span className="text-xs" style={{ color: '#C08898' }}>↑ Oben</span>}
-          {isBottom && <span className="text-xs" style={{ color: '#C08898' }}>↓ Unten</span>}
+          <span className="block text-xs font-bold" style={{ color: '#5a5a5a' }}>{label}</span>
+          {isTop && <span className="text-xs" style={{ color: '#3a3a3a' }}>↑ Oben</span>}
+          {isBottom && <span className="text-xs" style={{ color: '#3a3a3a' }}>↓ Unten</span>}
         </div>
 
         {/* Modell-Vorschau */}
         {modell ? (
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="w-12 h-8 rounded-md overflow-hidden flex-shrink-0 relative"
-              style={{ background: '#1A0005' }}
+              style={{ background: '#222' }}
             >
               <Image src={modell.imageUrl} alt={modell.name} fill sizes="48px" className="object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate" style={{ color: '#F5D0D5' }}>{modell.name}</p>
-              <p className="text-xs" style={{ color: '#C08898' }}>Nr. {modell.nr}</p>
+              <p className="text-sm font-medium truncate" style={{ color: '#d0d0d0' }}>{modell.name}</p>
+              <p className="text-xs" style={{ color: '#4a4a4a' }}>Nr. {modell.nr}</p>
             </div>
           </div>
         ) : (
           <div className="flex-1 flex items-center gap-2">
             <div className="w-12 h-8 rounded-md flex items-center justify-center flex-shrink-0"
-              style={{ background: '#0D0003', border: '1px dashed #333' }}
+              style={{ background: '#252525', border: '1px dashed #333' }}
             >
-              <span style={{ color: '#C08898', fontSize: '10px' }}>?</span>
+              <span style={{ color: '#3a3a3a', fontSize: '10px' }}>?</span>
             </div>
-            <p className="text-sm" style={{ color: '#C08898' }}>Kein Modell gewählt</p>
+            <p className="text-sm" style={{ color: '#4a4a4a' }}>Kein Modell gewählt</p>
           </div>
         )}
 
@@ -177,9 +177,9 @@ function ReihenZeile({
         <button type="button" onClick={() => setOpen((o) => !o)}
           className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{
-            background: open ? 'rgba(128,0,32,0.12)' : '#0D0003',
-            border: open ? '1px solid rgba(128,0,32,0.3)' : '1px solid #333',
-            color: open ? '#800020' : '#C88090',
+            background: open ? 'rgba(201,168,76,0.12)' : '#252525',
+            border: open ? '1px solid rgba(201,168,76,0.3)' : '1px solid #333',
+            color: open ? '#c9a84c' : '#7a7a7a',
           }}
         >
           {open ? 'Schließen' : modell ? 'Ändern' : 'Wählen'}
@@ -208,7 +208,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
     <div>
       <FieldLabel>Live-Vorschau</FieldLabel>
       <div className="rounded-xl overflow-hidden p-4"
-        style={{ background: '#080002', border: '1px solid #440011' }}
+        style={{ background: '#141414', border: '1px solid #222' }}
       >
         {/* Himmel */}
         <div className="h-3" />
@@ -223,12 +223,12 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                 style={{
                   width: '14px',
                   height: `${ebenen.length * 44 + 16}px`,
-                  background: 'linear-gradient(180deg, #9CA3AF, #E5E7EB)',
+                  background: 'linear-gradient(180deg, #4a4a4a, #2a2a2a)',
                   boxShadow: '1px 0 3px rgba(0,0,0,0.5)',
                 }}
               >
                 {/* Pfosten-Kappe */}
-                <div className="w-full h-2 rounded-t-sm" style={{ background: '#C08898' }} />
+                <div className="w-full h-2 rounded-t-sm" style={{ background: '#5a5a5a' }} />
               </div>
 
               {/* Feld (außer nach dem letzten Pfosten) */}
@@ -241,7 +241,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                         className="relative overflow-hidden"
                         style={{
                           height: '44px',
-                          background: '#1A0005',
+                          background: '#2a2a2a',
                           borderTop: li > 0 ? '1px solid rgba(0,0,0,0.4)' : 'none',
                         }}
                       >
@@ -258,7 +258,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                           <div className="w-full h-full flex items-center justify-center"
                             style={{ background: 'repeating-linear-gradient(45deg, #222 0px, #222 4px, #262626 4px, #262626 8px)' }}
                           >
-                            <span className="text-xs" style={{ color: '#C08898' }}>–</span>
+                            <span className="text-xs" style={{ color: '#3a3a3a' }}>–</span>
                           </div>
                         )}
                       </div>
@@ -271,7 +271,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
         </div>
 
         {/* Boden */}
-        <div className="h-2 rounded-b-lg" style={{ background: 'linear-gradient(180deg, #1e1a0a, #F9FAFB)' }} />
+        <div className="h-2 rounded-b-lg" style={{ background: 'linear-gradient(180deg, #1e1a0a, #141414)' }} />
 
         {/* Legende */}
         <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
@@ -281,11 +281,11 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
             return (
               <div key={li} className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-sm overflow-hidden relative flex-shrink-0"
-                  style={{ background: '#1A0005' }}
+                  style={{ background: '#2a2a2a' }}
                 >
                   {m && <Image src={m.imageUrl} alt="" fill sizes="12px" className="object-cover" />}
                 </div>
-                <span className="text-xs" style={{ color: '#C08898' }}>
+                <span className="text-xs" style={{ color: '#4a4a4a' }}>
                   {label}: {m ? m.name : '–'}
                 </span>
               </div>
@@ -294,8 +294,8 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
           {pfeiler && (
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm flex-shrink-0"
-                style={{ background: 'linear-gradient(180deg, #9CA3AF, #E5E7EB)' }} />
-              <span className="text-xs" style={{ color: '#C08898' }}>
+                style={{ background: 'linear-gradient(180deg, #4a4a4a, #2a2a2a)' }} />
+              <span className="text-xs" style={{ color: '#4a4a4a' }}>
                 Pfeiler: {PFEILER_OPTIONEN.find((p) => p.value === pfeiler)?.label ?? pfeiler}
               </span>
             </div>
@@ -328,20 +328,20 @@ function StuecklistenAnzeige({
   return (
     <div>
       <FieldLabel>Automatische Stückliste</FieldLabel>
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
         {/* Kopfzeile */}
         <div className="px-4 py-2.5 flex items-center justify-between"
-          style={{ background: '#33000D', borderBottom: '1px solid #440011' }}
+          style={{ background: '#1e1e1e', borderBottom: '1px solid #2a2a2a' }}
         >
-          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090' }}>
+          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#7a7a7a' }}>
             Stückliste · {sl.laengeMeter} m Zaun
           </span>
-          <span className="text-xs" style={{ color: '#C08898' }}>
+          <span className="text-xs" style={{ color: '#3a3a3a' }}>
             Feldbreite: 2 m
           </span>
         </div>
 
-        <div className="divide-y" style={{ borderColor: '#FFFFFF' }}>
+        <div className="divide-y" style={{ borderColor: '#1e1e1e' }}>
           {/* Pfosten */}
           <SLZeile
             label="Pfosten"
@@ -369,20 +369,20 @@ function StuecklistenAnzeige({
 
           {/* Summe */}
           <div className="px-4 py-3 flex items-center justify-between"
-            style={{ background: '#080002' }}
+            style={{ background: '#1a1a1a' }}
           >
             <div>
-              <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>Platten gesamt</p>
-              <p className="text-xs mt-0.5" style={{ color: '#C08898' }}>{sl.reihen} Reihen × {sl.plattenProReihe} Felder</p>
+              <p className="text-sm font-bold" style={{ color: '#e0e0e0' }}>Platten gesamt</p>
+              <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{sl.reihen} Reihen × {sl.plattenProReihe} Felder</p>
             </div>
             <div className="text-right">
-              <span className="text-xl font-bold" style={{ color: '#800020' }}>{sl.plattenGesamt}</span>
-              <span className="text-xs ml-1" style={{ color: '#C08898' }}>Stück</span>
+              <span className="text-xl font-bold" style={{ color: '#c9a84c' }}>{sl.plattenGesamt}</span>
+              <span className="text-xs ml-1" style={{ color: '#5a5a5a' }}>Stück</span>
             </div>
           </div>
         </div>
       </div>
-      <p className="text-xs mt-2" style={{ color: '#C08898' }}>
+      <p className="text-xs mt-2" style={{ color: '#3a3a3a' }}>
         * Richtmengen, inkl. je {ecken} Eckpfosten. Exakte Mengen nach Aufmaß.
       </p>
     </div>
@@ -396,22 +396,22 @@ function SLZeile({
   highlight?: boolean; modellBild?: string
 }) {
   return (
-    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#0D0003' }}>
+    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#161616' }}>
       {modellBild ? (
-        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#1A0005' }}>
+        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#222' }}>
           <Image src={modellBild} alt="" fill sizes="32px" className="object-cover" />
         </div>
       ) : (
         <div className="w-8 h-6 rounded flex-shrink-0"
-          style={{ background: highlight ? 'linear-gradient(180deg,#9CA3AF,#E5E7EB)' : '#FFFFFF' }} />
+          style={{ background: highlight ? 'linear-gradient(180deg,#4a4a4a,#2a2a2a)' : '#202020' }} />
       )}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium" style={{ color: '#c8c8c8' }}>{label}</p>
-        <p className="text-xs truncate" style={{ color: '#C08898' }}>{sub}</p>
+        <p className="text-xs truncate" style={{ color: '#4a4a4a' }}>{sub}</p>
       </div>
       <div className="text-right flex-shrink-0">
-        <span className="text-base font-bold" style={{ color: highlight ? '#FFFFFF' : '#C88090' }}>{menge}</span>
-        <span className="text-xs ml-1" style={{ color: '#C08898' }}>{einheit}</span>
+        <span className="text-base font-bold" style={{ color: highlight ? '#e0e0e0' : '#9a9a9a' }}>{menge}</span>
+        <span className="text-xs ml-1" style={{ color: '#4a4a4a' }}>{einheit}</span>
       </div>
     </div>
   )
@@ -441,10 +441,10 @@ export default function ZaunPlaner({ data, update }: Props) {
   // Nicht anzeigen wenn Höhe oder Länge fehlen
   if (!bz.hoehe || !bz.laenge) {
     return (
-      <div className="rounded-xl p-5 text-center" style={{ background: '#0D0003', border: '1px dashed #440011' }}>
-        <p className="text-sm" style={{ color: '#C08898' }}>
-          Bitte zuerst <strong style={{ color: '#C88090' }}>Höhe</strong> und{' '}
-          <strong style={{ color: '#C88090' }}>Gesamtlänge</strong> angeben.
+      <div className="rounded-xl p-5 text-center" style={{ background: '#161616', border: '1px dashed #2a2a2a' }}>
+        <p className="text-sm" style={{ color: '#4a4a4a' }}>
+          Bitte zuerst <strong style={{ color: '#6a6a6a' }}>Höhe</strong> und{' '}
+          <strong style={{ color: '#6a6a6a' }}>Gesamtlänge</strong> angeben.
         </p>
       </div>
     )
@@ -458,7 +458,7 @@ export default function ZaunPlaner({ data, update }: Props) {
       {/* Reihen-Konfiguration */}
       <div>
         <FieldLabel>Modell pro Reihe</FieldLabel>
-        <p className="text-xs mb-4" style={{ color: '#C08898' }}>
+        <p className="text-xs mb-4" style={{ color: '#4a4a4a' }}>
           {reihenAnzahl} Reihen à 50 cm · Jede Ebene kann ein anderes Modell haben.
         </p>
         <div className="space-y-2">
@@ -489,25 +489,25 @@ export default function ZaunPlaner({ data, update }: Props) {
               onClick={() => update({ betonzaun: { ...bz, pfeiler: p.value } })}
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all"
               style={{
-                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#080002',
-                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #440011',
+                background: bz.pfeiler === p.value ? 'rgba(201,168,76,0.08)' : '#1a1a1a',
+                border: bz.pfeiler === p.value ? '1px solid rgba(201,168,76,0.35)' : '1px solid #2a2a2a',
               }}
             >
               <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
                 style={{
-                  borderColor: bz.pfeiler === p.value ? '#800020' : '#C08898',
-                  background: bz.pfeiler === p.value ? '#800020' : 'transparent',
+                  borderColor: bz.pfeiler === p.value ? '#c9a84c' : '#3a3a3a',
+                  background: bz.pfeiler === p.value ? '#c9a84c' : 'transparent',
                 }}
               >
                 {bz.pfeiler === p.value && (
-                  <span style={{ fontSize: '10px', color: '#ffffff', fontWeight: 700 }}>✓</span>
+                  <span style={{ fontSize: '10px', color: '#1a1a1a', fontWeight: 700 }}>✓</span>
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium" style={{ color: bz.pfeiler === p.value ? '#800020' : '#c0c0c0' }}>
+                <p className="text-sm font-medium" style={{ color: bz.pfeiler === p.value ? '#c9a84c' : '#c0c0c0' }}>
                   {p.label}
                 </p>
-                <p className="text-xs" style={{ color: '#C08898' }}>{p.beschreibung}</p>
+                <p className="text-xs" style={{ color: '#4a4a4a' }}>{p.beschreibung}</p>
               </div>
             </button>
           ))}

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import SelectCard from './SelectCard'
@@ -124,10 +124,10 @@ function FarbChipSmall({ hex, label, prefix }: { hex: string; label: string; pre
         boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
       }} />
       <span style={{
-        fontSize: '10px', color: '#C88090',
+        fontSize: '10px', color: '#6a6a6a',
         whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px',
       }}>
-        <span style={{ color: '#C08898', marginRight: '2px' }}>{prefix}:</span>
+        <span style={{ color: '#3a3a3a', marginRight: '2px' }}>{prefix}:</span>
         {label}
       </span>
     </div>
@@ -174,7 +174,7 @@ function StickyFarbVorschau({ data }: { data: FormData }) {
       {/* ── Farb-Labels ─────────────────────────────────── */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontSize: '9px', color: '#C08898',
+          fontSize: '9px', color: '#3a3a3a',
           textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: '5px',
         }}>
           Live-Vorschau
@@ -199,9 +199,9 @@ function StickyFarbVorschau({ data }: { data: FormData }) {
       {bz.hoehe && (
         <span style={{
           flexShrink: 0, fontSize: '11px', fontWeight: 600,
-          color: '#800020',
-          background: 'rgba(128,0,32,0.08)',
-          border: '1px solid rgba(128,0,32,0.18)',
+          color: '#c9a84c',
+          background: 'rgba(201,168,76,0.08)',
+          border: '1px solid rgba(201,168,76,0.18)',
           borderRadius: '6px',
           padding: '3px 8px',
         }}>
@@ -268,15 +268,15 @@ function FarbPicker({
             borderRadius: '6px',
             position: 'relative',
             background: key === 'individuell'
-              ? 'conic-gradient(#800020, #e8c870, #b87840, #d4a850, #800020)'
-              : (hex || '#FFFFFF'),
+              ? 'conic-gradient(#c9a84c, #e8c870, #b87840, #d4a850, #c9a84c)'
+              : (hex || '#1e1e1e'),
             border: isSelected
               ? '2px solid #ffffff'
               : isHovered
               ? '2px solid rgba(255,255,255,0.35)'
               : '2px solid rgba(255,255,255,0.07)',
             boxShadow: isSelected
-              ? '0 0 0 2px rgba(128,0,32,0.55), 0 2px 8px rgba(0,0,0,0.5)'
+              ? '0 0 0 2px rgba(201,168,76,0.55), 0 2px 8px rgba(0,0,0,0.5)'
               : isHovered
               ? '0 2px 8px rgba(0,0,0,0.4)'
               : '0 1px 3px rgba(0,0,0,0.3)',
@@ -313,7 +313,7 @@ function FarbPicker({
         <span style={{
           fontSize: '9px', lineHeight: 1.2,
           textAlign: 'center', width: '100%',
-          color: isSelected ? '#800020' : '#C08898',
+          color: isSelected ? '#c9a84c' : '#4a4a4a',
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
           {tileLabel.replace(' (RAL 9010)', '').replace(' (RAL 7016)', '')}
@@ -331,7 +331,7 @@ function FarbPicker({
         <div className={GRID_CLASS}>
           {PALETTE_FAVORITEN.map((key) => {
             const sonder = PALETTE_SONDER_FARBEN.find((s) => s.key === key)
-            const hex = sonder ? sonder.hex : (getPaletteHex(key) || getFarbHex(key) || '#FFFFFF')
+            const hex = sonder ? sonder.hex : (getPaletteHex(key) || getFarbHex(key) || '#1e1e1e')
             const label = getFarbLabel(key)
             return renderTile(key, hex, label)
           })}
@@ -381,17 +381,17 @@ function FarbPicker({
                 fontWeight: isActive ? 600 : 400,
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: isActive ? '#800020'
-                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#33000D',
-                border: isActive ? '1px solid #800020'
-                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #440011',
-                color: isActive ? '#ffffff' : hasSelection ? '#800020' : '#666',
+                background: isActive ? '#c9a84c'
+                  : hasSelection ? 'rgba(201,168,76,0.12)' : '#1e1e1e',
+                border: isActive ? '1px solid #c9a84c'
+                  : hasSelection ? '1px solid rgba(201,168,76,0.3)' : '1px solid #2a2a2a',
+                color: isActive ? '#1a1a1a' : hasSelection ? '#c9a84c' : '#666',
                 transition: 'all 0.1s',
               }}
             >
               {label}
               {hasSelection && !isActive && (
-                <span style={{ marginLeft: '4px', fontSize: '7px', color: '#800020' }}>●</span>
+                <span style={{ marginLeft: '4px', fontSize: '7px', color: '#c9a84c' }}>●</span>
               )}
             </button>
           )
@@ -400,10 +400,10 @@ function FarbPicker({
 
       {/* ── Farbkachel-Raster (anthrazit-dunkler Hintergrund) ────────── */}
       <div style={{
-        background: '#080002',
+        background: '#1a1a1a',
         borderRadius: '10px',
         padding: '12px',
-        border: '1px solid #440011',
+        border: '1px solid #252525',
       }}>
         {renderTabContent()}
       </div>
@@ -413,7 +413,7 @@ function FarbPicker({
         <div style={{ width: '48px', flexShrink: 0 }}>
           {renderTile('individuell', '', 'Individuell')}
         </div>
-        <p style={{ fontSize: '11px', color: '#C08898', maxWidth: '230px', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '11px', color: '#4a4a4a', maxWidth: '230px', lineHeight: 1.5 }}>
           Jeder Farbton auf Anfrage – geben Sie Ihren Wunsch als NCS-, RAL- oder
           Caparol-Code an.
         </p>
@@ -459,10 +459,10 @@ function FarbAuswahl({ data, update }: Props) {
 
       {/* ── Premium-Info-Banner ─────────────────────────────────────────── */}
       <div className="rounded-xl p-4 flex items-start gap-3"
-        style={{ background: '#1A0D04', border: '1px solid #2D4A20' }}>
+        style={{ background: '#1a1e14', border: '1px solid #3a4a28' }}>
         <span style={{ fontSize: '20px', lineHeight: 1, flexShrink: 0 }}>🎨</span>
         <div>
-          <p className="text-sm font-semibold mb-1" style={{ color: '#86EFAC' }}>
+          <p className="text-sm font-semibold mb-1" style={{ color: '#a8c880' }}>
             Individuelle Farbbeschichtung – Premium Finish
           </p>
           <p className="text-xs leading-relaxed" style={{ color: '#5a7a4a' }}>
@@ -479,7 +479,7 @@ function FarbAuswahl({ data, update }: Props) {
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xs font-bold px-2 py-0.5 rounded"
-            style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.2)' }}>
+            style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.2)' }}>
             A
           </span>
           <FieldLabel>Farbe der Zaunfelder</FieldLabel>
@@ -490,7 +490,7 @@ function FarbAuswahl({ data, update }: Props) {
                 background: platteHex,
                 border: '1px solid rgba(255,255,255,0.1)',
               }} />
-              <span className="text-xs" style={{ color: '#C88090' }}>{platteLabel}</span>
+              <span className="text-xs" style={{ color: '#7a7a7a' }}>{platteLabel}</span>
             </div>
           )}
         </div>
@@ -504,7 +504,7 @@ function FarbAuswahl({ data, update }: Props) {
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xs font-bold px-2 py-0.5 rounded"
-            style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.2)' }}>
+            style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.2)' }}>
             B
           </span>
           <FieldLabel>Pfeiler &amp; Abdeckkappen</FieldLabel>
@@ -516,9 +516,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(false)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#080002',
-              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #440011',
-              color: !kontrastfarbe ? '#800020' : '#C08898',
+              background: !kontrastfarbe ? 'rgba(201,168,76,0.10)' : '#1a1a1a',
+              border: !kontrastfarbe ? '2px solid #c9a84c' : '1px solid #252525',
+              color: !kontrastfarbe ? '#c9a84c' : '#5a5a5a',
             }}
           >
             Gleich wie Zaunfelder
@@ -527,9 +527,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(true)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#080002',
-              border: kontrastfarbe ? '2px solid #800020' : '1px solid #440011',
-              color: kontrastfarbe ? '#800020' : '#C08898',
+              background: kontrastfarbe ? 'rgba(201,168,76,0.10)' : '#1a1a1a',
+              border: kontrastfarbe ? '2px solid #c9a84c' : '1px solid #252525',
+              color: kontrastfarbe ? '#c9a84c' : '#5a5a5a',
             }}
           >
             Kontrastfarbe wählen
@@ -537,7 +537,7 @@ function FarbAuswahl({ data, update }: Props) {
         </div>
 
         {!kontrastfarbe && (
-          <p className="text-xs" style={{ color: '#C08898' }}>
+          <p className="text-xs" style={{ color: '#3a3a3a' }}>
             Pfeiler und Abdeckkappen werden in derselben Farbe wie die Zaunfelder beschichtet.
           </p>
         )}
@@ -562,22 +562,22 @@ function FarbAuswahl({ data, update }: Props) {
             style={{
               width: '100%',
               padding: '12px 16px',
-              background: '#33000D',
-              border: '1px solid #440011',
+              background: '#1c1c1c',
+              border: '1px solid #2d2d2d',
               borderRadius: '10px',
-              color: '#FFFFFF',
+              color: '#e0e0e0',
               fontSize: '14px',
               outline: 'none',
             }}
           />
-          <p className="text-xs mt-1.5" style={{ color: '#C08898' }}>
+          <p className="text-xs mt-1.5" style={{ color: '#4a4a4a' }}>
             Caparol Code, RAL, NCS oder freie Beschreibung – unser Team berät Sie gerne.
           </p>
         </div>
       )}
 
       {/* ── Disclaimer ──────────────────────────────────────────────────── */}
-      <p style={{ fontSize: '11px', fontStyle: 'italic', color: '#C08898', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '11px', fontStyle: 'italic', color: '#3a3a3a', lineHeight: 1.6 }}>
         Hinweis: Die Darstellung der Farbtöne auf Ihrem Bildschirm kann technisch bedingt
         leicht vom Originalton abweichen. Für eine exakte Farbwahl empfehlen wir die
         Ansicht eines physischen Farbfächers vor Ort.
@@ -613,10 +613,10 @@ export default function Step2Betonzaun({ data, update }: Props) {
       {/* Schritt-Header */}
       <div>
         <p className="text-xs uppercase tracking-widest mb-1"
-          style={{ color: '#800020', letterSpacing: '0.2em' }}>
+          style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
           Schritt 2 · Betonzaun
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Konfiguration</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Konfiguration</h2>
       </div>
 
       {/* ── Interaktiver Designer ─────────────────────────────────────── */}
@@ -671,7 +671,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
           />
         </div>
         {bz.montage === 'ohne' && (
-          <p className="text-xs mt-2 px-1" style={{ color: '#C08898' }}>
+          <p className="text-xs mt-2 px-1" style={{ color: '#5a5a5a' }}>
             Der Zaun wird in Betongrau (natur) geliefert. Eine individuelle Farbbeschichtung
             ist ausschließlich bei Montage durch unser Fachteam möglich.
           </p>
@@ -685,13 +685,13 @@ export default function Step2Betonzaun({ data, update }: Props) {
           <StickyFarbVorschau data={data} />
 
           <div className="rounded-xl p-5"
-            style={{ background: '#0D0003', border: '1px solid #440011' }}
+            style={{ background: '#161616', border: '1px solid #242424' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider mb-1"
-              style={{ color: '#800020', letterSpacing: '0.14em' }}>
+              style={{ color: '#c9a84c', letterSpacing: '0.14em' }}>
               Farbgestaltung
             </p>
-            <p className="text-xs mb-5" style={{ color: '#C08898' }}>
+            <p className="text-xs mb-5" style={{ color: '#4a4a4a' }}>
               Wählen Sie eine Farbe – die Vorschau oben aktualisiert sich sofort.
             </p>
             <FarbAuswahl data={data} update={update} />

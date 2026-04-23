@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -115,13 +115,13 @@ function ResetPasswordForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(160deg, #0D0003 0%, #040001 50%, #0D0003 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)' }}
     >
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px),
-                            repeating-linear-gradient(-45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px)`,
+          backgroundImage: `repeating-linear-gradient(45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px),
+                            repeating-linear-gradient(-45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px)`,
         }}
       />
 
@@ -129,7 +129,7 @@ function ResetPasswordForm() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Logo variant="login" className="mb-3" />
-          <p className="text-xs tracking-widest" style={{ color: '#C08898', letterSpacing: '0.3em' }}>
+          <p className="text-xs tracking-widest" style={{ color: '#5a5a5a', letterSpacing: '0.3em' }}>
             KUNDENPORTAL
           </p>
         </div>
@@ -138,8 +138,8 @@ function ResetPasswordForm() {
         <div
           className="rounded-2xl p-7 shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #33000D, #080002)',
-            border: '1px solid #1A0005',
+            background: 'linear-gradient(145deg, #2d2d2d, #252525)',
+            border: '1px solid #3d3d3d',
             boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}
         >
@@ -149,9 +149,9 @@ function ResetPasswordForm() {
             <div className="text-center py-8 space-y-3">
               <div
                 className="w-10 h-10 border-2 rounded-full animate-spin mx-auto"
-                style={{ borderColor: '#800020', borderTopColor: 'transparent' }}
+                style={{ borderColor: '#c9a84c', borderTopColor: 'transparent' }}
               />
-              <p className="text-sm" style={{ color: '#C88090' }}>Link wird geprüft …</p>
+              <p className="text-sm" style={{ color: '#7a7a7a' }}>Link wird geprüft …</p>
             </div>
           )}
 
@@ -168,19 +168,19 @@ function ResetPasswordForm() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-base font-semibold mb-1.5" style={{ color: '#FFFFFF' }}>
+                <h2 className="text-base font-semibold mb-1.5" style={{ color: '#e8e8e8' }}>
                   Link ungültig
                 </h2>
-                <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>{invalidMsg}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#7a7a7a' }}>{invalidMsg}</p>
               </div>
               <button
                 type="button"
                 onClick={() => router.push('/login')}
                 className="w-full py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #400010, #800020)',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 14px rgba(128,0,32,0.22)',
+                  background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
+                  color: '#1a1a1a',
+                  boxShadow: '0 4px 14px rgba(201,168,76,0.22)',
                 }}
               >
                 Neuen Link anfordern
@@ -191,13 +191,13 @@ function ResetPasswordForm() {
           {/* ── Passwort-Formular ───────────────────────────────────────────── */}
           {(state === 'form' || state === 'saving') && (
             <>
-              <h2 className="text-lg font-semibold mb-1" style={{ color: '#FFFFFF' }}>
+              <h2 className="text-lg font-semibold mb-1" style={{ color: '#e8e8e8' }}>
                 Neues Passwort vergeben
               </h2>
-              <p className="text-xs mb-1" style={{ color: '#C88090' }}>
-                Konto: <span style={{ color: '#800020' }}>{email}</span>
+              <p className="text-xs mb-1" style={{ color: '#7a7a7a' }}>
+                Konto: <span style={{ color: '#c9a84c' }}>{email}</span>
               </p>
-              <p className="text-xs mb-6" style={{ color: '#C08898' }}>
+              <p className="text-xs mb-6" style={{ color: '#5a5a5a' }}>
                 Mindestens 8 Zeichen. Groß-/Kleinbuchstaben, Zahlen und Sonderzeichen empfohlen.
               </p>
 
@@ -238,9 +238,9 @@ function ResetPasswordForm() {
                   className="w-full py-3 rounded-lg font-bold text-sm uppercase tracking-wider
                              transition-all duration-200 disabled:opacity-50 active:scale-[0.98]"
                   style={{
-                    background: 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
-                    color: '#ffffff',
-                    boxShadow: '0 4px 15px rgba(128,0,32,0.25)',
+                    background: 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
+                    color: '#1a1a1a',
+                    boxShadow: '0 4px 15px rgba(201,168,76,0.25)',
                     letterSpacing: '0.1em',
                   }}
                 >
@@ -280,10 +280,10 @@ function ResetPasswordForm() {
 
               {/* Hauptnachricht */}
               <div>
-                <h2 className="text-lg font-bold mb-2" style={{ color: '#FFFFFF' }}>
+                <h2 className="text-lg font-bold mb-2" style={{ color: '#e8e8e8' }}>
                   Passwort gespeichert.
                 </h2>
-                <p className="text-sm" style={{ color: '#C88090' }}>
+                <p className="text-sm" style={{ color: '#9a9a9a' }}>
                   Die App wird geladen …
                 </p>
               </div>
@@ -305,7 +305,7 @@ function ResetPasswordForm() {
               </div>
 
               {/* Fortschrittsbalken */}
-              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#1A0005' }}>
+              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#2a2a2a' }}>
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -334,13 +334,13 @@ function ResetPasswordForm() {
               <div
                 className="rounded-xl p-4 flex items-start gap-3"
                 style={{
-                  background: 'rgba(128,0,32,0.06)',
-                  border: '1px solid rgba(128,0,32,0.2)',
+                  background: 'rgba(201,168,76,0.06)',
+                  border: '1px solid rgba(201,168,76,0.2)',
                 }}
               >
                 <span className="text-lg flex-shrink-0">⚠</span>
                 <div>
-                  <p className="text-sm font-semibold mb-1" style={{ color: '#a0002a' }}>
+                  <p className="text-sm font-semibold mb-1" style={{ color: '#e0c068' }}>
                     Passwort wurde gespeichert
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: '#7a6a3a' }}>
@@ -354,9 +354,9 @@ function ResetPasswordForm() {
                 onClick={() => router.push('/login')}
                 className="w-full py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #400010, #800020)',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 14px rgba(128,0,32,0.22)',
+                  background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
+                  color: '#1a1a1a',
+                  boxShadow: '0 4px 14px rgba(201,168,76,0.22)',
                 }}
               >
                 Zur Anmeldung
@@ -366,7 +366,7 @@ function ResetPasswordForm() {
 
         </div>
 
-        <p className="text-center mt-6 text-xs" style={{ color: '#C08898' }}>
+        <p className="text-center mt-6 text-xs" style={{ color: '#4a4a4a' }}>
           <span suppressHydrationWarning>
             © {new Date().getFullYear()} TR Edelzaun &amp; Tor GmbH
           </span>
@@ -392,7 +392,7 @@ function PasswordField({
       <label
         htmlFor={id}
         className="block text-xs font-medium mb-1.5 uppercase tracking-wider"
-        style={{ color: '#C88090' }}
+        style={{ color: '#9a9a9a' }}
       >
         {label}
       </label>
@@ -408,18 +408,18 @@ function PasswordField({
           onBlur={() => setFocused(false)}
           className="w-full px-4 py-3 pr-11 rounded-lg text-sm transition-all duration-150"
           style={{
-            background: '#080002',
-            border: `1px solid ${focused ? '#800020' : '#1A0005'}`,
-            color: '#FFFFFF',
+            background: '#1a1a1a',
+            border: `1px solid ${focused ? '#c9a84c' : '#3d3d3d'}`,
+            color: '#e8e8e8',
             outline: 'none',
-            boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',
+            boxShadow: focused ? '0 0 0 3px rgba(201,168,76,0.08)' : 'none',
           }}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
           className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity hover:opacity-70"
-          style={{ color: '#C08898', fontSize: '14px' }}
+          style={{ color: '#5a5a5a', fontSize: '14px' }}
           aria-label={visible ? 'Passwort verbergen' : 'Passwort anzeigen'}
         >
           {visible ? '🙈' : '👁'}
@@ -457,7 +457,7 @@ function StrengthBar({ password }: { password: string }) {
           <div
             key={i}
             className="flex-1 h-1 rounded-full transition-all duration-300"
-            style={{ background: i < score ? lvl.color : '#1A0005' }}
+            style={{ background: i < score ? lvl.color : '#2a2a2a' }}
           />
         ))}
       </div>

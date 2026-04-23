@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getSession } from '@/lib/auth'
@@ -68,11 +68,11 @@ function Field({
   return (
     <div>
       <label className="block text-xs font-medium mb-1.5"
-        style={{ color: error ? '#e08080' : readOnly ? '#C08898' : '#C88090' }}>
+        style={{ color: error ? '#e08080' : readOnly ? '#3a3a3a' : '#7a7a7a' }}>
         {label}
-        {required && <span style={{ color: '#800020' }}> *</span>}
+        {required && <span style={{ color: '#c9a84c' }}> *</span>}
         {readOnly && <span className="ml-1.5 text-[10px] uppercase tracking-wider"
-          style={{ color: '#C08898' }}>(schreibgeschützt)</span>}
+          style={{ color: '#3a3a3a' }}>(schreibgeschützt)</span>}
       </label>
       <input
         type={type}
@@ -82,17 +82,17 @@ function Field({
         placeholder={placeholder}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none transition-all"
         style={{
-          background: readOnly ? '#0D0003' : '#080002',
-          border:     `1px solid ${error ? '#883333' : '#1A0005'}`,
-          color:      readOnly ? '#C08898' : '#FFFFFF',
+          background: readOnly ? '#0f0f0f' : '#141414',
+          border:     `1px solid ${error ? '#883333' : '#2a2a2a'}`,
+          color:      readOnly ? '#4a4a4a' : '#e0e0e0',
           cursor:     readOnly ? 'default' : 'text',
         }}
         onFocus={readOnly ? undefined : (e) => {
-          e.currentTarget.style.borderColor = '#800020'
-          e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(128,0,32,0.12)'
+          e.currentTarget.style.borderColor = '#c9a84c'
+          e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(201,168,76,0.12)'
         }}
         onBlur={readOnly ? undefined : (e) => {
-          e.currentTarget.style.borderColor = error ? '#883333' : '#1A0005'
+          e.currentTarget.style.borderColor = error ? '#883333' : '#2a2a2a'
           e.currentTarget.style.boxShadow   = ''
         }}
       />
@@ -115,8 +115,8 @@ function PwField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium mb-1.5" style={{ color: '#C88090' }}>
-        {label} <span style={{ color: '#800020' }}>*</span>
+      <label className="block text-xs font-medium mb-1.5" style={{ color: '#7a7a7a' }}>
+        {label} <span style={{ color: '#c9a84c' }}>*</span>
       </label>
       <div className="relative">
         <input
@@ -126,18 +126,18 @@ function PwField({
           autoComplete="new-password"
           className="w-full rounded-xl px-3 py-2.5 pr-10 text-sm outline-none"
           style={{
-            background: '#080002',
-            border: `1px solid ${matchErr ? '#883333' : '#1A0005'}`,
-            color: '#FFFFFF',
+            background: '#141414',
+            border: `1px solid ${matchErr ? '#883333' : '#2a2a2a'}`,
+            color: '#e0e0e0',
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#800020' }}
-          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#1A0005' }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#c9a84c' }}
+          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#2a2a2a' }}
         />
         <button
           type="button"
           onClick={onToggle}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-sm leading-none"
-          style={{ color: '#C08898' }}
+          style={{ color: '#5a5a5a' }}
           tabIndex={-1}
         >
           {show ? '🙈' : '👁'}
@@ -167,9 +167,9 @@ function SaveBtn({
       style={{
         background: state === 'ok'
           ? 'linear-gradient(135deg, #2a5a2a, #5bc97a)'
-          : 'linear-gradient(135deg, #400010, #800020)',
-        color:     '#ffffff',
-        boxShadow: '0 2px 12px rgba(128,0,32,0.2)',
+          : 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
+        color:     '#1a1a1a',
+        boxShadow: '0 2px 12px rgba(201,168,76,0.2)',
       }}
     >
       {state === 'saving' ? 'Speichern …' : state === 'ok' ? labelOk : label}
@@ -184,12 +184,12 @@ const LAENDER = ['Deutschland', 'Österreich', 'Schweiz', 'Polen', 'Tschechien',
 function LandSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <label className="block text-xs font-medium mb-1.5" style={{ color: '#C88090' }}>Land</label>
+      <label className="block text-xs font-medium mb-1.5" style={{ color: '#7a7a7a' }}>Land</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
-        style={{ background: '#080002', border: '1px solid #440011', color: '#FFFFFF' }}
+        style={{ background: '#141414', border: '1px solid #2a2a2a', color: '#e0e0e0' }}
       >
         {LAENDER.map((l) => <option key={l} value={l}>{l}</option>)}
       </select>
@@ -373,15 +373,15 @@ function AdressKarte({
 
   return (
     <div className="rounded-2xl overflow-hidden flex flex-col h-full"
-      style={{ border: '1px solid #440011', background: '#33000D' }}>
+      style={{ border: '1px solid #2d2d2d', background: '#191919' }}>
       {/* Karten-Kopf */}
       <div className="px-5 py-4 flex items-center gap-3"
-        style={{ background: 'linear-gradient(145deg, #33000D, #080002)', borderBottom: '1px solid #440011' }}>
+        style={{ background: 'linear-gradient(145deg, #1e1e1e, #1c1c1c)', borderBottom: '1px solid #252525' }}>
         <span className="text-lg">{cardIcon}</span>
         <div>
           <p className="text-xs font-bold uppercase tracking-widest"
-            style={{ color: '#800020', letterSpacing: '0.14em' }}>{cardTitle}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#C08898' }}>
+            style={{ color: '#c9a84c', letterSpacing: '0.14em' }}>{cardTitle}</p>
+          <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
             {isLieferung ? 'Für Lieferungen und Montage' : 'Für Rechnungen und Korrespondenz'}
           </p>
         </div>
@@ -400,19 +400,19 @@ function AdressKarte({
               className="w-4.5 h-4.5 rounded flex items-center justify-center flex-shrink-0 transition-all"
               style={{
                 width: '18px', height: '18px',
-                background: sameAsRechnung ? '#800020' : '#080002',
-                border:     sameAsRechnung ? '2px solid #800020' : '2px solid #9CA3AF',
-                boxShadow:  sameAsRechnung ? '0 0 6px rgba(128,0,32,0.3)' : 'none',
+                background: sameAsRechnung ? '#c9a84c' : '#141414',
+                border:     sameAsRechnung ? '2px solid #c9a84c' : '2px solid #3a3a3a',
+                boxShadow:  sameAsRechnung ? '0 0 6px rgba(201,168,76,0.3)' : 'none',
               }}
             >
               {sameAsRechnung && (
                 <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                  <path d="M1 3.5L3.4 6L8 1" stroke="#ffffff" strokeWidth="1.8"
+                  <path d="M1 3.5L3.4 6L8 1" stroke="#1a1a1a" strokeWidth="1.8"
                     strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
             </div>
-            <span className="text-xs" style={{ color: sameAsRechnung ? '#800020' : '#C88090' }}>
+            <span className="text-xs" style={{ color: sameAsRechnung ? '#c9a84c' : '#6a6a6a' }}>
               Gleich wie Rechnungsadresse
             </span>
           </button>
@@ -481,7 +481,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
   const [err,   setErr]   = useState('')
 
   function strength(pw: string) {
-    if (!pw) return { pct: 0, color: '#440011', label: '' }
+    if (!pw) return { pct: 0, color: '#2a2a2a', label: '' }
     let s = 0
     if (pw.length >= 8)  s++
     if (pw.length >= 12) s++
@@ -491,7 +491,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
     return [
       { pct: 20,  color: '#cc3333', label: 'Zu schwach' },
       { pct: 40,  color: '#e07b5b', label: 'Schwach'    },
-      { pct: 60,  color: '#800020', label: 'Mittel'     },
+      { pct: 60,  color: '#c9a84c', label: 'Mittel'     },
       { pct: 80,  color: '#8ac95b', label: 'Stark'      },
       { pct: 100, color: '#5bc97a', label: 'Sehr stark' },
     ][Math.min(s, 4)]
@@ -542,10 +542,10 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
         {neu && (
           <div className="mt-2">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px]" style={{ color: '#C08898' }}>Stärke</span>
+              <span className="text-[10px]" style={{ color: '#4a4a4a' }}>Stärke</span>
               <span className="text-[10px] font-semibold" style={{ color: st.color }}>{st.label}</span>
             </div>
-            <div className="h-1 rounded-full" style={{ background: '#1A0005' }}>
+            <div className="h-1 rounded-full" style={{ background: '#2a2a2a' }}>
               <div className="h-full rounded-full transition-all duration-300"
                 style={{ width: `${st.pct}%`, background: st.color }} />
             </div>
@@ -580,8 +580,8 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
 
       {/* Hinweis */}
       <div className="rounded-xl px-4 py-3 text-xs space-y-1"
-        style={{ background: '#080002', border: '1px solid #440011', color: '#C08898' }}>
-        <p className="font-semibold" style={{ color: '#C08898' }}>Passwort-Anforderungen</p>
+        style={{ background: '#141414', border: '1px solid #222', color: '#4a4a4a' }}>
+        <p className="font-semibold" style={{ color: '#5a5a5a' }}>Passwort-Anforderungen</p>
         <p>Mindestens 8 Zeichen · Groß- und Kleinbuchstaben empfohlen · Sonderzeichen erhöhen die Sicherheit</p>
       </div>
     </div>
@@ -685,8 +685,8 @@ export default function ProfilPage() {
       <div className="flex items-center justify-center h-60">
         <div className="text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 animate-spin mx-auto"
-            style={{ borderColor: '#800020', borderTopColor: 'transparent' }} />
-          <p className="text-sm" style={{ color: '#C08898' }}>Profil wird geladen …</p>
+            style={{ borderColor: '#c9a84c', borderTopColor: 'transparent' }} />
+          <p className="text-sm" style={{ color: '#5a5a5a' }}>Profil wird geladen …</p>
         </div>
       </div>
     )
@@ -700,12 +700,12 @@ export default function ProfilPage() {
       <div className="max-w-3xl space-y-6">
 
         {/* ── Seiten-Header ──────────────────────────────────────────────── */}
-        <div className="pb-4" style={{ borderBottom: '1px solid #440011' }}>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
+        <div className="pb-4" style={{ borderBottom: '1px solid #2a2a2a' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
             Mein Konto
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Profilverwaltung</h1>
-          <p className="mt-1 text-sm" style={{ color: '#C08898' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Profilverwaltung</h1>
+          <p className="mt-1 text-sm" style={{ color: '#5a5a5a' }}>
             Änderungen werden direkt im System gespeichert.
           </p>
         </div>
@@ -720,19 +720,19 @@ export default function ProfilPage() {
 
         {/* ── Nutzer-Chip ────────────────────────────────────────────────── */}
         <div className="flex items-center gap-4 rounded-2xl p-4"
-          style={{ background: '#080002', border: '1px solid #440011' }}>
+          style={{ background: '#1a1a1a', border: '1px solid #2a2a2a' }}>
           <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #800020, #5a0016)', color: '#ffffff' }}>
+            style={{ background: 'linear-gradient(135deg, #c9a84c, #8a6914)', color: '#1a1a1a' }}>
             {rechnung.vorname ? rechnung.vorname[0].toUpperCase() : email.slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold truncate" style={{ color: '#FFFFFF' }}>
+            <p className="text-sm font-semibold truncate" style={{ color: '#e8e8e8' }}>
               {[rechnung.vorname, rechnung.nachname].filter(Boolean).join(' ') || email}
             </p>
-            <p className="text-xs mt-0.5" style={{ color: '#C08898' }}>
+            <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
               {email}
               {kundennr && (
-                <> · <span style={{ color: '#800020' }}>KD-{kundennr}</span></>
+                <> · <span style={{ color: '#c9a84c' }}>KD-{kundennr}</span></>
               )}
             </p>
           </div>
@@ -744,7 +744,7 @@ export default function ProfilPage() {
 
         {/* ── Tab-Navigation ─────────────────────────────────────────────── */}
         <div className="flex"
-          style={{ borderBottom: '1px solid #440011' }}>
+          style={{ borderBottom: '1px solid #252525' }}>
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
               return (
@@ -755,8 +755,8 @@ export default function ProfilPage() {
                   className="flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all duration-200 whitespace-nowrap"
                   style={{
                     background:   'transparent',
-                    color:        isActive ? '#800020' : '#C08898',
-                    borderBottom: isActive ? '2px solid #800020' : '2px solid transparent',
+                    color:        isActive ? '#c9a84c' : '#5a5a5a',
+                    borderBottom: isActive ? '2px solid #c9a84c' : '2px solid transparent',
                     marginBottom: '-1px',
                   }}
                 >
@@ -772,7 +772,7 @@ export default function ProfilPage() {
         </div>
 
         {/* ── Tab-Content ────────────────────────────────────────────────── */}
-        <div className="rounded-2xl p-6" style={{ background: '#33000D', border: '1px solid #440011' }}>
+        <div className="rounded-2xl p-6" style={{ background: '#191919', border: '1px solid #2a2a2a' }}>
 
           {/* Tab: Persönliche Daten */}
           {activeTab === 'persoenlich' && kKunde && (
@@ -820,14 +820,14 @@ export default function ProfilPage() {
 
           {/* Nicht eingeloggt */}
           {!kKunde && activeTab !== 'sicherheit' && (
-            <p className="text-sm text-center py-8" style={{ color: '#C08898' }}>
+            <p className="text-sm text-center py-8" style={{ color: '#5a5a5a' }}>
               Kunden-ID nicht gefunden. Bitte neu anmelden.
             </p>
           )}
         </div>
 
         {/* ── Footer-Hinweis ──────────────────────────────────────────────── */}
-        <p className="text-xs text-center pb-2" style={{ color: '#440011' }}>
+        <p className="text-xs text-center pb-2" style={{ color: '#2a2a2a' }}>
           Änderungen wirken sich auf alle zukünftigen Vorgänge aus ·
           Bestehende Rechnungen bleiben unverändert
         </p>

@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import Logo from '@/components/Logo'
 
 export const metadata = {
@@ -7,27 +7,27 @@ export const metadata = {
 
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#080002' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#1a1a1a' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
           <Link href="/"
             className="inline-flex items-center gap-2 text-xs mb-8 hover:opacity-80 transition-opacity"
-            style={{ color: '#C08898' }}
+            style={{ color: '#5a5a5a' }}
           >
             ← Zurück zur Startseite
           </Link>
         </div>
 
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
+          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
-          <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Impressum</h1>
+          <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>Impressum</h1>
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#33000D', border: '1px solid #333333' }}
+          style={{ background: '#242424', border: '1px solid #333333' }}
         >
           {/* Unternehmensangaben */}
           <Section title="Unternehmensangaben">
@@ -51,10 +51,10 @@ export default function ImpressumPage() {
 
           {/* USt-ID */}
           <Section title="Umsatzsteuer-ID">
-            <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#9a9a9a' }}>
               Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
             </p>
-            <p className="text-sm font-semibold mt-1" style={{ color: '#F5D0D5' }}>DE298694405</p>
+            <p className="text-sm font-semibold mt-1" style={{ color: '#d4d4d4' }}>DE298694405</p>
           </Section>
 
           <Divider />
@@ -125,7 +125,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 className="text-xs font-semibold uppercase tracking-wider mb-4"
-        style={{ color: '#800020', letterSpacing: '0.14em' }}
+        style={{ color: '#c9a84c', letterSpacing: '0.14em' }}
       >
         {title}
       </h2>
@@ -137,7 +137,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3 text-sm">
-      <span className="w-36 flex-shrink-0" style={{ color: '#C08898' }}>{label}</span>
+      <span className="w-36 flex-shrink-0" style={{ color: '#5a5a5a' }}>{label}</span>
       <span style={{ color: '#c8c8c8' }}>{value}</span>
     </div>
   )
@@ -145,10 +145,10 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>{children}</p>
+    <p className="text-sm leading-relaxed" style={{ color: '#8a8a8a' }}>{children}</p>
   )
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#1A0005' }} />
+  return <div className="w-full h-px" style={{ background: '#2d2d2d' }} />
 }

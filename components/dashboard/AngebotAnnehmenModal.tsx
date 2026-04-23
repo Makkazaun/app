@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 /**
  * AngebotAnnehmenModal
@@ -15,7 +15,7 @@ import type SignatureCanvas from 'react-signature-canvas'
 // Loaded via dynamic to avoid SSR issues (window access).
 const SignaturePad = dynamic(
   () => import('./SignaturePadWrapper'),
-  { ssr: false, loading: () => <div style={{ height: 180, background: '#F5F5F5', borderRadius: 8 }} /> }
+  { ssr: false, loading: () => <div style={{ height: 180, background: '#0d0d0d', borderRadius: 8 }} /> }
 )
 
 interface Props {
@@ -91,25 +91,25 @@ export default function AngebotAnnehmenModal({
     >
       <div
         className="w-full max-w-lg rounded-2xl overflow-hidden"
-        style={{ background: '#080002', border: '1px solid #440011', maxHeight: '90vh', overflowY: 'auto' }}
+        style={{ background: '#1a1a1a', border: '1px solid #2d2d2d', maxHeight: '90vh', overflowY: 'auto' }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4"
-          style={{ borderBottom: '1px solid #440011', background: '#0D0003' }}>
+          style={{ borderBottom: '1px solid #2d2d2d', background: '#161616' }}>
           <div className="flex items-center gap-2.5">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#800020' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#c9a84c' }}>
               <path d="M13.5 2.5l-9 9L2 14l2.5-2.5 9-9z" stroke="currentColor" strokeWidth="1.3"
                 strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M10.5 2.5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
             </svg>
-            <span className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>
+            <span className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>
               Angebot digital annehmen
             </span>
           </div>
           {step !== 'submitting' && (
             <button onClick={onClose}
               className="w-7 h-7 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70"
-              style={{ background: '#0D0003', color: '#C88090', border: '1px solid #333' }}>
+              style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                 <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
               </svg>
@@ -121,19 +121,19 @@ export default function AngebotAnnehmenModal({
 
           {/* Angebots-Info */}
           <div className="rounded-xl px-4 py-3 space-y-1"
-            style={{ background: '#33000D', border: '1px solid #440011' }}>
+            style={{ background: '#212121', border: '1px solid #2d2d2d' }}>
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{belegnummer}</span>
-              <span className="text-sm font-bold" style={{ color: '#FFFFFF' }}>{betrag}</span>
+              <span className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>{belegnummer}</span>
+              <span className="text-sm font-bold" style={{ color: '#e8e8e8' }}>{betrag}</span>
             </div>
-            <p className="text-xs leading-snug" style={{ color: '#C88090' }}>{betreff}</p>
+            <p className="text-xs leading-snug" style={{ color: '#7a7a7a' }}>{betreff}</p>
           </div>
 
           {/* ── Unterschrifts-Canvas ── */}
           {step === 'sign' && (
             <>
               <div>
-                <p className="text-xs font-medium mb-2" style={{ color: '#C88090' }}>
+                <p className="text-xs font-medium mb-2" style={{ color: '#8a8a8a' }}>
                   Bitte unterschreiben Sie im Feld unten:
                 </p>
                 <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #333' }}>
@@ -145,23 +145,23 @@ export default function AngebotAnnehmenModal({
                       style:  {
                         width:   '100%',
                         height:  '180px',
-                        background: '#F5F5F5',
+                        background: '#0d0d0d',
                         cursor: 'crosshair',
                       },
                     }}
-                    penColor="#800020"
+                    penColor="#c9a84c"
                     onEnd={handleEnd}
                   />
                 </div>
                 {isEmpty && (
-                  <p className="text-xs mt-1.5" style={{ color: '#C08898' }}>
+                  <p className="text-xs mt-1.5" style={{ color: '#4a4a4a' }}>
                     Zeichnen Sie Ihre Unterschrift mit der Maus oder dem Finger.
                   </p>
                 )}
               </div>
 
               {/* Hinweis */}
-              <p className="text-xs leading-relaxed" style={{ color: '#C08898' }}>
+              <p className="text-xs leading-relaxed" style={{ color: '#5a5a5a' }}>
                 Mit Ihrer Unterschrift bestätigen Sie die Annahme des Angebots.
                 Das unterschriebene Dokument wird automatisch an uns übermittelt.
               </p>
@@ -170,13 +170,13 @@ export default function AngebotAnnehmenModal({
               <div className="flex items-center gap-3 pt-1">
                 <button onClick={handleClear}
                   className="flex-shrink-0 px-3.5 py-2 rounded-lg text-xs font-medium transition-opacity hover:opacity-70"
-                  style={{ background: '#0D0003', color: '#C88090', border: '1px solid #333' }}>
+                  style={{ background: '#252525', color: '#7a7a7a', border: '1px solid #333' }}>
                   Löschen
                 </button>
 
                 <button onClick={onClose}
                   className="flex-shrink-0 px-3.5 py-2 rounded-lg text-xs font-medium transition-opacity hover:opacity-70"
-                  style={{ background: '#0D0003', color: '#C88090', border: '1px solid #333' }}>
+                  style={{ background: '#252525', color: '#7a7a7a', border: '1px solid #333' }}>
                   Abbrechen
                 </button>
 
@@ -186,10 +186,10 @@ export default function AngebotAnnehmenModal({
                   className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
                   style={{
                     background: isEmpty
-                      ? '#2a1018'
-                      : 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
-                    color: '#ffffff',
-                    boxShadow: isEmpty ? 'none' : '0 2px 12px rgba(128,0,32,0.30)',
+                      ? '#3a3020'
+                      : 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
+                    color: '#1a1a1a',
+                    boxShadow: isEmpty ? 'none' : '0 2px 12px rgba(201,168,76,0.30)',
                   }}
                 >
                   Angebot verbindlich annehmen
@@ -202,12 +202,12 @@ export default function AngebotAnnehmenModal({
           {step === 'submitting' && (
             <div className="flex flex-col items-center gap-4 py-8">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                style={{ animation: 'spin 0.8s linear infinite', color: '#800020' }}>
+                style={{ animation: 'spin 0.8s linear infinite', color: '#c9a84c' }}>
                 <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                 <circle cx="16" cy="16" r="13" stroke="currentColor" strokeWidth="2.5"
                   strokeDasharray="45 25" strokeLinecap="round"/>
               </svg>
-              <p className="text-sm" style={{ color: '#C88090' }}>Unterschrift wird übermittelt …</p>
+              <p className="text-sm" style={{ color: '#8a8a8a' }}>Unterschrift wird übermittelt …</p>
             </div>
           )}
 
@@ -222,10 +222,10 @@ export default function AngebotAnnehmenModal({
                 </svg>
               </div>
               <div>
-                <p className="text-base font-semibold mb-1" style={{ color: '#FFFFFF' }}>
+                <p className="text-base font-semibold mb-1" style={{ color: '#e8e8e8' }}>
                   Vielen Dank!
                 </p>
-                <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>
+                <p className="text-sm leading-relaxed" style={{ color: '#7a7a7a' }}>
                   Ihr unterschriebenes Angebot wurde erfolgreich an uns übermittelt.
                   Wir melden uns zeitnah bei Ihnen.
                 </p>
@@ -244,12 +244,12 @@ export default function AngebotAnnehmenModal({
               <div className="flex gap-3">
                 <button onClick={() => setStep('sign')}
                   className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-                  style={{ background: '#0D0003', color: '#C88090', border: '1px solid #333' }}>
+                  style={{ background: '#252525', color: '#9a9a9a', border: '1px solid #333' }}>
                   Zurück
                 </button>
                 <button onClick={handleSubmit}
                   className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-                  style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.25)' }}>
+                  style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.25)' }}>
                   Erneut versuchen
                 </button>
               </div>

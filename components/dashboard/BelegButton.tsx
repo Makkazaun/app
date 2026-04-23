@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 
@@ -66,7 +66,7 @@ export default function BelegButton({ belegnummer, type, label }: Props) {
           disabled={loading}
           className="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
-            background: '#0D0003',
+            background: '#1e2a3a',
             color: '#7a9ab8',
             border: '1px solid #2a3a4a',
             padding: '10px 12px',
@@ -104,9 +104,9 @@ export default function BelegButton({ belegnummer, type, label }: Props) {
           }}
           className="inline-flex items-center justify-center rounded-lg text-xs transition-all hover:opacity-80"
           style={{
-            background: '#080002',
-            color: '#C08898',
-            border: '1px solid #440011',
+            background: '#1a1a1a',
+            color: '#4a4a4a',
+            border: '1px solid #2a2a2a',
             minWidth: '40px',
             minHeight: '40px',
           }}
@@ -174,17 +174,17 @@ function PdfModal({
       <div
         className="flex items-center justify-between px-4 flex-shrink-0"
         style={{
-          background:   '#080002',
-          borderBottom: '1px solid #440011',
+          background:   '#1a1a1a',
+          borderBottom: '1px solid #2d2d2d',
           minHeight:    '56px',
         }}
       >
         <div className="flex items-center gap-2">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: '#800020' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: '#c9a84c' }}>
             <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
             <path d="M4 5h6M4 7.5h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
-          <span className="text-sm font-medium" style={{ color: '#F5D0D5' }}>
+          <span className="text-sm font-medium" style={{ color: '#d4d4d4' }}>
             Beleg {belegnummer}
           </span>
         </div>
@@ -194,8 +194,8 @@ function PdfModal({
             href={downloadUrl}
             className="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80"
             style={{
-              background: '#0D0003',
-              color: '#C88090',
+              background: '#252525',
+              color: '#9a9a9a',
               border: '1px solid #333',
               padding: '10px 12px',
               minHeight: '44px',
@@ -216,8 +216,8 @@ function PdfModal({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg text-xs transition-all hover:opacity-80 sm:hidden"
             style={{
-              background: '#0D0003',
-              color: '#C88090',
+              background: '#252525',
+              color: '#9a9a9a',
               border: '1px solid #333',
               minWidth: '44px',
               minHeight: '44px',
@@ -234,8 +234,8 @@ function PdfModal({
             onClick={onClose}
             className="flex items-center justify-center rounded-lg transition-all hover:opacity-80"
             style={{
-              background: '#0D0003',
-              color: '#C88090',
+              background: '#252525',
+              color: '#7a7a7a',
               border: '1px solid #333',
               minWidth: '44px',
               minHeight: '44px',
@@ -254,7 +254,7 @@ function PdfModal({
         <iframe
           src={pdfUrl}
           className="absolute inset-0 w-full h-full"
-          style={{ border: 'none', background: '#1A0005' }}
+          style={{ border: 'none', background: '#2a2a2a' }}
           title={`Beleg ${belegnummer}`}
         />
       </div>

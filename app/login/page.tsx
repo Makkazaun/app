@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -175,20 +175,20 @@ function LoginForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(160deg, #0D0003 0%, #040001 50%, #0D0003 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)' }}
     >
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px),
-                            repeating-linear-gradient(-45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px)`,
+          backgroundImage: `repeating-linear-gradient(45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px),
+                            repeating-linear-gradient(-45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px)`,
         }}
       />
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
           <Logo variant="login" className="mb-3" />
-          <p className="text-xs tracking-widest" style={{ color: '#C08898', letterSpacing: '0.3em' }}>
+          <p className="text-xs tracking-widest" style={{ color: '#5a5a5a', letterSpacing: '0.3em' }}>
             KUNDENPORTAL
           </p>
         </div>
@@ -200,7 +200,7 @@ function LoginForm() {
           >
             <span className="text-lg flex-shrink-0">📋</span>
             <div>
-              <p className="text-xs font-semibold" style={{ color: '#a0002a' }}>
+              <p className="text-xs font-semibold" style={{ color: '#e0c068' }}>
                 Anfrage gespeichert
               </p>
               <p className="text-xs mt-0.5" style={{ color: '#7a6a3a' }}>
@@ -215,14 +215,14 @@ function LoginForm() {
         {/* Tab-Toggle – nur im normalen Modus sichtbar */}
         {!forgotMode && (
           <div className="flex rounded-xl p-1 mb-6"
-            style={{ background: '#080002', border: '1px solid #440011' }}
+            style={{ background: '#1a1a1a', border: '1px solid #2d2d2d' }}
           >
             {(['login', 'register'] as const).map((t) => (
               <button key={t} type="button" onClick={() => { setTab(t); setError('') }}
                 className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
                 style={{
-                  background: tab === t ? '#800020' : 'transparent',
-                  color: tab === t ? '#FFFFFF' : '#C88090',
+                  background: tab === t ? '#2d2d2d' : 'transparent',
+                  color: tab === t ? '#e8e8e8' : '#5a5a5a',
                   boxShadow: tab === t ? '0 1px 4px rgba(0,0,0,0.4)' : 'none',
                 }}
               >
@@ -235,8 +235,8 @@ function LoginForm() {
         {/* Karte */}
         <div className="rounded-2xl p-7 shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #33000D, #080002)',
-            border: '1px solid #440011',
+            background: 'linear-gradient(145deg, #2d2d2d, #252525)',
+            border: '1px solid #3d3d3d',
             boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}
         >
@@ -245,15 +245,15 @@ function LoginForm() {
             <>
               <button type="button" onClick={closeForgot}
                 className="flex items-center gap-1.5 text-xs mb-5 hover:opacity-80 transition-opacity"
-                style={{ color: '#C88090' }}
+                style={{ color: '#7a7a7a' }}
               >
                 ← Zurück zur Anmeldung
               </button>
 
-              <h2 className="text-lg font-semibold mb-1" style={{ color: '#FFFFFF' }}>
+              <h2 className="text-lg font-semibold mb-1" style={{ color: '#e8e8e8' }}>
                 Passwort vergessen
               </h2>
-              <p className="text-xs mb-6" style={{ color: '#C88090' }}>
+              <p className="text-xs mb-6" style={{ color: '#7a7a7a' }}>
                 Geben Sie Ihre E-Mail-Adresse ein. Wir prüfen, ob ein Konto in unserem System hinterlegt ist.
               </p>
 
@@ -267,17 +267,17 @@ function LoginForm() {
                       <path d="M4.5 11L9 15.5L17.5 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
-                  <p className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>
+                  <p className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>
                     E-Mail zur Passwort-Aktivierung wurde gesendet
                   </p>
-                  <p className="text-xs leading-relaxed" style={{ color: '#C88090' }}>
+                  <p className="text-xs leading-relaxed" style={{ color: '#7a7a7a' }}>
                     Prüfen Sie Ihren Posteingang unter{' '}
-                    <span style={{ color: '#800020' }}>{forgotEmail}</span>.
+                    <span style={{ color: '#c9a84c' }}>{forgotEmail}</span>.
                     Die E-Mail trifft in wenigen Minuten ein.
                   </p>
                   <button type="button" onClick={closeForgot}
                     className="mt-2 w-full py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
-                    style={{ background: '#080002', color: '#C88090', border: '1px solid #1A0005' }}
+                    style={{ background: '#2a2a2a', color: '#9a9a9a', border: '1px solid #3a3a3a' }}
                   >
                     Zurück zur Anmeldung
                   </button>
@@ -319,8 +319,8 @@ function LoginForm() {
           ) : tab === 'login' ? (
             // ── Anmelden ───────────────────────────────────────────────────
             <>
-              <h2 className="text-lg font-semibold mb-1" style={{ color: '#FFFFFF' }}>Willkommen zurück</h2>
-              <p className="text-xs mb-6" style={{ color: '#C88090' }}>Melden Sie sich an, um Ihre Dokumente einzusehen.</p>
+              <h2 className="text-lg font-semibold mb-1" style={{ color: '#e8e8e8' }}>Willkommen zurück</h2>
+              <p className="text-xs mb-6" style={{ color: '#7a7a7a' }}>Melden Sie sich an, um Ihre Dokumente einzusehen.</p>
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <Field label="E-Mail" id="email" type="email" value={email}
@@ -332,11 +332,11 @@ function LoginForm() {
 
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" style={{ accentColor: '#800020' }} />
-                    <span className="text-xs" style={{ color: '#C88090' }}>Angemeldet bleiben</span>
+                    <input type="checkbox" style={{ accentColor: '#c9a84c' }} />
+                    <span className="text-xs" style={{ color: '#7a7a7a' }}>Angemeldet bleiben</span>
                   </label>
                   <button type="button" onClick={openForgot}
-                    className="text-xs hover:opacity-80 transition-opacity" style={{ color: '#800020' }}
+                    className="text-xs hover:opacity-80 transition-opacity" style={{ color: '#c9a84c' }}
                   >
                     Passwort vergessen?
                   </button>
@@ -345,10 +345,10 @@ function LoginForm() {
                 <SubmitBtn loading={loading}>Anmelden</SubmitBtn>
               </form>
 
-              <p className="text-center text-xs mt-5" style={{ color: '#C08898' }}>
+              <p className="text-center text-xs mt-5" style={{ color: '#4a4a4a' }}>
                 Noch kein Konto?{' '}
                 <button type="button" onClick={() => setTab('register')}
-                  className="hover:opacity-80 transition-opacity font-medium" style={{ color: '#800020' }}
+                  className="hover:opacity-80 transition-opacity font-medium" style={{ color: '#c9a84c' }}
                 >
                   Jetzt registrieren
                 </button>
@@ -358,8 +358,8 @@ function LoginForm() {
           ) : (
             // ── Registrieren ───────────────────────────────────────────────
             <>
-              <h2 className="text-lg font-semibold mb-1" style={{ color: '#FFFFFF' }}>Konto erstellen</h2>
-              <p className="text-xs mb-6" style={{ color: '#C88090' }}>Kostenlos und unverbindlich – Angebote & Status online verfolgen.</p>
+              <h2 className="text-lg font-semibold mb-1" style={{ color: '#e8e8e8' }}>Konto erstellen</h2>
+              <p className="text-xs mb-6" style={{ color: '#7a7a7a' }}>Kostenlos und unverbindlich – Angebote & Status online verfolgen.</p>
 
               <form onSubmit={handleRegister} className="space-y-4">
                 {/* Name */}
@@ -377,9 +377,9 @@ function LoginForm() {
                   onChange={setPassword} placeholder="Mindestens 6 Zeichen" required />
 
                 {/* Adressdaten (optional) */}
-                <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #440011' }}>
-                  <p className="text-[11px] uppercase tracking-wider" style={{ color: '#C08898' }}>
-                    Adressdaten <span style={{ color: '#C08898' }}>(optional)</span>
+                <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #2d2d2d' }}>
+                  <p className="text-[11px] uppercase tracking-wider" style={{ color: '#4a4a4a' }}>
+                    Adressdaten <span style={{ color: '#3a3a3a' }}>(optional)</span>
                   </p>
                   <Field label="Straße & Hausnummer" id="strasse" type="text" value={strasse}
                     onChange={setStrasse} placeholder="Musterstraße 1" />
@@ -398,10 +398,10 @@ function LoginForm() {
                 <SubmitBtn loading={loading}>Konto erstellen & anmelden</SubmitBtn>
               </form>
 
-              <p className="text-center text-xs mt-5" style={{ color: '#C08898' }}>
+              <p className="text-center text-xs mt-5" style={{ color: '#4a4a4a' }}>
                 Bereits registriert?{' '}
                 <button type="button" onClick={() => setTab('login')}
-                  className="hover:opacity-80 transition-opacity font-medium" style={{ color: '#800020' }}
+                  className="hover:opacity-80 transition-opacity font-medium" style={{ color: '#c9a84c' }}
                 >
                   Anmelden
                 </button>
@@ -411,7 +411,7 @@ function LoginForm() {
         </div>
 
         {/* Fix: suppressHydrationWarning verhindert Mismatch beim Jahreswechsel */}
-        <p className="text-center mt-6 text-xs" style={{ color: '#C08898' }}>
+        <p className="text-center mt-6 text-xs" style={{ color: '#4a4a4a' }}>
           <span suppressHydrationWarning>
             © {new Date().getFullYear()} TR Edelzaun &amp; Tor GmbH
           </span>
@@ -431,7 +431,7 @@ function Field({ label, id, type, value, onChange, placeholder, required }: {
   return (
     <div>
       <label htmlFor={id} className="block text-xs font-medium mb-1.5 uppercase tracking-wider"
-        style={{ color: '#C88090' }}
+        style={{ color: '#9a9a9a' }}
       >{label}</label>
       <input id={id} type={type} value={value} placeholder={placeholder} required={required}
         onChange={(e) => onChange(e.target.value)}
@@ -439,11 +439,11 @@ function Field({ label, id, type, value, onChange, placeholder, required }: {
         onBlur={() => setFocused(false)}
         className="w-full px-4 py-3 rounded-lg text-sm transition-all duration-150"
         style={{
-          background: '#080002',
-          border: `1px solid ${focused ? '#800020' : '#1A0005'}`,
-          color: '#FFFFFF',
+          background: '#1a1a1a',
+          border: `1px solid ${focused ? '#c9a84c' : '#3d3d3d'}`,
+          color: '#e8e8e8',
           outline: 'none',
-          boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',
+          boxShadow: focused ? '0 0 0 3px rgba(201,168,76,0.08)' : 'none',
         }}
       />
     </div>
@@ -463,9 +463,9 @@ function SubmitBtn({ loading, children }: { loading: boolean; children: React.Re
     <button type="submit" disabled={loading}
       className="w-full py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all duration-200 disabled:opacity-50"
       style={{
-        background: 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
-        color: '#ffffff',
-        boxShadow: '0 4px 15px rgba(128,0,32,0.25)',
+        background: 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
+        color: '#1a1a1a',
+        boxShadow: '0 4px 15px rgba(201,168,76,0.25)',
         letterSpacing: '0.12em',
       }}
     >

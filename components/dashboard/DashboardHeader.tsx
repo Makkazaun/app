@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { getSession } from '@/lib/auth'
@@ -39,7 +39,7 @@ export default function DashboardHeader() {
       label: 'Offene Angebote',
       value: loading ? '…' : offeneAngebote > 0 ? EUR.format(angebotVolumen) : '–',
       sub:   loading ? '' : offeneAngebote > 0 ? `${offeneAngebote} Angebot${offeneAngebote !== 1 ? 'e' : ''}` : 'Keine offenen Angebote',
-      color: '#800020',
+      color: '#c9a84c',
     },
     {
       label: 'Auftragsvolumen',
@@ -56,15 +56,15 @@ export default function DashboardHeader() {
   ]
 
   return (
-    <div className="pb-8" style={{ borderBottom: '1px solid #440011' }}>
+    <div className="pb-8" style={{ borderBottom: '1px solid #2a2a2a' }}>
       {/* Begrüßung */}
-      <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
+      <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
         Willkommen zurück
       </p>
-      <h1 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
+      <h1 className="text-3xl font-bold mb-2" style={{ color: '#e8e8e8' }}>
         {vorname ? `Hallo ${vorname},` : 'Mein Kundenbereich'}
       </h1>
-      <p className="text-sm mb-8" style={{ color: '#C08898' }}>
+      <p className="text-sm mb-8" style={{ color: '#5a5a5a' }}>
         {vorname
           ? 'hier sind Ihre aktuellen Vorgänge bei Edelzaun & Tor.'
           : 'Anfragen · Angebote · Aufträge · Termine – alles auf einen Blick.'}
@@ -74,15 +74,15 @@ export default function DashboardHeader() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map((s) => (
           <div key={s.label} className="rounded-xl p-4"
-            style={{ background: '#33000D', border: '1px solid #440011' }}
+            style={{ background: '#191919', border: '1px solid #252525' }}
           >
-            <p className="text-xs mb-2" style={{ color: '#C08898', letterSpacing: '0.08em' }}>
+            <p className="text-xs mb-2" style={{ color: '#4a4a4a', letterSpacing: '0.08em' }}>
               {s.label}
             </p>
             <p className="text-xl font-bold leading-none mb-1" style={{ color: s.color }}>
               {s.value}
             </p>
-            <p className="text-xs" style={{ color: '#C08898' }}>{s.sub}</p>
+            <p className="text-xs" style={{ color: '#3a3a3a' }}>{s.sub}</p>
           </div>
         ))}
       </div>

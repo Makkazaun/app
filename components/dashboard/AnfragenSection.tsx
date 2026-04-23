@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -51,17 +51,17 @@ export default function AnfragenSection() {
 
       {anfragen.length === 0 && (
         <div className="rounded-xl p-8 text-center mb-4"
-          style={{ background: '#33000D', border: '1px dashed #440011' }}>
+          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
           <p className="text-2xl mb-3">📋</p>
-          <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
+          <p className="text-sm font-medium mb-1" style={{ color: '#5a5a5a' }}>
             Noch keine Anfragen vorhanden
           </p>
-          <p className="text-xs mb-4" style={{ color: '#C08898' }}>
+          <p className="text-xs mb-4" style={{ color: '#3a3a3a' }}>
             Konfigurieren Sie Ihr Wunschprojekt und reichen Sie eine Anfrage ein.
           </p>
           <Link href="/konfigurator"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
-            style={{ background: 'linear-gradient(135deg, #400010, #800020)', color: '#ffffff' }}
+            style={{ background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)', color: '#1a1a1a' }}
           >
             Konfigurator starten →
           </Link>
@@ -78,13 +78,13 @@ export default function AnfragenSection() {
             <div key={a.id}
               className="rounded-xl p-5 card-hover cursor-pointer flex flex-col"
               style={{
-                background: 'linear-gradient(145deg, #33000D, #080002)',
-                border: '1px solid #440011',
+                background: 'linear-gradient(145deg, #242424, #202020)',
+                border: '1px solid #333333',
               }}
             >
               {/* ID + Status */}
               <div className="flex items-center justify-between mb-3 gap-2">
-                <span className="text-xs font-mono truncate" style={{ color: '#C08898' }}>
+                <span className="text-xs font-mono truncate" style={{ color: '#3a3a3a' }}>
                   {a.id.startsWith('demo') ? `ANF-${a.id.slice(-1).padStart(3, '0')}` : a.id.slice(0, 8).toUpperCase()}
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
@@ -99,7 +99,7 @@ export default function AnfragenSection() {
               </div>
 
               {/* Titel */}
-              <h3 className="font-semibold text-sm mb-3 leading-snug flex-1" style={{ color: '#FFFFFF' }}>
+              <h3 className="font-semibold text-sm mb-3 leading-snug flex-1" style={{ color: '#e0e0e0' }}>
                 {anfrageTitle(a)}
               </h3>
 
@@ -107,28 +107,28 @@ export default function AnfragenSection() {
               <div className="space-y-1.5 mb-3">
                 {details.map((d) => (
                   <div key={d.label} className="flex items-center justify-between text-xs">
-                    <span style={{ color: '#C08898' }}>{d.label}</span>
-                    <span style={{ color: '#C88090' }}>{d.value}</span>
+                    <span style={{ color: '#5a5a5a' }}>{d.label}</span>
+                    <span style={{ color: '#9a9a9a' }}>{d.value}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between text-xs">
-                  <span style={{ color: '#C08898' }}>Eingereicht</span>
-                  <span style={{ color: '#C88090' }}>{formatDate(a.createdAt)}</span>
+                  <span style={{ color: '#5a5a5a' }}>Eingereicht</span>
+                  <span style={{ color: '#9a9a9a' }}>{formatDate(a.createdAt)}</span>
                 </div>
                 {a.jtlAngebotId && (
                   <div className="flex items-center justify-between text-xs">
-                    <span style={{ color: '#C08898' }}>Angebots-Nr.</span>
-                    <span className="font-mono" style={{ color: '#800020' }}>{a.jtlAngebotId}</span>
+                    <span style={{ color: '#5a5a5a' }}>Angebots-Nr.</span>
+                    <span className="font-mono" style={{ color: '#c9a84c' }}>{a.jtlAngebotId}</span>
                   </div>
                 )}
               </div>
 
               {/* Footer */}
               <div className="pt-3 flex items-center justify-between"
-                style={{ borderTop: '1px solid #440011' }}
+                style={{ borderTop: '1px solid #2d2d2d' }}
               >
-                <span className="text-xs" style={{ color: '#C88090' }}>Details</span>
-                <span className="text-xs" style={{ color: '#800020' }}>→</span>
+                <span className="text-xs" style={{ color: '#3d3d3d' }}>Details</span>
+                <span className="text-xs" style={{ color: '#c9a84c' }}>→</span>
               </div>
             </div>
           )
@@ -136,20 +136,20 @@ export default function AnfragenSection() {
 
         {/* Neue Anfrage */}
         <Link href="/konfigurator"
-          className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 transition-all duration-200 hover:opacity-80 hover:border-[#9CA3AF]"
+          className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 transition-all duration-200 hover:opacity-80 hover:border-[#5a5a5a]"
           style={{
             background: 'transparent',
-            border: '1px dashed #1A0005',
+            border: '1px dashed #3d3d3d',
             minHeight: '160px',
             textDecoration: 'none',
           }}
         >
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
-            style={{ background: '#0D0003', color: '#800020' }}
+            style={{ background: '#252525', color: '#c9a84c' }}
           >
             +
           </div>
-          <span className="text-xs text-center" style={{ color: '#C08898' }}>
+          <span className="text-xs text-center" style={{ color: '#5a5a5a' }}>
             Neue Anfrage<br />konfigurieren
           </span>
         </Link>

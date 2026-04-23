@@ -1,4 +1,4 @@
-﻿interface NavButtonsProps {
+interface NavButtonsProps {
   onBack?: () => void
   onNext?: () => void
   nextLabel?: string
@@ -19,7 +19,7 @@ export default function NavButtons({
     <div
       className="sticky bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-4 mt-8"
       style={{
-        background: 'linear-gradient(to top, #F3F4F6 70%, transparent)',
+        background: 'linear-gradient(to top, #161616 70%, transparent)',
         zIndex: 10,
       }}
     >
@@ -30,8 +30,8 @@ export default function NavButtons({
           className="flex-1 py-4 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-80 active:scale-[0.98]"
           style={{
             background: 'transparent',
-            border: '1px solid #1A0005',
-            color: '#C88090',
+            border: '1px solid #3d3d3d',
+            color: '#7a7a7a',
           }}
         >
           ← Zurück
@@ -45,10 +45,10 @@ export default function NavButtons({
         style={{
           background: isLast
             ? 'linear-gradient(135deg, #5a7a3a, #7ab85a)'
-            : 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
-          color: '#ffffff',
+            : 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
+          color: '#1a1a1a',
           letterSpacing: '0.1em',
-          boxShadow: nextDisabled ? 'none' : '0 4px 16px rgba(128,0,32,0.3)',
+          boxShadow: nextDisabled ? 'none' : '0 4px 16px rgba(201,168,76,0.25)',
         }}
       >
         {loading ? '…' : isLast ? '✓ Anfrage senden' : nextLabel + ' →'}

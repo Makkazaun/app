@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
@@ -113,12 +113,12 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           borderTop:    idx < total - 1 ? `1px solid rgba(0,0,0,0.45)` : 'none',
           borderBottom: idx > 0         ? `1px solid rgba(0,0,0,0.45)` : 'none',
           outline: isActive
-            ? '2px solid #800020'
+            ? '2px solid #c9a84c'
             : dragOver
-            ? '2px solid rgba(128,0,32,0.5)'
+            ? '2px solid rgba(201,168,76,0.5)'
             : 'none',
           outlineOffset: isActive ? '-2px' : '-2px',
-          boxShadow: isActive ? 'inset 0 0 20px rgba(128,0,32,0.08)' : 'none',
+          boxShadow: isActive ? 'inset 0 0 20px rgba(201,168,76,0.08)' : 'none',
         }}
       >
         {/* Echtes Bild, wenn vorhanden */}
@@ -150,7 +150,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           <span className="ml-2 px-1.5 py-0.5 rounded text-xs font-mono flex-shrink-0"
             style={{
               background: 'rgba(0,0,0,0.55)',
-              color: isActive ? '#800020' : '#C08898',
+              color: isActive ? '#c9a84c' : '#5a5a5a',
               fontSize: '10px',
             }}
           >
@@ -171,7 +171,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
                 </p>
               </>
             ) : (
-              <p style={{ fontSize: '11px', color: isActive ? '#800020' : '#1A0005' }}>
+              <p style={{ fontSize: '11px', color: isActive ? '#c9a84c' : '#333' }}>
                 {isActive ? '← Modell wählen' : '+ klicken'}
               </p>
             )}
@@ -181,7 +181,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           <span className="mr-2 flex-shrink-0"
             style={{
               fontSize: '9px',
-              color: isActive ? '#800020' : '#1A0005',
+              color: isActive ? '#c9a84c' : '#333',
               writingMode: 'vertical-rl',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -194,13 +194,13 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
         {/* Aktiv-Indikator links */}
         {isActive && (
           <div className="absolute left-0 top-0 bottom-0 w-1"
-            style={{ background: '#800020' }} />
+            style={{ background: '#c9a84c' }} />
         )}
 
         {/* Drag-Over-Flash */}
         {dragOver && (
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'rgba(128,0,32,0.12)' }} />
+            style={{ background: 'rgba(201,168,76,0.12)' }} />
         )}
       </div>
 
@@ -212,9 +212,9 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100
                      transition-opacity duration-150 px-1.5 py-0.5 rounded text-xs z-10"
           style={{
-            background: 'rgba(128,0,32,0.15)',
-            border: '1px solid rgba(128,0,32,0.3)',
-            color: '#800020',
+            background: 'rgba(201,168,76,0.15)',
+            border: '1px solid rgba(201,168,76,0.3)',
+            color: '#c9a84c',
             fontSize: '9px',
             pointerEvents: 'auto',
           }}
@@ -298,7 +298,7 @@ function Pfosten({ totalPx, typ, primaryTex, colorHex }: {
       />
       {/* Sockel */}
       <div className="w-full rounded-b"
-        style={{ height: '6px', background: 'linear-gradient(180deg, #9CA3AF 0%, #E5E7EB 100%)' }} />
+        style={{ height: '6px', background: 'linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%)' }} />
     </div>
   )
 }
@@ -328,7 +328,7 @@ function FeldVorschau({ platten, pfeilerTyp, primaryTex, platteHex, pfeilerHex, 
       <div className="flex flex-col-reverse overflow-hidden"
         style={{
           width: '200px',
-          border: '1px solid #440011',
+          border: '1px solid #2a2a2a',
           borderTop: 'none',
           borderBottom: 'none',
         }}
@@ -369,7 +369,7 @@ function ModelPalette({
     <div className="flex flex-col gap-3">
       {/* Hinweis */}
       <p className="text-xs leading-relaxed"
-        style={{ color: activeId ? '#800020' : '#C08898' }}
+        style={{ color: activeId ? '#c9a84c' : '#4a4a4a' }}
       >
         {activeId
           ? 'Reihe aktiv – Modell klicken oder hierher ziehen:'
@@ -382,9 +382,9 @@ function ModelPalette({
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium transition-all"
             style={{
-              background: kat === k ? 'rgba(255,255,255,0.10)' : '#33000D',
-              border: kat === k ? '1px solid #800020' : '1px solid #1A0005',
-              color: kat === k ? '#800020' : '#C08898',
+              background: kat === k ? 'rgba(201,168,76,0.14)' : '#1c1c1c',
+              border: kat === k ? '1px solid #c9a84c' : '1px solid #262626',
+              color: kat === k ? '#c9a84c' : '#4a4a4a',
             }}
           >
             {k}
@@ -407,7 +407,7 @@ function ModelPalette({
               onClick={() => onSelect(m)}
               className="rounded-xl overflow-hidden cursor-grab active:cursor-grabbing transition-all
                          duration-100 hover:brightness-110 active:scale-95"
-              style={{ border: '1px solid #282828', background: '#0D0003' }}
+              style={{ border: '1px solid #282828', background: '#161616' }}
             >
               {/* Textur-Vorschau */}
               <div className="relative overflow-hidden"
@@ -431,7 +431,7 @@ function ModelPalette({
                 }} />
                 {/* Nr-Badge */}
                 <span className="absolute bottom-1 right-1.5 text-xs rounded px-1"
-                  style={{ background: 'rgba(0,0,0,0.65)', color: '#C08898', fontSize: '9px' }}
+                  style={{ background: 'rgba(0,0,0,0.65)', color: '#4a4a4a', fontSize: '9px' }}
                 >
                   Nr.{m.nr}
                 </span>
@@ -442,7 +442,7 @@ function ModelPalette({
                   ⠿
                 </span>
               </div>
-              <p className="px-2 py-1.5 text-xs font-medium truncate" style={{ color: '#F5D0D5' }}>
+              <p className="px-2 py-1.5 text-xs font-medium truncate" style={{ color: '#b8b8b8' }}>
                 {m.name}
               </p>
             </div>
@@ -450,10 +450,10 @@ function ModelPalette({
         })}
       </div>
 
-      <p className="text-xs" style={{ color: '#440011' }}>
+      <p className="text-xs" style={{ color: '#2a2a2a' }}>
         Alle 100+ Modelle →{' '}
         <a href="https://www.edelzaun-tor.com/modelle" target="_blank" rel="noopener noreferrer"
-          style={{ color: '#C08898' }}
+          style={{ color: '#3a3a3a' }}
         >
           edelzaun-tor.com/modelle
         </a>
@@ -484,62 +484,62 @@ function Stueckliste({
   const pfeilerInfo = PFEILER_TYPEN.find((p) => p.value === pfeilerTyp)
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5"
-        style={{ background: '#33000D', borderBottom: '1px solid #440011' }}
+        style={{ background: '#1e1e1e', borderBottom: '1px solid #252525' }}
       >
-        <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
+        <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#7a7a7a', letterSpacing: '0.12em' }}>
           Automatische Stückliste
         </p>
-        <p className="text-xs" style={{ color: '#C08898' }}>
+        <p className="text-xs" style={{ color: '#3a3a3a' }}>
           {sl.laengeMeter} m · Feld = 2 m
         </p>
       </div>
 
       {/* Zusammenfassung */}
-      <div className="grid grid-cols-3 divide-x" style={{ borderBottom: '1px solid #FFFFFF', borderColor: '#FFFFFF' }}>
-        <div className="py-3 text-center" style={{ borderColor: '#FFFFFF' }}>
-          <p className="text-xl font-bold" style={{ color: '#FFFFFF' }}>{sl.felder}</p>
-          <p className="text-xs" style={{ color: '#C08898' }}>Felder</p>
+      <div className="grid grid-cols-3 divide-x" style={{ borderBottom: '1px solid #1e1e1e', borderColor: '#1e1e1e' }}>
+        <div className="py-3 text-center" style={{ borderColor: '#242424' }}>
+          <p className="text-xl font-bold" style={{ color: '#e0e0e0' }}>{sl.felder}</p>
+          <p className="text-xs" style={{ color: '#4a4a4a' }}>Felder</p>
         </div>
-        <div className="py-3 text-center" style={{ borderColor: '#FFFFFF' }}>
-          <p className="text-xl font-bold" style={{ color: '#FFFFFF' }}>{sl.pfosten}</p>
-          <p className="text-xs" style={{ color: '#C08898' }}>Pfosten</p>
-          <p className="text-xs mt-0.5" style={{ color: '#C08898', fontSize: '9px' }}>
+        <div className="py-3 text-center" style={{ borderColor: '#242424' }}>
+          <p className="text-xl font-bold" style={{ color: '#e0e0e0' }}>{sl.pfosten}</p>
+          <p className="text-xs" style={{ color: '#4a4a4a' }}>Pfosten</p>
+          <p className="text-xs mt-0.5" style={{ color: '#3a3a3a', fontSize: '9px' }}>
             {sl.felder}+1{ecken > 0 ? `+${ecken}` : ''}
           </p>
         </div>
-        <div className="py-3 text-center" style={{ borderColor: '#FFFFFF' }}>
-          <p className="text-xl font-bold" style={{ color: '#FFFFFF' }}>{sl.plattenGesamt}</p>
-          <p className="text-xs" style={{ color: '#C08898' }}>Platten gesamt</p>
+        <div className="py-3 text-center" style={{ borderColor: '#242424' }}>
+          <p className="text-xl font-bold" style={{ color: '#e0e0e0' }}>{sl.plattenGesamt}</p>
+          <p className="text-xs" style={{ color: '#4a4a4a' }}>Platten gesamt</p>
         </div>
       </div>
 
       {/* Pfeiler-Typ-Zeile */}
       {pfeilerInfo && (
         <div className="flex items-center gap-3 px-4 py-2.5"
-          style={{ background: '#080002', borderBottom: '1px solid #FFFFFF' }}
+          style={{ background: '#181818', borderBottom: '1px solid #1e1e1e' }}
         >
           <MiniPfostenChip typ={pfeilerInfo} />
           <div className="flex-1">
             <span className="text-xs font-medium" style={{ color: '#c0c0c0' }}>
               {pfeilerInfo.label}
             </span>
-            <span className="text-xs ml-2" style={{ color: '#C08898' }}>
+            <span className="text-xs ml-2" style={{ color: '#3a3a3a' }}>
               {sl.pfosten} Stück
             </span>
           </div>
-          <span className="text-xs font-mono" style={{ color: '#800020' }}>
+          <span className="text-xs font-mono" style={{ color: '#c9a84c' }}>
             × {sl.pfosten}
           </span>
         </div>
       )}
 
       {/* Stapelreihenfolge */}
-      <div className="px-4 py-3 space-y-1.5" style={{ background: '#0D0003' }}>
+      <div className="px-4 py-3 space-y-1.5" style={{ background: '#161616' }}>
         <p className="text-xs font-bold uppercase tracking-wider mb-2"
-          style={{ color: '#C08898', letterSpacing: '0.1em' }}
+          style={{ color: '#5a5a5a', letterSpacing: '0.1em' }}
         >
           Stapelreihenfolge (oben → unten)
         </p>
@@ -565,24 +565,24 @@ function Stueckliste({
 
               <div className="flex-1 flex items-baseline justify-between gap-2 min-w-0">
                 <div className="flex items-baseline gap-1.5 min-w-0">
-                  <span className="text-xs flex-shrink-0" style={{ color: '#C08898' }}>
+                  <span className="text-xs flex-shrink-0" style={{ color: '#4a4a4a' }}>
                     {reiheLabel}
                   </span>
                   <span className="text-xs truncate font-medium"
-                    style={{ color: slot.modellNr ? '#4B5563' : '#C08898' }}
+                    style={{ color: slot.modellNr ? '#b0b0b0' : '#3a3a3a' }}
                   >
                     {slot.modellNr
                       ? `${slot.modellName} (Nr. ${slot.modellNr})`
                       : '– nicht gewählt –'}
                   </span>
                 </div>
-                <span className="text-xs flex-shrink-0" style={{ color: '#C08898' }}>
+                <span className="text-xs flex-shrink-0" style={{ color: '#3a3a3a' }}>
                   {slot.hoehe} cm
                 </span>
               </div>
 
               <span className="text-xs flex-shrink-0 font-mono"
-                style={{ color: '#800020', minWidth: '40px', textAlign: 'right' }}
+                style={{ color: '#c9a84c', minWidth: '40px', textAlign: 'right' }}
               >
                 × {sl.plattenProReihe}
               </span>
@@ -592,7 +592,7 @@ function Stueckliste({
       </div>
 
       {/* Hinweis */}
-      <p className="px-4 pb-3 text-xs" style={{ color: '#F5D0D5', background: '#0D0003' }}>
+      <p className="px-4 pb-3 text-xs" style={{ color: '#2e2e2e', background: '#161616' }}>
         * Richtmengen inkl. {ecken} Eckpfosten. Exakter Aufmaß vor Ort.
       </p>
     </div>
@@ -656,8 +656,8 @@ function PfeilerAuswahl({
               style={{
                 padding: '10px 12px 8px',
                 minWidth: '80px',
-                background: isSelected ? 'rgba(128,0,32,0.08)' : '#080002',
-                border: isSelected ? '2px solid #800020' : '1px solid #440011',
+                background: isSelected ? 'rgba(201,168,76,0.08)' : '#1a1a1a',
+                border: isSelected ? '2px solid #c9a84c' : '1px solid #252525',
               }}
             >
               {/* Pfosten-Vorschau */}
@@ -696,18 +696,18 @@ function PfeilerAuswahl({
                 {/* Sockel */}
                 <div style={{
                   width: '14px', height: '4px',
-                  background: '#1A0005', borderRadius: '0 0 2px 2px',
+                  background: '#2a2a2a', borderRadius: '0 0 2px 2px',
                 }} />
               </div>
 
               {/* Label */}
               <p className="text-xs font-semibold text-center leading-tight"
-                style={{ color: isSelected ? '#800020' : '#C88090', maxWidth: '72px' }}
+                style={{ color: isSelected ? '#c9a84c' : '#7a7a7a', maxWidth: '72px' }}
               >
                 {typ.label}
               </p>
               {isSelected && (
-                <span style={{ fontSize: '10px', color: '#800020' }}>✓</span>
+                <span style={{ fontSize: '10px', color: '#c9a84c' }}>✓</span>
               )}
             </button>
           )
@@ -716,7 +716,7 @@ function PfeilerAuswahl({
 
       {/* Beschreibung des gewählten Typs */}
       {selected && (
-        <p className="text-xs mt-2" style={{ color: '#C08898' }}>
+        <p className="text-xs mt-2" style={{ color: '#5a5a5a' }}>
           {PFEILER_TYPEN.find((p) => p.value === selected)?.beschreibung}
         </p>
       )}
@@ -823,11 +823,11 @@ export default function BetonzaunDesigner({ data, update }: Props) {
       {/* ── Titel ──────────────────────────────────────────────────────── */}
       <div>
         <p className="text-xs font-bold uppercase tracking-widest mb-1"
-          style={{ color: '#800020', letterSpacing: '0.2em' }}
+          style={{ color: '#c9a84c', letterSpacing: '0.2em' }}
         >
           Betonzaun-Designer
         </p>
-        <p className="text-sm" style={{ color: '#C08898' }}>
+        <p className="text-sm" style={{ color: '#5a5a5a' }}>
           Gestalten Sie Ihren Zaun Reihe für Reihe. Höhe wählen → Modelle in die Schablone ziehen.
         </p>
       </div>
@@ -841,15 +841,15 @@ export default function BetonzaunDesigner({ data, update }: Props) {
               onClick={() => applyHeight(h.value)}
               className="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-95"
               style={{
-                background: bz.hoehe === h.value ? 'rgba(255,255,255,0.10)' : '#33000D',
-                border: bz.hoehe === h.value ? '2px solid #800020' : '1px solid #440011',
-                color: bz.hoehe === h.value ? '#800020' : '#C88090',
+                background: bz.hoehe === h.value ? 'rgba(201,168,76,0.12)' : '#1e1e1e',
+                border: bz.hoehe === h.value ? '2px solid #c9a84c' : '1px solid #2a2a2a',
+                color: bz.hoehe === h.value ? '#c9a84c' : '#7a7a7a',
                 minWidth: '78px',
               }}
             >
               <span className="block text-base leading-none">{h.label}</span>
               {HOEHE_PLATTEN[h.value] && (
-                <span className="block text-xs mt-0.5" style={{ color: bz.hoehe === h.value ? '#8a7030' : '#C08898' }}>
+                <span className="block text-xs mt-0.5" style={{ color: bz.hoehe === h.value ? '#8a7030' : '#3a3a3a' }}>
                   {HOEHE_PLATTEN[h.value].join('+')} cm
                 </span>
               )}
@@ -883,7 +883,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
         <>
           {/* Status-Zeile */}
           <div className="flex items-center justify-between">
-            <p className="text-xs" style={{ color: allFilled ? '#5a8a5a' : '#C08898' }}>
+            <p className="text-xs" style={{ color: allFilled ? '#5a8a5a' : '#5a5a5a' }}>
               {allFilled
                 ? `✓ Alle ${bz.platten.length} Reihen konfiguriert`
                 : `${bz.platten.filter((s) => s.modellNr).length} / ${bz.platten.length} Reihen belegt`}
@@ -892,7 +892,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
               <button type="button"
                 onClick={() => update({ betonzaun: { ...bz, platten: bz.platten.map((s) => ({ ...s, modellNr: '', modellName: '' })) } })}
                 className="text-xs hover:opacity-80 transition-opacity"
-                style={{ color: '#C08898' }}
+                style={{ color: '#3a3a3a' }}
               >
                 Zurücksetzen
               </button>
@@ -904,7 +904,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
 
             {/* Links: Schablone */}
             <div className="flex flex-col items-center gap-3">
-              <p className="text-xs self-start" style={{ color: '#C08898' }}>
+              <p className="text-xs self-start" style={{ color: '#3a3a3a' }}>
                 Schablone · 1 Feld
               </p>
               <FeldVorschau
@@ -918,7 +918,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
                 onDrop={(id, nr, name) => assignModell(id, nr, name)}
                 onCopyAll={(i) => copyToAll(i)}
               />
-              <p className="text-xs text-center" style={{ color: '#F5D0D5' }}>
+              <p className="text-xs text-center" style={{ color: '#2e2e2e' }}>
                 Hover auf Reihe → „Alle" um auf alle zu übertragen
               </p>
             </div>
@@ -945,7 +945,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
                   style={{ ...inputStyle(), paddingRight: '52px' }}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold pointer-events-none"
-                  style={{ color: '#C08898' }}
+                  style={{ color: '#5a5a5a' }}
                 >
                   m
                 </span>
@@ -958,21 +958,21 @@ export default function BetonzaunDesigner({ data, update }: Props) {
                 <button type="button"
                   onClick={() => update({ betonzaun: { ...bz, ecken: Math.max(0, bz.ecken - 1) } })}
                   className="w-12 h-12 rounded-xl text-xl font-bold transition-all active:scale-90"
-                  style={{ background: '#33000D', border: '1px solid #440011', color: '#C88090' }}
+                  style={{ background: '#1e1e1e', border: '1px solid #2d2d2d', color: '#9a9a9a' }}
                 >
                   −
                 </button>
-                <span className="text-2xl font-bold w-8 text-center" style={{ color: '#FFFFFF' }}>
+                <span className="text-2xl font-bold w-8 text-center" style={{ color: '#e8e8e8' }}>
                   {bz.ecken}
                 </span>
                 <button type="button"
                   onClick={() => update({ betonzaun: { ...bz, ecken: Math.min(10, bz.ecken + 1) } })}
                   className="w-12 h-12 rounded-xl text-xl font-bold transition-all active:scale-90"
-                  style={{ background: '#33000D', border: '1px solid #440011', color: '#C88090' }}
+                  style={{ background: '#1e1e1e', border: '1px solid #2d2d2d', color: '#9a9a9a' }}
                 >
                   +
                 </button>
-                <span className="text-sm" style={{ color: '#C08898' }}>
+                <span className="text-sm" style={{ color: '#4a4a4a' }}>
                   {bz.ecken === 0 ? 'Gerade' : `${bz.ecken} Eck${bz.ecken === 1 ? 'e' : 'en'}`}
                 </span>
               </div>
@@ -989,9 +989,9 @@ export default function BetonzaunDesigner({ data, update }: Props) {
           />
         </>
       ) : (
-        <div className="rounded-xl p-6 text-center" style={{ background: '#0D0003', border: '1px dashed #440011' }}>
-          <p className="text-sm" style={{ color: '#C08898' }}>
-            Bitte zuerst eine <strong style={{ color: '#C08898' }}>Gesamthöhe</strong> wählen.
+        <div className="rounded-xl p-6 text-center" style={{ background: '#161616', border: '1px dashed #2a2a2a' }}>
+          <p className="text-sm" style={{ color: '#3a3a3a' }}>
+            Bitte zuerst eine <strong style={{ color: '#5a5a5a' }}>Gesamthöhe</strong> wählen.
           </p>
         </div>
       )}

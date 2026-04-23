@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useJtlAuftraege } from '@/lib/useJtlData'
 
@@ -36,11 +36,11 @@ export default function TerminePage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
             Termine
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Montagetermine</h1>
-          <p className="mt-1 text-sm" style={{ color: '#C88090' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Montagetermine</h1>
+          <p className="mt-1 text-sm" style={{ color: '#6a6a6a' }}>
             {loading
               ? 'Termine werden geladen …'
               : 'Voraussichtliche Montagetermine aus Ihren Aufträgen'}
@@ -48,7 +48,7 @@ export default function TerminePage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#33000D', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#1e1e1e', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -68,7 +68,7 @@ export default function TerminePage() {
         <div className="space-y-3">
           {[1, 2].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#33000D', border: '1px solid #440011', height: '110px' }} />
+              style={{ background: '#1e1e1e', border: '1px solid #2a2a2a', height: '110px' }} />
           ))}
         </div>
       )}
@@ -76,19 +76,19 @@ export default function TerminePage() {
       {/* Nächster Termin Banner */}
       {!loading && naechster && (
         <div className="rounded-2xl p-5 flex items-center gap-4"
-          style={{ background: '#1A0818', border: '1px solid #4D0035' }}>
+          style={{ background: 'linear-gradient(135deg, #1a1f2a, #151b26)', border: '1px solid #2a3040' }}>
           <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
-            style={{ background: '#080002' }}>
+            style={{ background: '#202535' }}>
             📅
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#93C5FD' }}>
+            <p className="text-xs font-semibold mb-0.5" style={{ color: '#7a9ab8' }}>
               Nächster Montagetermin
             </p>
-            <p className="text-base font-bold" style={{ color: '#BFDBFE' }}>
+            <p className="text-base font-bold" style={{ color: '#d4e0ec' }}>
               {formatDate(naechster.montagetermin!)}
             </p>
-            <p className="text-xs mt-0.5 truncate" style={{ color: '#C88090' }}>
+            <p className="text-xs mt-0.5 truncate" style={{ color: '#4a5a6a' }}>
               Auftrag {naechster.belegnummer} · {naechster.betreff}
             </p>
           </div>
@@ -98,12 +98,12 @@ export default function TerminePage() {
       {/* Leer-Zustand */}
       {!loading && auftraege.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#33000D', border: '1px dashed #440011' }}>
+          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
           <div className="text-4xl mb-4">🔧</div>
-          <p className="text-base font-semibold mb-2" style={{ color: '#C08898' }}>
+          <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
             Keine Dokumente vorhanden
           </p>
-          <p className="text-sm" style={{ color: '#C08898' }}>
+          <p className="text-sm" style={{ color: '#3a3a3a' }}>
             Sobald ein Auftrag mit Montagetermin angelegt wird,
             erscheint er hier.
           </p>
@@ -118,7 +118,7 @@ export default function TerminePage() {
             const istVergangen = new Date(auftrag.montagetermin!).getTime() < now
             const istNaechster = naechster?.kAuftrag === auftrag.kAuftrag
 
-            const statusColor = istVergangen ? '#5bc97a' : istNaechster ? '#800020' : '#5b9bd5'
+            const statusColor = istVergangen ? '#5bc97a' : istNaechster ? '#c9a84c' : '#5b9bd5'
             const statusLabel = istVergangen ? 'Durchgeführt' : istNaechster ? 'Nächster Termin' : 'Geplant'
 
             // Lieferadresse für Montageadresse
@@ -133,8 +133,8 @@ export default function TerminePage() {
                 style={{
                   background: istNaechster
                     ? 'linear-gradient(145deg, #1e1c0a, #181608)'
-                    : 'linear-gradient(145deg, #33000D, #080002)',
-                  border: istNaechster ? '1px solid #3d3210' : '1px solid #440011',
+                    : 'linear-gradient(145deg, #1e1e1e, #1a1a1a)',
+                  border: istNaechster ? '1px solid #3d3210' : '1px solid #2d2d2d',
                   opacity: istVergangen ? 0.6 : 1,
                 }}
               >
@@ -143,22 +143,22 @@ export default function TerminePage() {
                   <div
                     className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
                     style={{
-                      background: istVergangen ? '#0D0003' : istNaechster ? '#FFFBEB' : '#080002',
-                      border: `1px solid ${istNaechster ? '#FDE68A' : '#1A0005'}`,
+                      background: istVergangen ? '#1a1e1a' : istNaechster ? '#201e0a' : '#1a1a1a',
+                      border: `1px solid ${istNaechster ? '#3d3210' : '#2d2d2d'}`,
                     }}
                   >
                     <span className="text-xs font-medium" style={{ color: statusColor }}>
                       {d.monat}
                     </span>
-                    <span className="text-xl font-bold leading-tight" style={{ color: '#FFFFFF' }}>
+                    <span className="text-xl font-bold leading-tight" style={{ color: '#e8e8e8' }}>
                       {d.tag}
                     </span>
-                    <span className="text-[10px]" style={{ color: '#C08898' }}>{d.jahr}</span>
+                    <span className="text-[10px]" style={{ color: '#3a3a3a' }}>{d.jahr}</span>
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="font-mono text-xs" style={{ color: '#800020' }}>
+                      <span className="font-mono text-xs" style={{ color: '#c9a84c' }}>
                         {auftrag.belegnummer}
                       </span>
                       <span
@@ -172,10 +172,10 @@ export default function TerminePage() {
                         {statusLabel}
                       </span>
                     </div>
-                    <p className="font-semibold text-sm mb-1 leading-snug" style={{ color: '#F5D0D5' }}>
+                    <p className="font-semibold text-sm mb-1 leading-snug" style={{ color: '#d4d4d4' }}>
                       {auftrag.betreff}
                     </p>
-                    <p className="text-xs" style={{ color: '#C08898' }}>
+                    <p className="text-xs" style={{ color: '#5a5a5a' }}>
                       📍 {adrStr}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ export default function TerminePage() {
       {/* Hinweis */}
       {!loading && (
         <div className="rounded-xl px-4 py-3 text-xs"
-          style={{ background: '#080002', border: '1px solid #440011', color: '#C08898' }}>
+          style={{ background: '#141414', border: '1px solid #222', color: '#3a3a3a' }}>
           ℹ Terminänderungen werden von unserem Team kommuniziert. Alle Zeiten sind voraussichtliche Werte.
         </div>
       )}

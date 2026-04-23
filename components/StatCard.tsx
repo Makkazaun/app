@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 interface StatCardProps {
   label: string
@@ -13,14 +13,14 @@ export default function StatCard({ label, value, icon, color, href }: StatCardPr
     <Link href={href}
       className="block rounded-xl p-5 card-hover"
       style={{
-        background: 'linear-gradient(145deg, #33000D, #080002)',
-        border: '1px solid #1A0005',
+        background: 'linear-gradient(145deg, #2d2d2d, #252525)',
+        border: '1px solid #3d3d3d',
         textDecoration: 'none',
       }}
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
+          <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#6a6a6a', letterSpacing: '0.12em' }}>
             {label}
           </p>
           <p className="text-3xl font-bold" style={{ color }}>
@@ -34,7 +34,7 @@ export default function StatCard({ label, value, icon, color, href }: StatCardPr
         </div>
       </div>
       <div className="mt-3 flex items-center gap-1 text-xs"
-        style={{ color: '#C08898' }}
+        style={{ color: '#4a4a4a' }}
       >
         <span>→ Ansehen</span>
       </div>
