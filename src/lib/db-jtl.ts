@@ -909,41 +909,46 @@ export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
 
   const attempts = [
     {
-      label: 'tAngebot / cStatus + nFarbe',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen, nFarbe=2',
+      label:   'tAngebot / cStatus + nFarbe',
+      run:     () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'angenommen')
         .input('nFarbe',  sql.Int,           FARBE_GRUEN)
         .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus, nFarbe=@nFarbe WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAngebot / cStatus',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen',
+      label:   'tAngebot / cStatus',
+      run:     () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'angenommen')
         .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAuftrag / nAuftragStatus + nFarbe',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1, nFarbe=2',
+      label:   'tAuftrag / nAuftragStatus + nFarbe',
+      run:     () => pool.request()
         .input('nr',     sql.NVarChar(100), cAngebotNr)
         .input('nFarbe', sql.Int,           FARBE_GRUEN)
         .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1, nFarbe=@nFarbe WHERE ${WHERE_AUFTRAG}`),
     },
     {
-      label: 'tAuftrag / nAuftragStatus',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1',
+      label:   'tAuftrag / nAuftragStatus',
+      run:     () => pool.request()
         .input('nr', sql.NVarChar(100), cAngebotNr)
         .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1 WHERE ${WHERE_AUFTRAG}`),
     },
-  ] as const
+  ]
 
   for (const attempt of attempts) {
     try {
+      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
       const result = await attempt.run()
       const rows   = result.rowsAffected?.[0] ?? 0
       if (rows > 0) {
-        console.log(`Update erfolgreich für ${cAngebotNr} (${attempt.label})`)
+        console.log(`Update erfolgreich für ${cAngebotNr}`)
         return
       }
     } catch (err) {
@@ -985,8 +990,9 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
 
   const attempts = [
     {
-      label: 'tAngebot / cStatus + nFarbe + nStatus',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt, nFarbe=1, nStatus=2',
+      label:   'tAngebot / cStatus + nFarbe + nStatus',
+      run:     () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
         .input('nFarbe',  sql.Int,           FARBE_ROT)
@@ -996,8 +1002,9 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAngebot / cStatus + nFarbe',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt, nFarbe=1',
+      label:   'tAngebot / cStatus + nFarbe',
+      run:     () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
         .input('nFarbe',  sql.Int,           FARBE_ROT)
@@ -1006,8 +1013,9 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAngebot / cStatus',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt',
+      label:   'tAngebot / cStatus',
+      run:     () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
         .query(`UPDATE [Verkauf].[tAngebot]
@@ -1015,23 +1023,25 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAuftrag / nFarbe (Fallback)',
-      run:   () => pool.request()
+      tabelle: 'Verkauf.tAuftrag', felder: 'nFarbe=1',
+      label:   'tAuftrag / nFarbe (Fallback)',
+      run:     () => pool.request()
         .input('nr',     sql.NVarChar(100), cAngebotNr)
         .input('nFarbe', sql.Int,           FARBE_ROT)
         .query(`UPDATE [Verkauf].[tAuftrag]
                 SET nFarbe=@nFarbe
                 WHERE ${WHERE_AUFTRAG}`),
     },
-  ] as const
+  ]
 
   for (const attempt of attempts) {
     try {
+      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
       const result = await attempt.run()
       const rows   = result.rowsAffected?.[0] ?? 0
 
       if (rows > 0) {
-        console.log(`Update erfolgreich für ${cAngebotNr} (${attempt.label})`)
+        console.log(`Update erfolgreich für ${cAngebotNr}`)
         return { rowsAffected: rows, path: attempt.label }
       }
     } catch (err) {
