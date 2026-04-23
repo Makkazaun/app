@@ -1,14 +1,11 @@
 /**
  * POST /api/jtl/reject-angebot
  *
- * Body: { kAngebot: number }
+ * Body: { kAngebot: number, cAngebotNr: string }
  *
  * Ablehnung eines Angebots durch den Kunden:
  *   1. Autoritativer Eintrag in portal-db (angebot_rejections) → Status "abgelehnt" in der App
- *   2. Visuell: nFarbe=ROT in JTL-Wawi (non-fatal, rein optisch)
- *      – Ergebnis (rowsAffected, ggf. Fehler) wird geloggt und in der Response zurückgegeben
- *
- * Es werden KEINE weiteren Spalten in JTL beschrieben (kein cAnmerkung, kein nAuftragStatus).
+ *   2. JTL-Wawi: UPDATE tAuftragText SET cVorgangsstatus='abgelehnt' (non-fatal)
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -32,7 +29,7 @@ export async function POST(req: NextRequest) {
   rejectAngebotInPortal(kAngebot)
   console.log(`[jtl/reject-angebot] portal-db: kAngebot=${kAngebot} (${cAngebotNr}) als abgelehnt markiert`)
 
-  // 2. JTL-Wawi – nFarbe + cStatus (non-fatal, markAngebotAbgelehnt wirft nie)
+  // 2. JTL-Wawi – cVorgangsstatus (non-fatal, markAngebotAbgelehnt wirft nie)
   const jtl = await markAngebotAbgelehnt(cAngebotNr)
   console.log(`[jtl/reject-angebot] JTL-Ergebnis: path=${jtl.path ?? 'keiner'} rowsAffected=${jtl.rowsAffected}${jtl.error ? ` error="${jtl.error}"` : ''}`)
 

@@ -14,7 +14,7 @@
  *
  *   Verkauf.tAuftrag            kAuftrag, kKunde, cAuftragsNr,
  *                               nType (0=Angebot, 1=Auftrag),
- *                               nAuftragStatus, nStorno, nFarbe,
+ *                               nAuftragStatus, nStorno,
  *                               dErstellt, dVoraussichtlichesLieferdatum
  *
  *   Verkauf.tAuftragEckdaten    kAuftrag, fWertNetto, fWertBrutto
@@ -26,8 +26,8 @@
  *                               cName, cStrasse, cPLZ, cOrt, cLand, cTel, cMobil, cMail
  *
  * ── Schreibzugriff ───────────────────────────────────────────────────────────
- *   markAngebotAngenommen() → UPDATE tAuftrag SET nAuftragStatus, nFarbe
- *   markAngebotAbgelehnt()  → UPDATE tAngebot SET cStatus, nStatus
+ *   markAngebotAngenommen() → UPDATE tAuftragText SET cVorgangsstatus='angenommen'
+ *   markAngebotAbgelehnt()  → UPDATE tAuftragText SET cVorgangsstatus='abgelehnt'
  *   Alle anderen Ops sind READ-ONLY.
  */
 
@@ -168,10 +168,6 @@ export interface JtlAuftrag {
   rechnungsadresse: JtlAdresse | null
   lieferadresse:    JtlAdresse | null
 }
-
-// ── Farb-Konstanten (JTL-Index, nicht COLORREF) ───────────────────────────────
-const FARBE_ROT   = 1   // Rot
-const FARBE_GRUEN = 2   // Grün
 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
@@ -976,46 +972,6 @@ async function preflightLog(pool: sql.ConnectionPool, cAngebotNr: string): Promi
   console.log(`[preflight] "${cAngebotNr}" nirgends gefunden`)
 }
 
-/**
- * Setzt tAuftrag.nFarbe für das Angebot (best-effort, non-fatal).
- * Überspringt still, wenn die Spalte in dieser JTL-Version nicht existiert.
- */
-async function trySetNFarbe(
-  pool:       sql.ConnectionPool,
-  cAngebotNr: string,
-  farbe:      number,
-): Promise<void> {
-  const trimNr = cAngebotNr.trim()
-  const like   = `%${trimNr}%`
-
-  const attempts = [
-    { label: 'TRIM', sql: `UPDATE [Verkauf].[tAuftrag] SET nFarbe=@farbe WHERE LTRIM(RTRIM(cAuftragsNr)) = @nr AND nType = 0` },
-    { label: 'LIKE', sql: `UPDATE [Verkauf].[tAuftrag] SET nFarbe=@farbe WHERE cAuftragsNr LIKE @like AND nType = 0` },
-  ]
-
-  for (const a of attempts) {
-    try {
-      const req = pool.request().input('farbe', sql.Int, farbe)
-      if (a.label === 'TRIM') req.input('nr',   sql.NVarChar(50),  trimNr)
-      else                    req.input('like', sql.NVarChar(102), like)
-      const res = await req.query(a.sql)
-      if ((res.rowsAffected?.[0] ?? 0) > 0) {
-        console.log(`[nFarbe] tAuftrag.nFarbe=${farbe} gesetzt (${a.label}) für ${cAngebotNr}`)
-        return
-      }
-    } catch (err) {
-      const msg = (err as Error).message
-      if (/Invalid column name|Invalid object name/i.test(msg)) {
-        console.log('[nFarbe] nFarbe-Spalte nicht vorhanden – übersprungen')
-        return
-      }
-      console.warn('[nFarbe] Fehler:', msg.split('\n')[0])
-      return
-    }
-  }
-  console.log(`[nFarbe] rowsAffected=0 für ${cAngebotNr} – kein nFarbe-Update`)
-}
-
 // ── Gemeinsamer Update-Kernel ─────────────────────────────────────────────────
 
 async function runUpdateChain(
@@ -1053,9 +1009,9 @@ async function runUpdateChain(
 /**
  * Markiert ein Angebot als "angenommen" in der JTL-Wawi.
  *
- * Status-Update: TRIM-Exact zuerst, LIKE als Fallback.
- * nFarbe (tAuftrag): best-effort, non-fatal, übersprungen wenn Spalte fehlt.
- * Kein cAnmerkung, kein direktes nFarbe in tAngebot.
+ * Schreibt cVorgangsstatus = 'angenommen' in [Verkauf].[tAuftragText].
+ * Verknüpfung: tAuftragText.kAuftrag = tAngebot.kAngebot (via Subquery).
+ * WHERE: TRIM-Exact zuerst, LIKE als Fallback.
  * Wirft nie.
  */
 export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
@@ -1071,50 +1027,47 @@ export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
   const trimNr = cAngebotNr.trim()
   const like   = `%${trimNr}%`
 
-  // Status-Update: tAngebot.cStatus (TRIM → LIKE), dann tAuftrag.nAuftragStatus (TRIM → LIKE)
-  await runUpdateChain(pool, cAngebotNr, [
+  const result = await runUpdateChain(pool, cAngebotNr, [
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen (TRIM)',
+      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=angenommen (TRIM)',
       run: () => pool.request()
-        .input('nr',      sql.NVarChar(50),  trimNr)
-        .input('cStatus', sql.NVarChar(50),  'angenommen')
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
-                WHERE LTRIM(RTRIM(cAngebotNr)) = @nr`),
+        .input('nr',     sql.NVarChar(50), trimNr)
+        .input('status', sql.NVarChar(50), 'angenommen')
+        .query(`
+          UPDATE [Verkauf].[tAuftragText]
+          SET cVorgangsstatus = @status
+          WHERE kAuftrag = (
+            SELECT kAngebot FROM [Verkauf].[tAngebot]
+            WHERE LTRIM(RTRIM(cAngebotNr)) = @nr
+          )
+        `),
     },
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen (LIKE)',
+      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=angenommen (LIKE)',
       run: () => pool.request()
-        .input('like',    sql.NVarChar(102), like)
-        .input('cStatus', sql.NVarChar(50),  'angenommen')
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
-                WHERE cAngebotNr LIKE @like`),
-    },
-    {
-      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1 (TRIM)',
-      run: () => pool.request()
-        .input('nr', sql.NVarChar(50), trimNr)
-        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1
-                WHERE LTRIM(RTRIM(cAuftragsNr)) = @nr AND nType = 0`),
-    },
-    {
-      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1 (LIKE)',
-      run: () => pool.request()
-        .input('like', sql.NVarChar(102), like)
-        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1
-                WHERE cAuftragsNr LIKE @like AND nType = 0`),
+        .input('like',   sql.NVarChar(102), like)
+        .input('status', sql.NVarChar(50),  'angenommen')
+        .query(`
+          UPDATE [Verkauf].[tAuftragText]
+          SET cVorgangsstatus = @status
+          WHERE kAuftrag = (
+            SELECT TOP 1 kAngebot FROM [Verkauf].[tAngebot]
+            WHERE cAngebotNr LIKE @like
+          )
+        `),
     },
   ])
 
-  // nFarbe (grün) in tAuftrag – best-effort
-  await trySetNFarbe(pool, cAngebotNr, FARBE_GRUEN)
+  if (result.rowsAffected > 0)
+    console.log(`Status in [Verkauf].[tAuftragText] auf angenommen gesetzt für ${cAngebotNr}`)
 }
 
 /**
  * Markiert ein Angebot als "abgelehnt" in der JTL-Wawi.
  *
- * Status-Update: TRIM-Exact zuerst, LIKE als Fallback.
- * nFarbe (tAuftrag): best-effort, non-fatal, übersprungen wenn Spalte fehlt.
- * Kein cAnmerkung, kein direktes nFarbe in tAngebot.
+ * Schreibt cVorgangsstatus = 'abgelehnt' in [Verkauf].[tAuftragText].
+ * Verknüpfung: tAuftragText.kAuftrag = tAngebot.kAngebot (via Subquery).
+ * WHERE: TRIM-Exact zuerst, LIKE als Fallback.
  * Wirft nie.
  */
 export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
@@ -1133,28 +1086,39 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
   const trimNr = cAngebotNr.trim()
   const like   = `%${trimNr}%`
 
-  // Status-Update: cStatus in tAngebot (TRIM → LIKE)
   const result = await runUpdateChain(pool, cAngebotNr, [
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt (TRIM)',
+      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=abgelehnt (TRIM)',
       run: () => pool.request()
-        .input('nr',      sql.NVarChar(50),  trimNr)
-        .input('cStatus', sql.NVarChar(50),  'abgelehnt')
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
-                WHERE LTRIM(RTRIM(cAngebotNr)) = @nr`),
+        .input('nr',     sql.NVarChar(50), trimNr)
+        .input('status', sql.NVarChar(50), 'abgelehnt')
+        .query(`
+          UPDATE [Verkauf].[tAuftragText]
+          SET cVorgangsstatus = @status
+          WHERE kAuftrag = (
+            SELECT kAngebot FROM [Verkauf].[tAngebot]
+            WHERE LTRIM(RTRIM(cAngebotNr)) = @nr
+          )
+        `),
     },
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt (LIKE)',
+      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=abgelehnt (LIKE)',
       run: () => pool.request()
-        .input('like',    sql.NVarChar(102), like)
-        .input('cStatus', sql.NVarChar(50),  'abgelehnt')
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
-                WHERE cAngebotNr LIKE @like`),
+        .input('like',   sql.NVarChar(102), like)
+        .input('status', sql.NVarChar(50),  'abgelehnt')
+        .query(`
+          UPDATE [Verkauf].[tAuftragText]
+          SET cVorgangsstatus = @status
+          WHERE kAuftrag = (
+            SELECT TOP 1 kAngebot FROM [Verkauf].[tAngebot]
+            WHERE cAngebotNr LIKE @like
+          )
+        `),
     },
   ])
 
-  // nFarbe (rot) in tAuftrag – best-effort
-  await trySetNFarbe(pool, cAngebotNr, FARBE_ROT)
+  if (result.rowsAffected > 0)
+    console.log(`Status in [Verkauf].[tAuftragText] auf abgelehnt gesetzt für ${cAngebotNr}`)
 
   return result
 }
