@@ -62,20 +62,22 @@ async function embedSignature(pdfPath: string, signaturePng: Buffer, dateStr: st
   const sigH   = sigW * (sigImg.height / sigImg.width)
   const sigY   = 95  // bottom of image from page bottom (sits just above the "Unterschrift" line)
 
+  const sigX = width / 2 - sigW / 2 - 75
+
   last.drawImage(sigImg, {
-    x:      width / 2 - sigW / 2,
+    x:      sigX,
     y:      sigY,
     width:  sigW,
     height: sigH,
   })
 
-  // Date text centered below the signature image
+  // Date text aligned with signature image
   const font      = await pdfDoc.embedFont(StandardFonts.Helvetica)
   const fontSize  = 9
   const textWidth = font.widthOfTextAtSize(dateStr, fontSize)
 
   last.drawText(dateStr, {
-    x:    width / 2 - textWidth / 2,
+    x:    sigX + sigW / 2 - textWidth / 2,
     y:    sigY - 14,
     size: fontSize,
     font,

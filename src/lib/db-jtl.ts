@@ -177,11 +177,14 @@ function toIso(d: Date | null | undefined): string {
   return d instanceof Date && !isNaN(d.getTime()) ? d.toISOString() : new Date().toISOString()
 }
 
-function mapAngebotStatus(nAuftragStatus: number, nStorno: boolean): JtlAngebot['status'] {
-  if (nStorno)               return 'storniert'
+function mapAngebotStatus(nAuftragStatus: number, nStorno: boolean, cVorgangsstatus?: string | null): JtlAngebot['status'] {
+  if (nStorno) return 'storniert'
+  // cVorgangsstatus aus tAuftragText hat Vorrang (gesetzt via App-Kundeninteraktion)
+  if (cVorgangsstatus === 'angenommen') return 'angenommen'
+  if (cVorgangsstatus === 'abgelehnt')  return 'abgelehnt'
   if (nAuftragStatus === 0)  return 'offen'
-  if (nAuftragStatus === 99) return 'abgelehnt'  // vom Kunden via App abgelehnt
-  return 'angenommen'   // jeder andere Status = vom Sachbearbeiter weiterbearbeitet
+  if (nAuftragStatus === 99) return 'abgelehnt'
+  return 'angenommen'
 }
 
 function mapAuftragStatus(nAuftragStatus: number, nStorno: boolean, nZahlungStatus: number): JtlAuftrag['status'] {
@@ -351,13 +354,14 @@ export async function getAngeboteByKunde(kKunde: number): Promise<JtlAngebot[]> 
   const angRes = await pool.request()
     .input('kKunde', sql.Int, kKunde)
     .query<{
-      kAuftrag:      number
-      cAuftragsNr:   string
-      dErstellt:     Date
-      nAuftragStatus: number
-      nStorno:       boolean
-      fWertNetto:    number
-      fWertBrutto:   number
+      kAuftrag:        number
+      cAuftragsNr:     string
+      dErstellt:       Date
+      nAuftragStatus:  number
+      nStorno:         boolean
+      fWertNetto:      number
+      fWertBrutto:     number
+      cVorgangsstatus: string | null
     }>(`
       SELECT
         a.kAuftrag,
@@ -366,9 +370,11 @@ export async function getAngeboteByKunde(kKunde: number): Promise<JtlAngebot[]> 
         ISNULL(a.nAuftragStatus, 0) AS nAuftragStatus,
         ISNULL(a.nStorno, 0)        AS nStorno,
         ISNULL(e.fWertNetto,  0)    AS fWertNetto,
-        ISNULL(e.fWertBrutto, 0)    AS fWertBrutto
+        ISNULL(e.fWertBrutto, 0)    AS fWertBrutto,
+        t.cVorgangsstatus
       FROM [Verkauf].[tAuftrag] a
       JOIN [Verkauf].[tAuftragEckdaten] e ON e.kAuftrag = a.kAuftrag
+      LEFT JOIN [Verkauf].[tAuftragText] t ON t.kAuftrag = a.kAuftrag
       WHERE a.kKunde = @kKunde
         AND a.nType  = 0
       ORDER BY a.dErstellt DESC
@@ -414,7 +420,7 @@ export async function getAngeboteByKunde(kKunde: number): Promise<JtlAngebot[]> 
       betreff:      positionen[0]?.bezeichnung || row.cAuftragsNr,
       betragNetto:  row.fWertNetto,
       betragBrutto: row.fWertBrutto,
-      status:       mapAngebotStatus(row.nAuftragStatus, !!row.nStorno),
+      status:       mapAngebotStatus(row.nAuftragStatus, !!row.nStorno, row.cVorgangsstatus),
       positionen,
     }
   })
