@@ -887,14 +887,124 @@ export async function upsertKundeLieferadresse(
   }
 }
 
-// ── Schreib-Operation (einzige) ───────────────────────────────────────────────
+// ── Schreib-Operationen ───────────────────────────────────────────────────────
+
+export interface FarbeResult {
+  rowsAffected: number
+  path?:        string
+  error?:       string
+}
+
+/**
+ * Liest den aktuellen Datensatz eines Angebots aus der Wawi und gibt alle
+ * nicht-leeren Felder in den pm2-Logs aus.
+ *
+ * Zweck: Statusfeld-Erkennung. Wir suchen zuerst in Verkauf.tAngebot,
+ * dann in Verkauf.tAuftrag (nType=0). Jedes WHERE-Muster wird versucht:
+ *   1. LTRIM/RTRIM exact match
+ *   2. LIKE '%nr%' (fängt führende/nachfolgende Zeichen ab)
+ */
+async function preflightLog(pool: sql.ConnectionPool, cAngebotNr: string): Promise<void> {
+  const like = `%${cAngebotNr.trim()}%`
+
+  const queries: { label: string; exec: () => Promise<sql.IResult<Record<string, unknown>>> }[] = [
+    {
+      label: 'Verkauf.tAngebot – exact',
+      exec:  () => pool.request()
+        .input('nr', sql.NVarChar(100), cAngebotNr)
+        .query(`SELECT TOP 1 * FROM [Verkauf].[tAngebot]
+                WHERE LTRIM(RTRIM(cAngebotNr)) = LTRIM(RTRIM(@nr))`),
+    },
+    {
+      label: 'Verkauf.tAngebot – LIKE',
+      exec:  () => pool.request()
+        .input('like', sql.NVarChar(102), like)
+        .query(`SELECT TOP 1 * FROM [Verkauf].[tAngebot]
+                WHERE cAngebotNr LIKE @like`),
+    },
+    {
+      label: 'Verkauf.tAuftrag – exact (nType=0)',
+      exec:  () => pool.request()
+        .input('nr', sql.NVarChar(100), cAngebotNr)
+        .query(`SELECT TOP 1 * FROM [Verkauf].[tAuftrag]
+                WHERE LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`),
+    },
+    {
+      label: 'Verkauf.tAuftrag – LIKE (nType=0)',
+      exec:  () => pool.request()
+        .input('like', sql.NVarChar(102), like)
+        .query(`SELECT TOP 1 * FROM [Verkauf].[tAuftrag]
+                WHERE cAuftragsNr LIKE @like AND nType = 0`),
+    },
+  ]
+
+  for (const q of queries) {
+    try {
+      const res = await q.exec()
+      const row = res.recordset[0]
+      if (!row) continue
+
+      console.log(`[preflight] Datensatz gefunden – ${q.label}`)
+      for (const [key, val] of Object.entries(row)) {
+        if (val !== null && val !== undefined && val !== '') {
+          console.log(`  ${String(key).padEnd(32)} = ${JSON.stringify(val)}`)
+        }
+      }
+      return  // ersten Treffer loggen, dann aufhören
+    } catch (err) {
+      const msg = (err as Error).message.split('\n')[0]
+      if (!/Invalid object name/i.test(msg))
+        console.warn(`[preflight] ${q.label}: ${msg}`)
+    }
+  }
+
+  console.log(`[preflight] "${cAngebotNr}" in keiner Tabelle gefunden – WHERE-Muster prüfen`)
+}
+
+// ── Gemeinsamer Update-Kernel ─────────────────────────────────────────────────
+// Versucht Varianten in Reihenfolge; überspringt bei fehlender Spalte/Tabelle.
+// WHERE: erst exact (LTRIM/RTRIM), dann LIKE als Fallback.
+
+async function runUpdateChain(
+  pool:       sql.ConnectionPool,
+  cAngebotNr: string,
+  attempts:   {
+    tabelle:  string
+    felder:   string
+    useExact: boolean  // true = LTRIM/RTRIM, false = LIKE
+    run:      () => Promise<sql.IResult<unknown>>
+  }[],
+): Promise<FarbeResult> {
+  for (const attempt of attempts) {
+    try {
+      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
+      const result = await attempt.run()
+      const rows   = result.rowsAffected?.[0] ?? 0
+
+      if (rows > 0) {
+        console.log(`Update erfolgreich für ${cAngebotNr}`)
+        return { rowsAffected: rows, path: `${attempt.tabelle}/${attempt.felder}` }
+      }
+    } catch (err) {
+      const msg = (err as Error).message
+      if (/Invalid column name|Invalid object name/i.test(msg)) continue
+      const short = msg.split('\n')[0]
+      console.warn(`[update] ${attempt.tabelle}: ${short}`)
+      return { rowsAffected: 0, error: short }
+    }
+  }
+
+  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
+  return { rowsAffected: 0, error: `Angebot ${cAngebotNr} in Wawi nicht gefunden` }
+}
 
 /**
  * Markiert ein Angebot als "angenommen" in der JTL-Wawi.
  *
- * Identifikation via cAngebotNr (= belegnummer aus der App, z.B. "AN20021").
- * Versuchskette: tAngebot cStatus+nFarbe → tAngebot cStatus → tAuftrag nAuftragStatus+nFarbe → tAuftrag nAuftragStatus.
- * Wirft nie – JTL-Update ist non-fatal für den Unterschriften-Flow.
+ * Liest den Datensatz zuerst aus (preflight-Log zeigt alle Felder in pm2).
+ * Update-Reihenfolge: tAngebot cStatus exact → tAngebot cStatus LIKE →
+ *   tAuftrag nAuftragStatus exact → tAuftrag nAuftragStatus LIKE.
+ * Kein nFarbe in tAngebot (Spalte existiert nicht). Wirft nie.
  */
 export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
   let pool: sql.ConnectionPool
@@ -904,78 +1014,54 @@ export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
     return
   }
 
-  const WHERE_ANGEBOT = `LTRIM(RTRIM(cAngebotNr))  = LTRIM(RTRIM(@nr))`
-  const WHERE_AUFTRAG = `LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`
+  await preflightLog(pool, cAngebotNr)
 
-  const attempts = [
+  const like = `%${cAngebotNr.trim()}%`
+
+  await runUpdateChain(pool, cAngebotNr, [
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen, nFarbe=2',
-      label:   'tAngebot / cStatus + nFarbe',
-      run:     () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen', useExact: true,
+      run: () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'angenommen')
-        .input('nFarbe',  sql.Int,           FARBE_GRUEN)
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus, nFarbe=@nFarbe WHERE ${WHERE_ANGEBOT}`),
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
+                WHERE LTRIM(RTRIM(cAngebotNr)) = LTRIM(RTRIM(@nr))`),
     },
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen',
-      label:   'tAngebot / cStatus',
-      run:     () => pool.request()
-        .input('nr',      sql.NVarChar(100), cAngebotNr)
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=angenommen (LIKE)', useExact: false,
+      run: () => pool.request()
+        .input('like',    sql.NVarChar(102), like)
         .input('cStatus', sql.NVarChar(50),  'angenommen')
-        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus WHERE ${WHERE_ANGEBOT}`),
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
+                WHERE cAngebotNr LIKE @like`),
     },
     {
-      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1, nFarbe=2',
-      label:   'tAuftrag / nAuftragStatus + nFarbe',
-      run:     () => pool.request()
-        .input('nr',     sql.NVarChar(100), cAngebotNr)
-        .input('nFarbe', sql.Int,           FARBE_GRUEN)
-        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1, nFarbe=@nFarbe WHERE ${WHERE_AUFTRAG}`),
-    },
-    {
-      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1',
-      label:   'tAuftrag / nAuftragStatus',
-      run:     () => pool.request()
+      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1', useExact: true,
+      run: () => pool.request()
         .input('nr', sql.NVarChar(100), cAngebotNr)
-        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1 WHERE ${WHERE_AUFTRAG}`),
+        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1
+                WHERE LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`),
     },
-  ]
-
-  for (const attempt of attempts) {
-    try {
-      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
-      const result = await attempt.run()
-      const rows   = result.rowsAffected?.[0] ?? 0
-      if (rows > 0) {
-        console.log(`Update erfolgreich für ${cAngebotNr}`)
-        return
-      }
-    } catch (err) {
-      if (/Invalid column name|Invalid object name/i.test((err as Error).message)) continue
-      console.warn(`[annehmen] Fehler bei ${attempt.label}:`, (err as Error).message.split('\n')[0])
-      return
-    }
-  }
-
-  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
-}
-
-export interface FarbeResult {
-  rowsAffected: number
-  path?:        string
-  error?:       string
+    {
+      tabelle: 'Verkauf.tAuftrag', felder: 'nAuftragStatus=1 (LIKE)', useExact: false,
+      run: () => pool.request()
+        .input('like', sql.NVarChar(102), like)
+        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1
+                WHERE cAuftragsNr LIKE @like AND nType = 0`),
+    },
+  ])
 }
 
 /**
- * Setzt den Status eines Angebots in der Wawi auf "abgelehnt" (cStatus + nFarbe=1).
+ * Markiert ein Angebot als "abgelehnt" in der JTL-Wawi.
  *
- * Identifikation über cAngebotNr mit LTRIM/RTRIM.
- * Versuchskette: tAngebot vollständig → tAngebot ohne nFarbe → tAngebot nur cStatus → tAuftrag nFarbe.
- * Wirft nie – JTL-Update ist non-fatal.
+ * Liest den Datensatz zuerst aus (preflight-Log zeigt alle Felder in pm2).
+ * Update-Reihenfolge: tAngebot cStatus+nStatus exact → tAngebot cStatus exact →
+ *   tAngebot cStatus LIKE → tAuftrag nFarbe exact.
+ * Kein nFarbe in tAngebot (Spalte existiert nicht). Wirft nie.
  */
 export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
-  console.log('Versuche Update für AngebotNr:', cAngebotNr)
+  console.log(`[ablehnen] Starte für AngebotNr: ${cAngebotNr}`)
 
   let pool: sql.ConnectionPool
   try { pool = await getPool() }
@@ -985,75 +1071,45 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
     return { rowsAffected: 0, error: msg }
   }
 
-  const WHERE_ANGEBOT = `LTRIM(RTRIM(cAngebotNr))  = LTRIM(RTRIM(@nr))`
-  const WHERE_AUFTRAG = `LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`
+  await preflightLog(pool, cAngebotNr)
 
-  const attempts = [
+  const like = `%${cAngebotNr.trim()}%`
+
+  return runUpdateChain(pool, cAngebotNr, [
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt, nFarbe=1, nStatus=2',
-      label:   'tAngebot / cStatus + nFarbe + nStatus',
-      run:     () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt,nStatus=2', useExact: true,
+      run: () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
-        .input('nFarbe',  sql.Int,           FARBE_ROT)
         .input('nStatus', sql.Int,           2)
-        .query(`UPDATE [Verkauf].[tAngebot]
-                SET cStatus=@cStatus, nFarbe=@nFarbe, nStatus=@nStatus
-                WHERE ${WHERE_ANGEBOT}`),
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus, nStatus=@nStatus
+                WHERE LTRIM(RTRIM(cAngebotNr)) = LTRIM(RTRIM(@nr))`),
     },
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt, nFarbe=1',
-      label:   'tAngebot / cStatus + nFarbe',
-      run:     () => pool.request()
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt', useExact: true,
+      run: () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
-        .input('nFarbe',  sql.Int,           FARBE_ROT)
-        .query(`UPDATE [Verkauf].[tAngebot]
-                SET cStatus=@cStatus, nFarbe=@nFarbe
-                WHERE ${WHERE_ANGEBOT}`),
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
+                WHERE LTRIM(RTRIM(cAngebotNr)) = LTRIM(RTRIM(@nr))`),
     },
     {
-      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt',
-      label:   'tAngebot / cStatus',
-      run:     () => pool.request()
-        .input('nr',      sql.NVarChar(100), cAngebotNr)
+      tabelle: 'Verkauf.tAngebot', felder: 'cStatus=abgelehnt (LIKE)', useExact: false,
+      run: () => pool.request()
+        .input('like',    sql.NVarChar(102), like)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
-        .query(`UPDATE [Verkauf].[tAngebot]
-                SET cStatus=@cStatus
-                WHERE ${WHERE_ANGEBOT}`),
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus
+                WHERE cAngebotNr LIKE @like`),
     },
     {
-      tabelle: 'Verkauf.tAuftrag', felder: 'nFarbe=1',
-      label:   'tAuftrag / nFarbe (Fallback)',
-      run:     () => pool.request()
+      tabelle: 'Verkauf.tAuftrag', felder: 'nFarbe=1 (Fallback)', useExact: true,
+      run: () => pool.request()
         .input('nr',     sql.NVarChar(100), cAngebotNr)
         .input('nFarbe', sql.Int,           FARBE_ROT)
-        .query(`UPDATE [Verkauf].[tAuftrag]
-                SET nFarbe=@nFarbe
-                WHERE ${WHERE_AUFTRAG}`),
+        .query(`UPDATE [Verkauf].[tAuftrag] SET nFarbe=@nFarbe
+                WHERE LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`),
     },
-  ]
-
-  for (const attempt of attempts) {
-    try {
-      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
-      const result = await attempt.run()
-      const rows   = result.rowsAffected?.[0] ?? 0
-
-      if (rows > 0) {
-        console.log(`Update erfolgreich für ${cAngebotNr}`)
-        return { rowsAffected: rows, path: attempt.label }
-      }
-    } catch (err) {
-      if (/Invalid column name|Invalid object name/i.test((err as Error).message)) continue
-      const short = (err as Error).message.split('\n')[0]
-      console.warn(`[ablehnen] Fehler bei ${attempt.label}:`, short)
-      return { rowsAffected: 0, error: short }
-    }
-  }
-
-  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
-  return { rowsAffected: 0, error: `Angebot ${cAngebotNr} in Wawi nicht gefunden` }
+  ])
 }
 
 // ── Kunden-Neuanlage ──────────────────────────────────────────────────────────
