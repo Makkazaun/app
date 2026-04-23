@@ -35,7 +35,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
 
     const ctx = canvas.getContext('2d')!
     ctx.scale(dpr, dpr)
-    ctx.strokeStyle = '#1F2937'
+    ctx.strokeStyle = '#FFFFFF'
     ctx.lineWidth   = 2.5
     ctx.lineCap     = 'round'
     ctx.lineJoin    = 'round'
@@ -45,7 +45,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
     const canvas = canvasRef.current
     if (!canvas) return null
     const ctx = canvas.getContext('2d')!
-    ctx.strokeStyle = '#1F2937'
+    ctx.strokeStyle = '#FFFFFF'
     ctx.lineWidth   = 2.5
     ctx.lineCap     = 'round'
     ctx.lineJoin    = 'round'
@@ -129,22 +129,22 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
       <div
         className="relative w-full sm:max-w-lg flex flex-col"
         style={{
-          background: '#F9FAFB',
-          border:     '1px solid #E5E7EB',
+          background: '#3A000F',
+          border:     '1px solid #9A0025',
           borderRadius: '20px 20px 0 0',
           padding: '28px 24px 32px',
         }}
       >
         {/* Handle (mobil) */}
         <div className="sm:hidden flex justify-center mb-5 -mt-2">
-          <div className="w-12 h-1 rounded-full" style={{ background: '#9CA3AF' }} />
+          <div className="w-12 h-1 rounded-full" style={{ background: '#C08898' }} />
         </div>
 
         {/* Schließen (Desktop) */}
         <button
           onClick={onClose}
           className="hidden sm:flex absolute top-5 right-5 w-8 h-8 items-center justify-center rounded-lg transition-opacity hover:opacity-70"
-          style={{ background: '#E5E7EB', color: '#6B7280', fontSize: '14px' }}
+          style={{ background: '#700020', color: '#C88090', fontSize: '14px' }}
         >
           ✕
         </button>
@@ -154,21 +154,21 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
           <p className="text-xs uppercase tracking-[0.18em] mb-1" style={{ color: '#800020' }}>
             Digitale Unterschrift
           </p>
-          <h2 className="text-xl font-bold mb-4" style={{ color: '#1F2937' }}>
+          <h2 className="text-xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
             Angebot annehmen
           </h2>
 
           {/* Angebots-Info */}
           <div className="rounded-xl p-4 space-y-2.5"
-            style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
           >
             <div className="flex items-center justify-between text-xs">
-              <span style={{ color: '#9CA3AF' }}>Angebots-Nr.</span>
+              <span style={{ color: '#C08898' }}>Angebots-Nr.</span>
               <span className="font-mono font-semibold" style={{ color: '#800020' }}>{angebotId}</span>
             </div>
             <div className="flex items-baseline justify-between gap-3">
-              <span className="text-xs leading-snug" style={{ color: '#6B7280' }}>{leistung}</span>
-              <span className="text-sm font-bold flex-shrink-0" style={{ color: '#1F2937' }}>{betrag}</span>
+              <span className="text-xs leading-snug" style={{ color: '#C88090' }}>{leistung}</span>
+              <span className="text-sm font-bold flex-shrink-0" style={{ color: '#FFFFFF' }}>{betrag}</span>
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
         {/* Unterschriftenfeld */}
         <div className="mb-2">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium" style={{ color: '#6B7280' }}>
+            <p className="text-xs font-medium" style={{ color: '#C88090' }}>
               Hier unterschreiben:
             </p>
             {!isEmpty && (
@@ -184,7 +184,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
                 type="button"
                 onClick={clearCanvas}
                 className="text-xs hover:opacity-70 transition-opacity"
-                style={{ color: '#9CA3AF' }}
+                style={{ color: '#C08898' }}
               >
                 Zurücksetzen
               </button>
@@ -195,10 +195,10 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             ref={wrapRef}
             className="w-full rounded-xl overflow-hidden relative"
             style={{
-              background: '#F9FAFB',
+              background: '#3A000F',
               border: isEmpty
-                ? '1.5px dashed #E5E7EB'
-                : '1.5px solid #9CA3AF',
+                ? '1.5px dashed #9A0025'
+                : '1.5px solid #700020',
             }}
           >
             <canvas
@@ -215,7 +215,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             {isEmpty && (
               <p
                 className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none"
-                style={{ color: '#9CA3AF' }}
+                style={{ color: '#C08898' }}
               >
                 ✍ Hier mit dem Finger unterschreiben
               </p>
@@ -224,7 +224,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
         </div>
 
         {/* Rechtlicher Hinweis */}
-        <p className="text-xs leading-relaxed mb-6" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs leading-relaxed mb-6" style={{ color: '#C08898' }}>
           Mit Ihrer Unterschrift akzeptieren Sie das oben genannte Angebot verbindlich.
           Diese elektronische Unterschrift ist rechtsgültig gemäß eIDAS-Verordnung (EU) 910/2014.
         </p>
@@ -235,7 +235,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             type="button"
             onClick={onClose}
             className="flex-1 py-3.5 rounded-xl font-medium text-sm transition-opacity hover:opacity-80"
-            style={{ background: '#F3F4F6', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            style={{ background: '#2D000B', color: '#C88090', border: '1px solid #9A0025' }}
           >
             Abbrechen
           </button>

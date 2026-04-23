@@ -115,7 +115,7 @@ function ResetPasswordForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(160deg, #F9FAFB 0%, #E5E7EB 50%, #F9FAFB 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #2D000B 0%, #1A0008 50%, #2D000B 100%)' }}
     >
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
@@ -129,7 +129,7 @@ function ResetPasswordForm() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Logo variant="login" className="mb-3" />
-          <p className="text-xs tracking-widest" style={{ color: '#9CA3AF', letterSpacing: '0.3em' }}>
+          <p className="text-xs tracking-widest" style={{ color: '#C08898', letterSpacing: '0.3em' }}>
             KUNDENPORTAL
           </p>
         </div>
@@ -138,8 +138,8 @@ function ResetPasswordForm() {
         <div
           className="rounded-2xl p-7 shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #E5E7EB, #F3F4F6)',
-            border: '1px solid #D1D5DB',
+            background: 'linear-gradient(145deg, #4D0013, #3A000F)',
+            border: '1px solid #700020',
             boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}
         >
@@ -151,7 +151,7 @@ function ResetPasswordForm() {
                 className="w-10 h-10 border-2 rounded-full animate-spin mx-auto"
                 style={{ borderColor: '#800020', borderTopColor: 'transparent' }}
               />
-              <p className="text-sm" style={{ color: '#6B7280' }}>Link wird geprüft …</p>
+              <p className="text-sm" style={{ color: '#C88090' }}>Link wird geprüft …</p>
             </div>
           )}
 
@@ -168,10 +168,10 @@ function ResetPasswordForm() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-base font-semibold mb-1.5" style={{ color: '#1F2937' }}>
+                <h2 className="text-base font-semibold mb-1.5" style={{ color: '#FFFFFF' }}>
                   Link ungültig
                 </h2>
-                <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>{invalidMsg}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>{invalidMsg}</p>
               </div>
               <button
                 type="button"
@@ -191,13 +191,13 @@ function ResetPasswordForm() {
           {/* ── Passwort-Formular ───────────────────────────────────────────── */}
           {(state === 'form' || state === 'saving') && (
             <>
-              <h2 className="text-lg font-semibold mb-1" style={{ color: '#1F2937' }}>
+              <h2 className="text-lg font-semibold mb-1" style={{ color: '#FFFFFF' }}>
                 Neues Passwort vergeben
               </h2>
-              <p className="text-xs mb-1" style={{ color: '#6B7280' }}>
+              <p className="text-xs mb-1" style={{ color: '#C88090' }}>
                 Konto: <span style={{ color: '#800020' }}>{email}</span>
               </p>
-              <p className="text-xs mb-6" style={{ color: '#9CA3AF' }}>
+              <p className="text-xs mb-6" style={{ color: '#C08898' }}>
                 Mindestens 8 Zeichen. Groß-/Kleinbuchstaben, Zahlen und Sonderzeichen empfohlen.
               </p>
 
@@ -280,10 +280,10 @@ function ResetPasswordForm() {
 
               {/* Hauptnachricht */}
               <div>
-                <h2 className="text-lg font-bold mb-2" style={{ color: '#1F2937' }}>
+                <h2 className="text-lg font-bold mb-2" style={{ color: '#FFFFFF' }}>
                   Passwort gespeichert.
                 </h2>
-                <p className="text-sm" style={{ color: '#6B7280' }}>
+                <p className="text-sm" style={{ color: '#C88090' }}>
                   Die App wird geladen …
                 </p>
               </div>
@@ -305,7 +305,7 @@ function ResetPasswordForm() {
               </div>
 
               {/* Fortschrittsbalken */}
-              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#E5E7EB' }}>
+              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#700020' }}>
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -366,7 +366,7 @@ function ResetPasswordForm() {
 
         </div>
 
-        <p className="text-center mt-6 text-xs" style={{ color: '#9CA3AF' }}>
+        <p className="text-center mt-6 text-xs" style={{ color: '#C08898' }}>
           <span suppressHydrationWarning>
             © {new Date().getFullYear()} TR Edelzaun &amp; Tor GmbH
           </span>
@@ -392,7 +392,7 @@ function PasswordField({
       <label
         htmlFor={id}
         className="block text-xs font-medium mb-1.5 uppercase tracking-wider"
-        style={{ color: '#6B7280' }}
+        style={{ color: '#C88090' }}
       >
         {label}
       </label>
@@ -408,9 +408,9 @@ function PasswordField({
           onBlur={() => setFocused(false)}
           className="w-full px-4 py-3 pr-11 rounded-lg text-sm transition-all duration-150"
           style={{
-            background: '#F9FAFB',
-            border: `1px solid ${focused ? '#800020' : '#D1D5DB'}`,
-            color: '#1F2937',
+            background: '#3A000F',
+            border: `1px solid ${focused ? '#800020' : '#700020'}`,
+            color: '#FFFFFF',
             outline: 'none',
             boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',
           }}
@@ -419,7 +419,7 @@ function PasswordField({
           type="button"
           onClick={() => setVisible((v) => !v)}
           className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity hover:opacity-70"
-          style={{ color: '#9CA3AF', fontSize: '14px' }}
+          style={{ color: '#C08898', fontSize: '14px' }}
           aria-label={visible ? 'Passwort verbergen' : 'Passwort anzeigen'}
         >
           {visible ? '🙈' : '👁'}
@@ -457,7 +457,7 @@ function StrengthBar({ password }: { password: string }) {
           <div
             key={i}
             className="flex-1 h-1 rounded-full transition-all duration-300"
-            style={{ background: i < score ? lvl.color : '#E5E7EB' }}
+            style={{ background: i < score ? lvl.color : '#700020' }}
           />
         ))}
       </div>

@@ -35,10 +35,10 @@ export default function Step1Produkt({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 1
         </p>
-        <h2 className="text-2xl font-bold mb-1" style={{ color: '#1F2937' }}>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: '#FFFFFF' }}>
           Welches Produkt interessiert Sie?
         </h2>
-        <p className="text-sm" style={{ color: '#9CA3AF' }}>
+        <p className="text-sm" style={{ color: '#C08898' }}>
           Wählen Sie Ihr Hauptprodukt – die Details konfigurieren wir im nächsten Schritt.
         </p>
       </div>

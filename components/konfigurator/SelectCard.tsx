@@ -17,8 +17,8 @@ export default function SelectCard({
       onClick={onClick}
       className={`relative flex items-center gap-3 rounded-xl px-4 py-4 text-left transition-all duration-200 active:scale-[0.97] ${fullWidth ? 'w-full' : ''}`}
       style={{
-        background: selected ? 'rgba(128,0,32,0.08)' : '#FFFFFF',
-        border: selected ? '2px solid #800020' : '1px solid #E5E7EB',
+        background: selected ? 'rgba(255,255,255,0.08)' : '#4D0013',
+        border: selected ? '2px solid #800020' : '1px solid #9A0025',
         boxShadow: selected ? '0 0 20px rgba(128,0,32,0.1)' : 'none',
       }}
     >
@@ -27,12 +27,12 @@ export default function SelectCard({
       )}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold leading-tight"
-          style={{ color: selected ? '#800020' : '#374151' }}
+          style={{ color: selected ? '#F5D0D5' : '#FFFFFF' }}
         >
           {label}
         </p>
         {sublabel && (
-          <p className="text-xs mt-0.5 leading-snug" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-0.5 leading-snug" style={{ color: '#C08898' }}>
             {sublabel}
           </p>
         )}

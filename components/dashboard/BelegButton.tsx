@@ -66,7 +66,7 @@ export default function BelegButton({ belegnummer, type, label }: Props) {
           disabled={loading}
           className="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
-            background: '#F3F4F6',
+            background: '#2D000B',
             color: '#7a9ab8',
             border: '1px solid #2a3a4a',
             padding: '10px 12px',
@@ -104,9 +104,9 @@ export default function BelegButton({ belegnummer, type, label }: Props) {
           }}
           className="inline-flex items-center justify-center rounded-lg text-xs transition-all hover:opacity-80"
           style={{
-            background: '#F9FAFB',
-            color: '#9CA3AF',
-            border: '1px solid #E5E7EB',
+            background: '#3A000F',
+            color: '#C08898',
+            border: '1px solid #9A0025',
             minWidth: '40px',
             minHeight: '40px',
           }}
@@ -174,8 +174,8 @@ function PdfModal({
       <div
         className="flex items-center justify-between px-4 flex-shrink-0"
         style={{
-          background:   '#F9FAFB',
-          borderBottom: '1px solid #E5E7EB',
+          background:   '#3A000F',
+          borderBottom: '1px solid #9A0025',
           minHeight:    '56px',
         }}
       >
@@ -184,7 +184,7 @@ function PdfModal({
             <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
             <path d="M4 5h6M4 7.5h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
-          <span className="text-sm font-medium" style={{ color: '#374151' }}>
+          <span className="text-sm font-medium" style={{ color: '#F5D0D5' }}>
             Beleg {belegnummer}
           </span>
         </div>
@@ -194,8 +194,8 @@ function PdfModal({
             href={downloadUrl}
             className="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80"
             style={{
-              background: '#F3F4F6',
-              color: '#6B7280',
+              background: '#2D000B',
+              color: '#C88090',
               border: '1px solid #333',
               padding: '10px 12px',
               minHeight: '44px',
@@ -216,8 +216,8 @@ function PdfModal({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg text-xs transition-all hover:opacity-80 sm:hidden"
             style={{
-              background: '#F3F4F6',
-              color: '#6B7280',
+              background: '#2D000B',
+              color: '#C88090',
               border: '1px solid #333',
               minWidth: '44px',
               minHeight: '44px',
@@ -234,8 +234,8 @@ function PdfModal({
             onClick={onClose}
             className="flex items-center justify-center rounded-lg transition-all hover:opacity-80"
             style={{
-              background: '#F3F4F6',
-              color: '#6B7280',
+              background: '#2D000B',
+              color: '#C88090',
               border: '1px solid #333',
               minWidth: '44px',
               minHeight: '44px',
@@ -254,7 +254,7 @@ function PdfModal({
         <iframe
           src={pdfUrl}
           className="absolute inset-0 w-full h-full"
-          style={{ border: 'none', background: '#E5E7EB' }}
+          style={{ border: 'none', background: '#700020' }}
           title={`Beleg ${belegnummer}`}
         />
       </div>

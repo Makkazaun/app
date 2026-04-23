@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Zentrales E-Mail-Template-System
  *
  * SERVER-ONLY – niemals in Client-Komponenten importieren.
@@ -77,13 +77,13 @@ export function generateEmailHtml({ title, content, preheader = '' }: WrapperPar
   <!-- E-Mail-Karte -->
   <table role="presentation" width="580" cellpadding="0" cellspacing="0"
     style="max-width:580px;width:100%;background:#FFFFFF;border-radius:16px;
-           overflow:hidden;border:1px solid #E5E7EB;
+           overflow:hidden;border:1px solid #9A0025;
            box-shadow:0 4px 24px rgba(0,0,0,0.06);">
 
     <!-- ── Logo-Header ─────────────────────────────────────────────────── -->
     <tr>
       <td align="center"
-        style="background:#FFFFFF;padding:28px 36px 24px;border-bottom:2px solid #800020;">
+        style="background:#800020;padding:28px 36px 24px;border-bottom:none;">
         <img
           src="cid:${LOGO_CID}"
           alt="TR Edelzaun &amp; Tor GmbH"
@@ -198,7 +198,7 @@ export function buildPasswordResetEmail({
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
             style="margin-bottom:28px;">
             <tr>
-              <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:12px 16px;">
+              <td style="background:#F9FAFB;border:1px solid #9A0025;border-radius:10px;padding:12px 16px;">
                 <p style="margin:0;font-size:12px;color:#6B7280;line-height:1.6;">
                   ⏱&nbsp; Der Link ist
                   <strong style="color:#800020;">30 Minuten gültig</strong>
@@ -229,7 +229,7 @@ export function buildPasswordResetEmail({
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
             style="margin-bottom:28px;">
             <tr>
-              <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;
+              <td style="background:#F9FAFB;border:1px solid #9A0025;border-radius:8px;
                          padding:10px 14px;word-break:break-all;">
                 <a href="${resetLink}"
                   style="font-size:11px;color:#800020;text-decoration:none;line-height:1.5;">${resetLink}</a>
@@ -239,7 +239,7 @@ export function buildPasswordResetEmail({
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;">
+              <td style="background:#F9FAFB;border:1px solid #9A0025;border-radius:10px;padding:14px 16px;">
                 <p style="margin:0;font-size:12px;color:#6B7280;line-height:1.6;">
                   <strong style="color:#374151;">Nicht von Ihnen angefordert?</strong><br>
                   Ignorieren Sie diese E-Mail. Ihr Passwort bleibt unverändert
@@ -303,7 +303,7 @@ export function buildTestEmail({
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
             style="margin-bottom:24px;">
             <tr>
-              <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:16px 20px;">
+              <td style="background:#F9FAFB;border:1px solid #9A0025;border-radius:10px;padding:16px 20px;">
                 <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.14em;
                            text-transform:uppercase;color:#800020;">Konfiguration</p>
                 ${[

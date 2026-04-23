@@ -55,16 +55,16 @@ function KompaktPicker({
   const modelle = BETONZAUN_MODELLE.filter((m) => m.kategorie === kat)
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #D1D5DB', background: '#FFFFFF' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #700020', background: '#4D0013' }}>
       {/* Kategorie-Tabs */}
-      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #E5E7EB' }}>
+      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #9A0025' }}>
         {KATEGORIEN.map((k) => (
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all"
             style={{
               background: kat === k ? 'rgba(128,0,32,0.15)' : 'transparent',
               border: kat === k ? '1px solid #800020' : '1px solid transparent',
-              color: kat === k ? '#800020' : '#9CA3AF',
+              color: kat === k ? '#800020' : '#C08898',
             }}
           >
             {k}
@@ -80,11 +80,11 @@ function KompaktPicker({
             <button key={m.nr} type="button" onClick={() => { onSelect(m); onClose() }}
               className="rounded-lg overflow-hidden transition-all active:scale-95"
               style={{
-                border: sel ? '2px solid #800020' : '1px solid #E5E7EB',
-                background: '#F9FAFB',
+                border: sel ? '2px solid #800020' : '1px solid #9A0025',
+                background: '#3A000F',
               }}
             >
-              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#E5E7EB' }}>
+              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#700020' }}>
                 <Image src={m.imageUrl} alt={m.name} fill sizes="100px" className="object-cover"
                   onError={() => {}} />
                 {sel && (
@@ -95,7 +95,7 @@ function KompaktPicker({
                   </div>
                 )}
               </div>
-              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#800020' : '#6B7280' }}>
+              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#800020' : '#C88090' }}>
                 {m.name}
               </p>
             </button>
@@ -106,7 +106,7 @@ function KompaktPicker({
       <div className="px-3 pb-2 flex justify-end">
         <button type="button" onClick={onClose}
           className="text-xs px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
-          style={{ background: '#E5E7EB', color: '#9CA3AF' }}
+          style={{ background: '#700020', color: '#C08898' }}
         >
           Schließen
         </button>
@@ -137,39 +137,39 @@ function ReihenZeile({
     <div>
       <div className="flex items-center gap-3 p-3 rounded-xl transition-all"
         style={{
-          background: '#FFFFFF',
-          border: open ? '1px solid #800020' : '1px solid #E5E7EB',
+          background: '#4D0013',
+          border: open ? '1px solid #800020' : '1px solid #9A0025',
           borderRadius: open ? '12px 12px 0 0' : '12px',
         }}
       >
         {/* Reihen-Badge */}
         <div className="flex-shrink-0 w-16 text-center">
-          <span className="block text-xs font-bold" style={{ color: '#9CA3AF' }}>{label}</span>
-          {isTop && <span className="text-xs" style={{ color: '#9CA3AF' }}>↑ Oben</span>}
-          {isBottom && <span className="text-xs" style={{ color: '#9CA3AF' }}>↓ Unten</span>}
+          <span className="block text-xs font-bold" style={{ color: '#C08898' }}>{label}</span>
+          {isTop && <span className="text-xs" style={{ color: '#C08898' }}>↑ Oben</span>}
+          {isBottom && <span className="text-xs" style={{ color: '#C08898' }}>↓ Unten</span>}
         </div>
 
         {/* Modell-Vorschau */}
         {modell ? (
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="w-12 h-8 rounded-md overflow-hidden flex-shrink-0 relative"
-              style={{ background: '#E5E7EB' }}
+              style={{ background: '#700020' }}
             >
               <Image src={modell.imageUrl} alt={modell.name} fill sizes="48px" className="object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate" style={{ color: '#374151' }}>{modell.name}</p>
-              <p className="text-xs" style={{ color: '#9CA3AF' }}>Nr. {modell.nr}</p>
+              <p className="text-sm font-medium truncate" style={{ color: '#F5D0D5' }}>{modell.name}</p>
+              <p className="text-xs" style={{ color: '#C08898' }}>Nr. {modell.nr}</p>
             </div>
           </div>
         ) : (
           <div className="flex-1 flex items-center gap-2">
             <div className="w-12 h-8 rounded-md flex items-center justify-center flex-shrink-0"
-              style={{ background: '#F3F4F6', border: '1px dashed #333' }}
+              style={{ background: '#2D000B', border: '1px dashed #333' }}
             >
-              <span style={{ color: '#9CA3AF', fontSize: '10px' }}>?</span>
+              <span style={{ color: '#C08898', fontSize: '10px' }}>?</span>
             </div>
-            <p className="text-sm" style={{ color: '#9CA3AF' }}>Kein Modell gewählt</p>
+            <p className="text-sm" style={{ color: '#C08898' }}>Kein Modell gewählt</p>
           </div>
         )}
 
@@ -177,9 +177,9 @@ function ReihenZeile({
         <button type="button" onClick={() => setOpen((o) => !o)}
           className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{
-            background: open ? 'rgba(128,0,32,0.12)' : '#F3F4F6',
+            background: open ? 'rgba(128,0,32,0.12)' : '#2D000B',
             border: open ? '1px solid rgba(128,0,32,0.3)' : '1px solid #333',
-            color: open ? '#800020' : '#6B7280',
+            color: open ? '#800020' : '#C88090',
           }}
         >
           {open ? 'Schließen' : modell ? 'Ändern' : 'Wählen'}
@@ -208,7 +208,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
     <div>
       <FieldLabel>Live-Vorschau</FieldLabel>
       <div className="rounded-xl overflow-hidden p-4"
-        style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}
+        style={{ background: '#3A000F', border: '1px solid #9A0025' }}
       >
         {/* Himmel */}
         <div className="h-3" />
@@ -228,7 +228,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                 }}
               >
                 {/* Pfosten-Kappe */}
-                <div className="w-full h-2 rounded-t-sm" style={{ background: '#9CA3AF' }} />
+                <div className="w-full h-2 rounded-t-sm" style={{ background: '#C08898' }} />
               </div>
 
               {/* Feld (außer nach dem letzten Pfosten) */}
@@ -241,7 +241,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                         className="relative overflow-hidden"
                         style={{
                           height: '44px',
-                          background: '#E5E7EB',
+                          background: '#700020',
                           borderTop: li > 0 ? '1px solid rgba(0,0,0,0.4)' : 'none',
                         }}
                       >
@@ -258,7 +258,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                           <div className="w-full h-full flex items-center justify-center"
                             style={{ background: 'repeating-linear-gradient(45deg, #222 0px, #222 4px, #262626 4px, #262626 8px)' }}
                           >
-                            <span className="text-xs" style={{ color: '#9CA3AF' }}>–</span>
+                            <span className="text-xs" style={{ color: '#C08898' }}>–</span>
                           </div>
                         )}
                       </div>
@@ -281,11 +281,11 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
             return (
               <div key={li} className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-sm overflow-hidden relative flex-shrink-0"
-                  style={{ background: '#E5E7EB' }}
+                  style={{ background: '#700020' }}
                 >
                   {m && <Image src={m.imageUrl} alt="" fill sizes="12px" className="object-cover" />}
                 </div>
-                <span className="text-xs" style={{ color: '#9CA3AF' }}>
+                <span className="text-xs" style={{ color: '#C08898' }}>
                   {label}: {m ? m.name : '–'}
                 </span>
               </div>
@@ -295,7 +295,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-sm flex-shrink-0"
                 style={{ background: 'linear-gradient(180deg, #9CA3AF, #E5E7EB)' }} />
-              <span className="text-xs" style={{ color: '#9CA3AF' }}>
+              <span className="text-xs" style={{ color: '#C08898' }}>
                 Pfeiler: {PFEILER_OPTIONEN.find((p) => p.value === pfeiler)?.label ?? pfeiler}
               </span>
             </div>
@@ -328,15 +328,15 @@ function StuecklistenAnzeige({
   return (
     <div>
       <FieldLabel>Automatische Stückliste</FieldLabel>
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
         {/* Kopfzeile */}
         <div className="px-4 py-2.5 flex items-center justify-between"
-          style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
+          style={{ background: '#4D0013', borderBottom: '1px solid #9A0025' }}
         >
-          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#6B7280' }}>
+          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090' }}>
             Stückliste · {sl.laengeMeter} m Zaun
           </span>
-          <span className="text-xs" style={{ color: '#9CA3AF' }}>
+          <span className="text-xs" style={{ color: '#C08898' }}>
             Feldbreite: 2 m
           </span>
         </div>
@@ -369,20 +369,20 @@ function StuecklistenAnzeige({
 
           {/* Summe */}
           <div className="px-4 py-3 flex items-center justify-between"
-            style={{ background: '#F9FAFB' }}
+            style={{ background: '#3A000F' }}
           >
             <div>
-              <p className="text-sm font-bold" style={{ color: '#1F2937' }}>Platten gesamt</p>
-              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{sl.reihen} Reihen × {sl.plattenProReihe} Felder</p>
+              <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>Platten gesamt</p>
+              <p className="text-xs mt-0.5" style={{ color: '#C08898' }}>{sl.reihen} Reihen × {sl.plattenProReihe} Felder</p>
             </div>
             <div className="text-right">
               <span className="text-xl font-bold" style={{ color: '#800020' }}>{sl.plattenGesamt}</span>
-              <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>Stück</span>
+              <span className="text-xs ml-1" style={{ color: '#C08898' }}>Stück</span>
             </div>
           </div>
         </div>
       </div>
-      <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>
+      <p className="text-xs mt-2" style={{ color: '#C08898' }}>
         * Richtmengen, inkl. je {ecken} Eckpfosten. Exakte Mengen nach Aufmaß.
       </p>
     </div>
@@ -396,9 +396,9 @@ function SLZeile({
   highlight?: boolean; modellBild?: string
 }) {
   return (
-    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#F3F4F6' }}>
+    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#2D000B' }}>
       {modellBild ? (
-        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#E5E7EB' }}>
+        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#700020' }}>
           <Image src={modellBild} alt="" fill sizes="32px" className="object-cover" />
         </div>
       ) : (
@@ -407,11 +407,11 @@ function SLZeile({
       )}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium" style={{ color: '#c8c8c8' }}>{label}</p>
-        <p className="text-xs truncate" style={{ color: '#9CA3AF' }}>{sub}</p>
+        <p className="text-xs truncate" style={{ color: '#C08898' }}>{sub}</p>
       </div>
       <div className="text-right flex-shrink-0">
-        <span className="text-base font-bold" style={{ color: highlight ? '#1F2937' : '#6B7280' }}>{menge}</span>
-        <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>{einheit}</span>
+        <span className="text-base font-bold" style={{ color: highlight ? '#FFFFFF' : '#C88090' }}>{menge}</span>
+        <span className="text-xs ml-1" style={{ color: '#C08898' }}>{einheit}</span>
       </div>
     </div>
   )
@@ -441,10 +441,10 @@ export default function ZaunPlaner({ data, update }: Props) {
   // Nicht anzeigen wenn Höhe oder Länge fehlen
   if (!bz.hoehe || !bz.laenge) {
     return (
-      <div className="rounded-xl p-5 text-center" style={{ background: '#F3F4F6', border: '1px dashed #E5E7EB' }}>
-        <p className="text-sm" style={{ color: '#9CA3AF' }}>
-          Bitte zuerst <strong style={{ color: '#6B7280' }}>Höhe</strong> und{' '}
-          <strong style={{ color: '#6B7280' }}>Gesamtlänge</strong> angeben.
+      <div className="rounded-xl p-5 text-center" style={{ background: '#2D000B', border: '1px dashed #9A0025' }}>
+        <p className="text-sm" style={{ color: '#C08898' }}>
+          Bitte zuerst <strong style={{ color: '#C88090' }}>Höhe</strong> und{' '}
+          <strong style={{ color: '#C88090' }}>Gesamtlänge</strong> angeben.
         </p>
       </div>
     )
@@ -458,7 +458,7 @@ export default function ZaunPlaner({ data, update }: Props) {
       {/* Reihen-Konfiguration */}
       <div>
         <FieldLabel>Modell pro Reihe</FieldLabel>
-        <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs mb-4" style={{ color: '#C08898' }}>
           {reihenAnzahl} Reihen à 50 cm · Jede Ebene kann ein anderes Modell haben.
         </p>
         <div className="space-y-2">
@@ -489,13 +489,13 @@ export default function ZaunPlaner({ data, update }: Props) {
               onClick={() => update({ betonzaun: { ...bz, pfeiler: p.value } })}
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all"
               style={{
-                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#F9FAFB',
-                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #E5E7EB',
+                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#3A000F',
+                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #9A0025',
               }}
             >
               <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
                 style={{
-                  borderColor: bz.pfeiler === p.value ? '#800020' : '#9CA3AF',
+                  borderColor: bz.pfeiler === p.value ? '#800020' : '#C08898',
                   background: bz.pfeiler === p.value ? '#800020' : 'transparent',
                 }}
               >
@@ -507,7 +507,7 @@ export default function ZaunPlaner({ data, update }: Props) {
                 <p className="text-sm font-medium" style={{ color: bz.pfeiler === p.value ? '#800020' : '#c0c0c0' }}>
                   {p.label}
                 </p>
-                <p className="text-xs" style={{ color: '#9CA3AF' }}>{p.beschreibung}</p>
+                <p className="text-xs" style={{ color: '#C08898' }}>{p.beschreibung}</p>
               </div>
             </button>
           ))}

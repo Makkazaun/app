@@ -56,15 +56,15 @@ export default function DashboardHeader() {
   ]
 
   return (
-    <div className="pb-8" style={{ borderBottom: '1px solid #E5E7EB' }}>
+    <div className="pb-8" style={{ borderBottom: '1px solid #9A0025' }}>
       {/* Begrüßung */}
       <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
         Willkommen zurück
       </p>
-      <h1 className="text-3xl font-bold mb-2" style={{ color: '#1F2937' }}>
+      <h1 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
         {vorname ? `Hallo ${vorname},` : 'Mein Kundenbereich'}
       </h1>
-      <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>
+      <p className="text-sm mb-8" style={{ color: '#C08898' }}>
         {vorname
           ? 'hier sind Ihre aktuellen Vorgänge bei Edelzaun & Tor.'
           : 'Anfragen · Angebote · Aufträge · Termine – alles auf einen Blick.'}
@@ -74,15 +74,15 @@ export default function DashboardHeader() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map((s) => (
           <div key={s.label} className="rounded-xl p-4"
-            style={{ background: '#FFFFFF', border: '1px solid #F3F4F6' }}
+            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
           >
-            <p className="text-xs mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.08em' }}>
+            <p className="text-xs mb-2" style={{ color: '#C08898', letterSpacing: '0.08em' }}>
               {s.label}
             </p>
             <p className="text-xl font-bold leading-none mb-1" style={{ color: s.color }}>
               {s.value}
             </p>
-            <p className="text-xs" style={{ color: '#9CA3AF' }}>{s.sub}</p>
+            <p className="text-xs" style={{ color: '#C08898' }}>{s.sub}</p>
           </div>
         ))}
       </div>

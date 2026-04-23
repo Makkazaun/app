@@ -25,7 +25,7 @@ export default function Step2Doppelstab({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 2 · Doppelstabmatte
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Konfiguration</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Konfiguration</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ export default function Step2Doppelstab({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '44px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#9CA3AF' }}>cm</span>
+              style={{ color: '#C08898' }}>cm</span>
           </div>
         </div>
         <div>
@@ -52,7 +52,7 @@ export default function Step2Doppelstab({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '36px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#9CA3AF' }}>m</span>
+              style={{ color: '#C08898' }}>m</span>
           </div>
         </div>
       </div>

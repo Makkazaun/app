@@ -114,18 +114,18 @@ export default function KonfiguratorPage() {
 
   // ── Formular ───────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F3F4F6' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#2D000B' }}>
       <header className="flex items-center justify-between px-4 sm:px-6 py-4 flex-shrink-0"
-        style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}
+        style={{ background: '#3A000F', borderBottom: '1px solid #9A0025' }}
       >
         <Logo variant="header" />
-        <Link href="/" className="text-xs hover:opacity-70 transition-opacity" style={{ color: '#9CA3AF' }}>
+        <Link href="/" className="text-xs hover:opacity-70 transition-opacity" style={{ color: '#C08898' }}>
           ✕ Schließen
         </Link>
       </header>
 
       <div className="px-4 sm:px-6 pt-5 pb-3 flex-shrink-0"
-        style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}
+        style={{ background: '#3A000F', borderBottom: '1px solid #9A0025' }}
       >
         <StepIndicator current={step} />
       </div>
@@ -159,7 +159,7 @@ export default function KonfiguratorPage() {
 
 function LoggedInSuccessScreen({ name }: { name: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: '#F3F4F6' }}>
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: '#2D000B' }}>
       <div className="max-w-sm w-full text-center space-y-5">
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full text-4xl"
           style={{ background: 'rgba(91,201,122,0.12)', border: '2px solid #5bc97a' }}
@@ -167,22 +167,22 @@ function LoggedInSuccessScreen({ name }: { name: string }) {
           ✓
         </div>
         <div>
-          <h1 className="text-2xl font-bold mb-2" style={{ color: '#1F2937' }}>
+          <h1 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
             Anfrage gespeichert!{name ? ` Danke, ${name}.` : ''}
           </h1>
-          <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>
             Ihre Konfiguration wurde in Ihrem Kundenprofil gesichert.
             Sie werden gleich zu Ihrem Dashboard weitergeleitet …
           </p>
         </div>
         <div className="flex justify-center">
           <div className="w-6 h-6 rounded-full border-2 animate-spin"
-            style={{ borderColor: '#E5E7EB', borderTopColor: '#800020' }}
+            style={{ borderColor: '#9A0025', borderTopColor: '#800020' }}
           />
         </div>
         <Link href="/dashboard"
           className="inline-block text-xs hover:opacity-80 transition-opacity"
-          style={{ color: '#9CA3AF' }}
+          style={{ color: '#C08898' }}
         >
           Jetzt zum Dashboard →
         </Link>
@@ -195,7 +195,7 @@ function LoggedInSuccessScreen({ name }: { name: string }) {
 
 function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{ background: '#F3F4F6' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{ background: '#2D000B' }}>
       <div className="max-w-md w-full space-y-6">
 
         {/* Bestätigung */}
@@ -205,10 +205,10 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
           >
             ✓
           </div>
-          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>
             Anfrage gesendet!{name ? ` Danke, ${name}.` : ''}
           </h1>
-          <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>
             Wir melden uns innerhalb von 1–2 Werktagen mit einem persönlichen Angebot.
           </p>
         </div>
@@ -250,16 +250,16 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
 
         {/* Kontakt + weiter ohne Konto */}
         <div className="rounded-xl p-4 space-y-1"
-          style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+          style={{ background: '#4D0013', border: '1px solid #9A0025' }}
         >
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>📞 Telefonisch erreichbar</p>
+          <p className="text-xs" style={{ color: '#C08898' }}>📞 Telefonisch erreichbar</p>
           <p className="text-sm font-semibold" style={{ color: '#800020' }}>03496-7005181</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>✉ info@edelzaun-tor.de</p>
+          <p className="text-xs" style={{ color: '#C08898' }}>✉ info@edelzaun-tor.de</p>
         </div>
 
         <Link href="/"
           className="block text-center text-xs hover:opacity-80 transition-opacity py-2"
-          style={{ color: '#9CA3AF' }}
+          style={{ color: '#C08898' }}
         >
           Ohne Konto zur Startseite
         </Link>

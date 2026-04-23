@@ -11,7 +11,7 @@ export default function StepIndicator({ current }: { current: number }) {
   return (
     <div className="w-full">
       {/* Fortschrittsbalken */}
-      <div className="w-full h-0.5 mb-4" style={{ background: '#E5E7EB' }}>
+      <div className="w-full h-0.5 mb-4" style={{ background: '#700020' }}>
         <div
           className="h-full transition-all duration-500"
           style={{
@@ -44,7 +44,7 @@ export default function StepIndicator({ current }: { current: number }) {
               </div>
               <span
                 className="text-xs whitespace-nowrap"
-                style={{ color: active ? '#800020' : done ? '#6B7280' : '#9CA3AF' }}
+                style={{ color: active ? '#800020' : done ? '#C88090' : '#C08898' }}
               >
                 {s.label}
               </span>
@@ -55,7 +55,7 @@ export default function StepIndicator({ current }: { current: number }) {
 
       {/* Mobile: nur aktueller Schritt */}
       <div className="sm:hidden flex items-center justify-between px-1">
-        <span className="text-xs" style={{ color: '#9CA3AF' }}>
+        <span className="text-xs" style={{ color: '#C08898' }}>
           Schritt {current} von {STEPS.length}
         </span>
         <span className="text-xs font-semibold" style={{ color: '#800020' }}>

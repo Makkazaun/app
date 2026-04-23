@@ -51,12 +51,12 @@ export default function AnfragenSection() {
 
       {anfragen.length === 0 && (
         <div className="rounded-xl p-8 text-center mb-4"
-          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}>
+          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
           <p className="text-2xl mb-3">📋</p>
-          <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>
+          <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
             Noch keine Anfragen vorhanden
           </p>
-          <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mb-4" style={{ color: '#C08898' }}>
             Konfigurieren Sie Ihr Wunschprojekt und reichen Sie eine Anfrage ein.
           </p>
           <Link href="/konfigurator"
@@ -78,13 +78,13 @@ export default function AnfragenSection() {
             <div key={a.id}
               className="rounded-xl p-5 card-hover cursor-pointer flex flex-col"
               style={{
-                background: 'linear-gradient(145deg, #FFFFFF, #FFFFFF)',
-                border: '1px solid #333333',
+                background: 'linear-gradient(145deg, #4D0013, #3A000F)',
+                border: '1px solid #9A0025',
               }}
             >
               {/* ID + Status */}
               <div className="flex items-center justify-between mb-3 gap-2">
-                <span className="text-xs font-mono truncate" style={{ color: '#9CA3AF' }}>
+                <span className="text-xs font-mono truncate" style={{ color: '#C08898' }}>
                   {a.id.startsWith('demo') ? `ANF-${a.id.slice(-1).padStart(3, '0')}` : a.id.slice(0, 8).toUpperCase()}
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
@@ -99,7 +99,7 @@ export default function AnfragenSection() {
               </div>
 
               {/* Titel */}
-              <h3 className="font-semibold text-sm mb-3 leading-snug flex-1" style={{ color: '#1F2937' }}>
+              <h3 className="font-semibold text-sm mb-3 leading-snug flex-1" style={{ color: '#FFFFFF' }}>
                 {anfrageTitle(a)}
               </h3>
 
@@ -107,17 +107,17 @@ export default function AnfragenSection() {
               <div className="space-y-1.5 mb-3">
                 {details.map((d) => (
                   <div key={d.label} className="flex items-center justify-between text-xs">
-                    <span style={{ color: '#9CA3AF' }}>{d.label}</span>
-                    <span style={{ color: '#6B7280' }}>{d.value}</span>
+                    <span style={{ color: '#C08898' }}>{d.label}</span>
+                    <span style={{ color: '#C88090' }}>{d.value}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between text-xs">
-                  <span style={{ color: '#9CA3AF' }}>Eingereicht</span>
-                  <span style={{ color: '#6B7280' }}>{formatDate(a.createdAt)}</span>
+                  <span style={{ color: '#C08898' }}>Eingereicht</span>
+                  <span style={{ color: '#C88090' }}>{formatDate(a.createdAt)}</span>
                 </div>
                 {a.jtlAngebotId && (
                   <div className="flex items-center justify-between text-xs">
-                    <span style={{ color: '#9CA3AF' }}>Angebots-Nr.</span>
+                    <span style={{ color: '#C08898' }}>Angebots-Nr.</span>
                     <span className="font-mono" style={{ color: '#800020' }}>{a.jtlAngebotId}</span>
                   </div>
                 )}
@@ -125,9 +125,9 @@ export default function AnfragenSection() {
 
               {/* Footer */}
               <div className="pt-3 flex items-center justify-between"
-                style={{ borderTop: '1px solid #E5E7EB' }}
+                style={{ borderTop: '1px solid #9A0025' }}
               >
-                <span className="text-xs" style={{ color: '#D1D5DB' }}>Details</span>
+                <span className="text-xs" style={{ color: '#C88090' }}>Details</span>
                 <span className="text-xs" style={{ color: '#800020' }}>→</span>
               </div>
             </div>
@@ -139,17 +139,17 @@ export default function AnfragenSection() {
           className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 transition-all duration-200 hover:opacity-80 hover:border-[#9CA3AF]"
           style={{
             background: 'transparent',
-            border: '1px dashed #D1D5DB',
+            border: '1px dashed #700020',
             minHeight: '160px',
             textDecoration: 'none',
           }}
         >
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
-            style={{ background: '#F3F4F6', color: '#800020' }}
+            style={{ background: '#2D000B', color: '#800020' }}
           >
             +
           </div>
-          <span className="text-xs text-center" style={{ color: '#9CA3AF' }}>
+          <span className="text-xs text-center" style={{ color: '#C08898' }}>
             Neue Anfrage<br />konfigurieren
           </span>
         </Link>

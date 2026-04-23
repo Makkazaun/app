@@ -153,7 +153,7 @@ export async function POST(req: NextRequest) {
 
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
               <tr>
-                <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:16px 20px;">
+                <td style="background:#F9FAFB;border:1px solid #9A0025;border-radius:10px;padding:16px 20px;">
                   <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
                     <span style="color:#9CA3AF;display:inline-block;width:150px;">Angebotsnummer</span>
                     <strong style="color:#800020;font-family:monospace;">${esc(belegnummer)}</strong>

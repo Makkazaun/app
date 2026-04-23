@@ -7,13 +7,13 @@ export const metadata = {
 
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#F9FAFB' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#3A000F' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
           <Link href="/"
             className="inline-flex items-center gap-2 text-xs mb-8 hover:opacity-80 transition-opacity"
-            style={{ color: '#9CA3AF' }}
+            style={{ color: '#C08898' }}
           >
             ← Zurück zur Startseite
           </Link>
@@ -23,11 +23,11 @@ export default function ImpressumPage() {
           <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
-          <h1 className="text-3xl font-bold" style={{ color: '#1F2937' }}>Impressum</h1>
+          <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Impressum</h1>
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#FFFFFF', border: '1px solid #333333' }}
+          style={{ background: '#4D0013', border: '1px solid #333333' }}
         >
           {/* Unternehmensangaben */}
           <Section title="Unternehmensangaben">
@@ -51,10 +51,10 @@ export default function ImpressumPage() {
 
           {/* USt-ID */}
           <Section title="Umsatzsteuer-ID">
-            <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>
               Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
             </p>
-            <p className="text-sm font-semibold mt-1" style={{ color: '#374151' }}>DE298694405</p>
+            <p className="text-sm font-semibold mt-1" style={{ color: '#F5D0D5' }}>DE298694405</p>
           </Section>
 
           <Divider />
@@ -137,7 +137,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3 text-sm">
-      <span className="w-36 flex-shrink-0" style={{ color: '#9CA3AF' }}>{label}</span>
+      <span className="w-36 flex-shrink-0" style={{ color: '#C08898' }}>{label}</span>
       <span style={{ color: '#c8c8c8' }}>{value}</span>
     </div>
   )
@@ -145,10 +145,10 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>{children}</p>
+    <p className="text-sm leading-relaxed" style={{ color: '#C88090' }}>{children}</p>
   )
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#E5E7EB' }} />
+  return <div className="w-full h-px" style={{ background: '#700020' }} />
 }

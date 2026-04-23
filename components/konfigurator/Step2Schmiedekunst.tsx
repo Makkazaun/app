@@ -16,8 +16,8 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 2 · Schmiedekunst & Metallzaun
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Konfiguration</h2>
-        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Konfiguration</h2>
+        <p className="text-sm mt-1" style={{ color: '#C08898' }}>
           Individuelle Schmiedearbeiten werden auf Basis Ihrer Angaben persönlich kalkuliert.
         </p>
       </div>
@@ -32,7 +32,7 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '44px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#9CA3AF' }}>cm</span>
+              style={{ color: '#C08898' }}>cm</span>
           </div>
         </div>
         <div>
@@ -44,7 +44,7 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '36px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#9CA3AF' }}>m</span>
+              style={{ color: '#C08898' }}>m</span>
           </div>
         </div>
       </div>
@@ -78,8 +78,8 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
         </div>
       </div>
 
-      <div className="rounded-xl p-4" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
-        <p className="text-xs" style={{ color: '#92400E' }}>
+      <div className="rounded-xl p-4" style={{ background: '#1C1200', border: '1px solid #92400E' }}>
+        <p className="text-xs" style={{ color: '#FCD34D' }}>
           💡 Im nächsten Schritt können Sie Referenzfotos, Skizzen oder Pläne hochladen –
           das hilft uns, Ihren Wunsch optimal umzusetzen und ein genaues Angebot zu erstellen.
         </p>

@@ -207,17 +207,17 @@ export const PFEILER_TYPEN: PfeilerTyp[] = [
     capColor: '#686868',
     capBg: 'linear-gradient(180deg, #686868 0%, #4e4e4e 100%)',
     bodyBg: 'linear-gradient(90deg, #484848 0%, #5c5c5c 35%, #404040 65%, #4c4c4c 100%)',
-    borderColor: '#9CA3AF',
+    borderColor: '#C08898',
   },
   {
     value: 'struktur',
     label: 'Struktur-Pfeiler',
     beschreibung: 'Gleiche Oberfläche wie die gewählten Platten – harmonisches Gesamtbild',
     capVariant: 'flat',
-    capColor: '#9CA3AF',
+    capColor: '#C08898',
     capBg: 'linear-gradient(180deg, #9CA3AF 0%, #3e3e3e 100%)',
     bodyBg: '',   // wird dynamisch aus der Plattenstruktur abgeleitet
-    borderColor: '#E5E7EB',
+    borderColor: '#9A0025',
   },
   {
     value: 'schmuckhaube',
@@ -227,7 +227,7 @@ export const PFEILER_TYPEN: PfeilerTyp[] = [
     capColor: '#8c8c8c',
     capBg: 'linear-gradient(180deg, #8c8c8c 0%, #5c5c5c 100%)',
     bodyBg: 'linear-gradient(90deg, #484848 0%, #5c5c5c 35%, #404040 65%, #4c4c4c 100%)',
-    borderColor: '#9CA3AF',
+    borderColor: '#C08898',
   },
   {
     value: 'naturstein',

@@ -124,10 +124,10 @@ function FarbChipSmall({ hex, label, prefix }: { hex: string; label: string; pre
         boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
       }} />
       <span style={{
-        fontSize: '10px', color: '#6B7280',
+        fontSize: '10px', color: '#C88090',
         whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px',
       }}>
-        <span style={{ color: '#9CA3AF', marginRight: '2px' }}>{prefix}:</span>
+        <span style={{ color: '#C08898', marginRight: '2px' }}>{prefix}:</span>
         {label}
       </span>
     </div>
@@ -174,7 +174,7 @@ function StickyFarbVorschau({ data }: { data: FormData }) {
       {/* ── Farb-Labels ─────────────────────────────────── */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontSize: '9px', color: '#9CA3AF',
+          fontSize: '9px', color: '#C08898',
           textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: '5px',
         }}>
           Live-Vorschau
@@ -313,7 +313,7 @@ function FarbPicker({
         <span style={{
           fontSize: '9px', lineHeight: 1.2,
           textAlign: 'center', width: '100%',
-          color: isSelected ? '#800020' : '#9CA3AF',
+          color: isSelected ? '#800020' : '#C08898',
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
           {tileLabel.replace(' (RAL 9010)', '').replace(' (RAL 7016)', '')}
@@ -382,9 +382,9 @@ function FarbPicker({
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: isActive ? '#800020'
-                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#FFFFFF',
+                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#4D0013',
                 border: isActive ? '1px solid #800020'
-                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #E5E7EB',
+                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #9A0025',
                 color: isActive ? '#ffffff' : hasSelection ? '#800020' : '#666',
                 transition: 'all 0.1s',
               }}
@@ -400,10 +400,10 @@ function FarbPicker({
 
       {/* ── Farbkachel-Raster (anthrazit-dunkler Hintergrund) ────────── */}
       <div style={{
-        background: '#F9FAFB',
+        background: '#3A000F',
         borderRadius: '10px',
         padding: '12px',
-        border: '1px solid #F3F4F6',
+        border: '1px solid #9A0025',
       }}>
         {renderTabContent()}
       </div>
@@ -413,7 +413,7 @@ function FarbPicker({
         <div style={{ width: '48px', flexShrink: 0 }}>
           {renderTile('individuell', '', 'Individuell')}
         </div>
-        <p style={{ fontSize: '11px', color: '#9CA3AF', maxWidth: '230px', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '11px', color: '#C08898', maxWidth: '230px', lineHeight: 1.5 }}>
           Jeder Farbton auf Anfrage – geben Sie Ihren Wunsch als NCS-, RAL- oder
           Caparol-Code an.
         </p>
@@ -459,10 +459,10 @@ function FarbAuswahl({ data, update }: Props) {
 
       {/* ── Premium-Info-Banner ─────────────────────────────────────────── */}
       <div className="rounded-xl p-4 flex items-start gap-3"
-        style={{ background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+        style={{ background: '#1A0D04', border: '1px solid #2D4A20' }}>
         <span style={{ fontSize: '20px', lineHeight: 1, flexShrink: 0 }}>🎨</span>
         <div>
-          <p className="text-sm font-semibold mb-1" style={{ color: '#15803D' }}>
+          <p className="text-sm font-semibold mb-1" style={{ color: '#86EFAC' }}>
             Individuelle Farbbeschichtung – Premium Finish
           </p>
           <p className="text-xs leading-relaxed" style={{ color: '#5a7a4a' }}>
@@ -490,7 +490,7 @@ function FarbAuswahl({ data, update }: Props) {
                 background: platteHex,
                 border: '1px solid rgba(255,255,255,0.1)',
               }} />
-              <span className="text-xs" style={{ color: '#6B7280' }}>{platteLabel}</span>
+              <span className="text-xs" style={{ color: '#C88090' }}>{platteLabel}</span>
             </div>
           )}
         </div>
@@ -516,9 +516,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(false)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#F9FAFB',
-              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #F3F4F6',
-              color: !kontrastfarbe ? '#800020' : '#9CA3AF',
+              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#3A000F',
+              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #9A0025',
+              color: !kontrastfarbe ? '#800020' : '#C08898',
             }}
           >
             Gleich wie Zaunfelder
@@ -527,9 +527,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(true)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#F9FAFB',
-              border: kontrastfarbe ? '2px solid #800020' : '1px solid #F3F4F6',
-              color: kontrastfarbe ? '#800020' : '#9CA3AF',
+              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#3A000F',
+              border: kontrastfarbe ? '2px solid #800020' : '1px solid #9A0025',
+              color: kontrastfarbe ? '#800020' : '#C08898',
             }}
           >
             Kontrastfarbe wählen
@@ -537,7 +537,7 @@ function FarbAuswahl({ data, update }: Props) {
         </div>
 
         {!kontrastfarbe && (
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs" style={{ color: '#C08898' }}>
             Pfeiler und Abdeckkappen werden in derselben Farbe wie die Zaunfelder beschichtet.
           </p>
         )}
@@ -562,22 +562,22 @@ function FarbAuswahl({ data, update }: Props) {
             style={{
               width: '100%',
               padding: '12px 16px',
-              background: '#FFFFFF',
-              border: '1px solid #E5E7EB',
+              background: '#4D0013',
+              border: '1px solid #9A0025',
               borderRadius: '10px',
-              color: '#1F2937',
+              color: '#FFFFFF',
               fontSize: '14px',
               outline: 'none',
             }}
           />
-          <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-1.5" style={{ color: '#C08898' }}>
             Caparol Code, RAL, NCS oder freie Beschreibung – unser Team berät Sie gerne.
           </p>
         </div>
       )}
 
       {/* ── Disclaimer ──────────────────────────────────────────────────── */}
-      <p style={{ fontSize: '11px', fontStyle: 'italic', color: '#9CA3AF', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '11px', fontStyle: 'italic', color: '#C08898', lineHeight: 1.6 }}>
         Hinweis: Die Darstellung der Farbtöne auf Ihrem Bildschirm kann technisch bedingt
         leicht vom Originalton abweichen. Für eine exakte Farbwahl empfehlen wir die
         Ansicht eines physischen Farbfächers vor Ort.
@@ -616,7 +616,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
           style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 2 · Betonzaun
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Konfiguration</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Konfiguration</h2>
       </div>
 
       {/* ── Interaktiver Designer ─────────────────────────────────────── */}
@@ -671,7 +671,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
           />
         </div>
         {bz.montage === 'ohne' && (
-          <p className="text-xs mt-2 px-1" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-2 px-1" style={{ color: '#C08898' }}>
             Der Zaun wird in Betongrau (natur) geliefert. Eine individuelle Farbbeschichtung
             ist ausschließlich bei Montage durch unser Fachteam möglich.
           </p>
@@ -685,13 +685,13 @@ export default function Step2Betonzaun({ data, update }: Props) {
           <StickyFarbVorschau data={data} />
 
           <div className="rounded-xl p-5"
-            style={{ background: '#F3F4F6', border: '1px solid #FFFFFF' }}
+            style={{ background: '#2D000B', border: '1px solid #9A0025' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider mb-1"
               style={{ color: '#800020', letterSpacing: '0.14em' }}>
               Farbgestaltung
             </p>
-            <p className="text-xs mb-5" style={{ color: '#9CA3AF' }}>
+            <p className="text-xs mb-5" style={{ color: '#C08898' }}>
               Wählen Sie eine Farbe – die Vorschau oben aktualisiert sich sofort.
             </p>
             <FarbAuswahl data={data} update={update} />

@@ -23,8 +23,8 @@ export default function TopBar({ onMenuOpen }: TopBarProps) {
     <header
       className="flex items-center justify-between px-4 md:px-6 py-4 flex-shrink-0"
       style={{
-        background: '#FFFFFF',
-        borderBottom: '1px solid #E5E7EB',
+        background: '#4D0013',
+        borderBottom: '1px solid #9A0025',
         height: '64px',
       }}
     >
@@ -32,15 +32,15 @@ export default function TopBar({ onMenuOpen }: TopBarProps) {
         {/* Hamburger – mobile only */}
         <button
           className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-opacity hover:opacity-80"
-          style={{ background: '#F3F4F6', color: '#6B7280', border: '1px solid #E5E7EB' }}
+          style={{ background: '#2D000B', color: '#C88090', border: '1px solid #9A0025' }}
           onClick={onMenuOpen}
           aria-label="Navigation öffnen"
         >
           <Menu size={18} strokeWidth={1.8} />
         </button>
 
-        <div className="w-px h-4 hidden sm:block" style={{ background: '#D1D5DB' }} />
-        <h2 className="text-sm font-semibold" style={{ color: '#6B7280' }}>
+        <div className="w-px h-4 hidden sm:block" style={{ background: '#700020' }} />
+        <h2 className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>
           {title}
         </h2>
       </div>
@@ -52,7 +52,7 @@ export default function TopBar({ onMenuOpen }: TopBarProps) {
         {/* Hilfe */}
         <button
           className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors hover:opacity-80"
-          style={{ background: '#F3F4F6', color: '#6B7280', border: '1px solid #E5E7EB' }}
+          style={{ background: '#2D000B', color: '#C88090', border: '1px solid #9A0025' }}
           aria-label="Hilfe"
         >
           ?

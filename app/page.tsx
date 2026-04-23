@@ -20,16 +20,16 @@ export default function HomePage() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#F9FAFB' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#3A000F' }}>
         <div className="w-6 h-6 rounded-full border-2 animate-spin"
-          style={{ borderColor: '#D1D5DB', borderTopColor: '#800020' }}
+          style={{ borderColor: '#C88090', borderTopColor: '#800020' }}
         />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F9FAFB' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#3A000F' }}>
       {/* Goldener Schimmer oben */}
       <div className="fixed inset-0 pointer-events-none"
         style={{
@@ -39,12 +39,12 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="relative flex items-center justify-between px-8 py-5"
-        style={{ borderBottom: '1px solid #E5E7EB' }}
+        style={{ borderBottom: '1px solid #9A0025' }}
       >
         <Logo variant="header" />
         <Link href="/login"
           className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-80"
-          style={{ background: '#E5E7EB', color: '#6B7280', border: '1px solid #D1D5DB' }}
+          style={{ background: '#2D000B', color: '#F5D0D5', border: '1px solid #700020' }}
         >
           Edelzaun App
         </Link>
@@ -60,10 +60,10 @@ export default function HomePage() {
         <p className="text-xs font-medium tracking-[0.4em] uppercase mb-4" style={{ color: '#800020' }}>
           Zäune &amp; Tore nach Maß
         </p>
-        <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#1F2937' }}>
+        <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#FFFFFF' }}>
           Ihre persönliche <span className="gold-gradient">Edelzaun App</span>
         </h1>
-        <p className="max-w-xl text-base leading-relaxed mb-12" style={{ color: '#6B7280' }}>
+        <p className="max-w-xl text-base leading-relaxed mb-12" style={{ color: '#C88090' }}>
           Premium-Einzäunungen und Toranlagen für anspruchsvolle Kunden.
           Verwalten Sie Angebote, Termine und Rechnungen an einem Ort.
         </p>
@@ -87,11 +87,11 @@ export default function HomePage() {
           </Link>
 
           <Link href="/login"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm uppercase transition-all duration-200 hover:opacity-90 hover:border-[#9CA3AF]"
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm uppercase transition-all duration-200 hover:opacity-90 hover:border-[#C88090]"
             style={{
               background: 'transparent',
-              color: '#6B7280',
-              border: '1px solid #D1D5DB',
+              color: '#C88090',
+              border: '1px solid #700020',
               letterSpacing: '0.12em',
             }}
           >
@@ -111,11 +111,11 @@ export default function HomePage() {
             { icon: '🛡️', title: 'Langlebige Qualität', text: 'Hochwertige Materialien mit langer Lebensdauer.' },
           ].map((f) => (
             <div key={f.title} className="rounded-xl p-6 text-left"
-              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+              style={{ background: '#4D0013', border: '1px solid #9A0025' }}
             >
               <span className="text-2xl mb-3 block">{f.icon}</span>
-              <h3 className="text-sm font-semibold mb-1" style={{ color: '#374151' }}>{f.title}</h3>
-              <p className="text-xs leading-relaxed" style={{ color: '#9CA3AF' }}>{f.text}</p>
+              <h3 className="text-sm font-semibold mb-1" style={{ color: '#F5D0D5' }}>{f.title}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: '#C08898' }}>{f.text}</p>
             </div>
           ))}
         </div>

@@ -45,8 +45,8 @@ export default function Step5Kontakt({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 5
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Ihre Kontaktdaten</h2>
-        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Ihre Kontaktdaten</h2>
+        <p className="text-sm mt-1" style={{ color: '#C08898' }}>
           Damit wir Ihnen ein persönliches Angebot zusenden können.
         </p>
       </div>
@@ -104,14 +104,14 @@ export default function Step5Kontakt({ data, update }: Props) {
           <div
             className="w-5 h-5 rounded flex items-center justify-center transition-all duration-150"
             style={{
-              background: k.datenschutz ? '#800020' : '#F9FAFB',
-              border: `2px solid ${k.datenschutz ? '#800020' : '#D1D5DB'}`,
+              background: k.datenschutz ? '#800020' : '#3A000F',
+              border: `2px solid ${k.datenschutz ? '#800020' : '#700020'}`,
             }}
           >
             {k.datenschutz && <span style={{ color: '#ffffff', fontSize: '11px', fontWeight: 'bold' }}>✓</span>}
           </div>
         </div>
-        <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+        <p className="text-xs leading-relaxed" style={{ color: '#C88090' }}>
           Ich habe die{' '}
           <a href="/datenschutz" target="_blank"
             className="underline hover:opacity-80 transition-opacity"
