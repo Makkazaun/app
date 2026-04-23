@@ -20,7 +20,7 @@ export default function DatenschutzPage() {
         </div>
 
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
           <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>Datenschutzerklärung</h1>
@@ -176,7 +176,7 @@ export default function DatenschutzPage() {
               <p style={{ color: '#c8c8c8' }}>TR Edelzaun &amp; Tor GmbH</p>
               <p style={{ color: '#7a7a7a' }}>Kastanienplatz 2, 06369 Großwülknitz</p>
               <p style={{ color: '#7a7a7a' }}>Tel: 03496-7005181</p>
-              <p style={{ color: '#c9a84c' }}>info@edelzaun-tor.de</p>
+              <p style={{ color: '#800020' }}>info@edelzaun-tor.de</p>
             </div>
           </Section>
         </div>
@@ -189,7 +189,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 className="text-xs font-semibold uppercase tracking-wider mb-4"
-        style={{ color: '#c9a84c', letterSpacing: '0.14em' }}
+        style={{ color: '#800020', letterSpacing: '0.14em' }}
       >
         {title}
       </h2>

@@ -70,7 +70,7 @@ function Field({
       <label className="block text-xs font-medium mb-1.5"
         style={{ color: error ? '#e08080' : readOnly ? '#3a3a3a' : '#7a7a7a' }}>
         {label}
-        {required && <span style={{ color: '#c9a84c' }}> *</span>}
+        {required && <span style={{ color: '#800020' }}> *</span>}
         {readOnly && <span className="ml-1.5 text-[10px] uppercase tracking-wider"
           style={{ color: '#3a3a3a' }}>(schreibgeschützt)</span>}
       </label>
@@ -88,8 +88,8 @@ function Field({
           cursor:     readOnly ? 'default' : 'text',
         }}
         onFocus={readOnly ? undefined : (e) => {
-          e.currentTarget.style.borderColor = '#c9a84c'
-          e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(201,168,76,0.12)'
+          e.currentTarget.style.borderColor = '#800020'
+          e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(128,0,32,0.12)'
         }}
         onBlur={readOnly ? undefined : (e) => {
           e.currentTarget.style.borderColor = error ? '#883333' : '#2a2a2a'
@@ -116,7 +116,7 @@ function PwField({
   return (
     <div>
       <label className="block text-xs font-medium mb-1.5" style={{ color: '#7a7a7a' }}>
-        {label} <span style={{ color: '#c9a84c' }}>*</span>
+        {label} <span style={{ color: '#800020' }}>*</span>
       </label>
       <div className="relative">
         <input
@@ -130,7 +130,7 @@ function PwField({
             border: `1px solid ${matchErr ? '#883333' : '#2a2a2a'}`,
             color: '#e0e0e0',
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#c9a84c' }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#800020' }}
           onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#2a2a2a' }}
         />
         <button
@@ -167,9 +167,9 @@ function SaveBtn({
       style={{
         background: state === 'ok'
           ? 'linear-gradient(135deg, #2a5a2a, #5bc97a)'
-          : 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
-        color:     '#1a1a1a',
-        boxShadow: '0 2px 12px rgba(201,168,76,0.2)',
+          : 'linear-gradient(135deg, #400010, #800020)',
+        color:     '#ffffff',
+        boxShadow: '0 2px 12px rgba(128,0,32,0.2)',
       }}
     >
       {state === 'saving' ? 'Speichern …' : state === 'ok' ? labelOk : label}
@@ -380,7 +380,7 @@ function AdressKarte({
         <span className="text-lg">{cardIcon}</span>
         <div>
           <p className="text-xs font-bold uppercase tracking-widest"
-            style={{ color: '#c9a84c', letterSpacing: '0.14em' }}>{cardTitle}</p>
+            style={{ color: '#800020', letterSpacing: '0.14em' }}>{cardTitle}</p>
           <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
             {isLieferung ? 'Für Lieferungen und Montage' : 'Für Rechnungen und Korrespondenz'}
           </p>
@@ -400,19 +400,19 @@ function AdressKarte({
               className="w-4.5 h-4.5 rounded flex items-center justify-center flex-shrink-0 transition-all"
               style={{
                 width: '18px', height: '18px',
-                background: sameAsRechnung ? '#c9a84c' : '#141414',
-                border:     sameAsRechnung ? '2px solid #c9a84c' : '2px solid #3a3a3a',
-                boxShadow:  sameAsRechnung ? '0 0 6px rgba(201,168,76,0.3)' : 'none',
+                background: sameAsRechnung ? '#800020' : '#141414',
+                border:     sameAsRechnung ? '2px solid #800020' : '2px solid #3a3a3a',
+                boxShadow:  sameAsRechnung ? '0 0 6px rgba(128,0,32,0.3)' : 'none',
               }}
             >
               {sameAsRechnung && (
                 <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                  <path d="M1 3.5L3.4 6L8 1" stroke="#1a1a1a" strokeWidth="1.8"
+                  <path d="M1 3.5L3.4 6L8 1" stroke="#ffffff" strokeWidth="1.8"
                     strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
             </div>
-            <span className="text-xs" style={{ color: sameAsRechnung ? '#c9a84c' : '#6a6a6a' }}>
+            <span className="text-xs" style={{ color: sameAsRechnung ? '#800020' : '#6a6a6a' }}>
               Gleich wie Rechnungsadresse
             </span>
           </button>
@@ -491,7 +491,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
     return [
       { pct: 20,  color: '#cc3333', label: 'Zu schwach' },
       { pct: 40,  color: '#e07b5b', label: 'Schwach'    },
-      { pct: 60,  color: '#c9a84c', label: 'Mittel'     },
+      { pct: 60,  color: '#800020', label: 'Mittel'     },
       { pct: 80,  color: '#8ac95b', label: 'Stark'      },
       { pct: 100, color: '#5bc97a', label: 'Sehr stark' },
     ][Math.min(s, 4)]
@@ -685,7 +685,7 @@ export default function ProfilPage() {
       <div className="flex items-center justify-center h-60">
         <div className="text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 animate-spin mx-auto"
-            style={{ borderColor: '#c9a84c', borderTopColor: 'transparent' }} />
+            style={{ borderColor: '#800020', borderTopColor: 'transparent' }} />
           <p className="text-sm" style={{ color: '#5a5a5a' }}>Profil wird geladen …</p>
         </div>
       </div>
@@ -701,7 +701,7 @@ export default function ProfilPage() {
 
         {/* ── Seiten-Header ──────────────────────────────────────────────── */}
         <div className="pb-4" style={{ borderBottom: '1px solid #2a2a2a' }}>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Mein Konto
           </p>
           <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Profilverwaltung</h1>
@@ -722,7 +722,7 @@ export default function ProfilPage() {
         <div className="flex items-center gap-4 rounded-2xl p-4"
           style={{ background: '#1a1a1a', border: '1px solid #2a2a2a' }}>
           <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #c9a84c, #8a6914)', color: '#1a1a1a' }}>
+            style={{ background: 'linear-gradient(135deg, #800020, #5a0016)', color: '#ffffff' }}>
             {rechnung.vorname ? rechnung.vorname[0].toUpperCase() : email.slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
@@ -732,7 +732,7 @@ export default function ProfilPage() {
             <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
               {email}
               {kundennr && (
-                <> · <span style={{ color: '#c9a84c' }}>KD-{kundennr}</span></>
+                <> · <span style={{ color: '#800020' }}>KD-{kundennr}</span></>
               )}
             </p>
           </div>
@@ -755,8 +755,8 @@ export default function ProfilPage() {
                   className="flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all duration-200 whitespace-nowrap"
                   style={{
                     background:   'transparent',
-                    color:        isActive ? '#c9a84c' : '#5a5a5a',
-                    borderBottom: isActive ? '2px solid #c9a84c' : '2px solid transparent',
+                    color:        isActive ? '#800020' : '#5a5a5a',
+                    borderBottom: isActive ? '2px solid #800020' : '2px solid transparent',
                     marginBottom: '-1px',
                   }}
                 >

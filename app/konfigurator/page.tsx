@@ -177,7 +177,7 @@ function LoggedInSuccessScreen({ name }: { name: string }) {
         </div>
         <div className="flex justify-center">
           <div className="w-6 h-6 rounded-full border-2 animate-spin"
-            style={{ borderColor: '#2d2d2d', borderTopColor: '#c9a84c' }}
+            style={{ borderColor: '#2d2d2d', borderTopColor: '#800020' }}
           />
         </div>
         <Link href="/dashboard"
@@ -221,7 +221,7 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
           }}
         >
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: '#e0c068' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#a0002a' }}>
               ✨ Anfrage-Status jederzeit verfolgen
             </p>
             <p className="text-xs leading-relaxed" style={{ color: '#7a6a3a' }}>
@@ -234,10 +234,10 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
             href={`/login?register=1&email=${encodeURIComponent(email)}`}
             className="flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
             style={{
-              background: 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-              color: '#1a1a1a',
+              background: 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+              color: '#ffffff',
               letterSpacing: '0.1em',
-              boxShadow: '0 4px 16px rgba(201,168,76,0.25)',
+              boxShadow: '0 4px 16px rgba(128,0,32,0.25)',
             }}
           >
             Jetzt Kundenkonto erstellen →
@@ -253,7 +253,7 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
           style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}
         >
           <p className="text-xs" style={{ color: '#4a4a4a' }}>📞 Telefonisch erreichbar</p>
-          <p className="text-sm font-semibold" style={{ color: '#c9a84c' }}>03496-7005181</p>
+          <p className="text-sm font-semibold" style={{ color: '#800020' }}>03496-7005181</p>
           <p className="text-xs" style={{ color: '#4a4a4a' }}>✉ info@edelzaun-tor.de</p>
         </div>
 

@@ -78,7 +78,7 @@ export default function NotificationBell() {
         {count > 0 && (
           <span
             className="absolute -top-1 -right-1 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-bold"
-            style={{ background: '#c9a84c', color: '#1a1a1a', padding: '0 4px' }}
+            style={{ background: '#800020', color: '#ffffff', padding: '0 4px' }}
           >
             {count > 9 ? '9+' : count}
           </span>
@@ -115,7 +115,7 @@ export default function NotificationBell() {
               <button
                 onClick={handleMarkAll}
                 className="text-xs hover:opacity-70 transition-opacity"
-                style={{ color: '#c9a84c' }}
+                style={{ color: '#800020' }}
               >
                 Alle lesen
               </button>
@@ -139,7 +139,7 @@ export default function NotificationBell() {
                     key={n.id}
                     className="flex gap-3 px-5 py-4 cursor-pointer transition-colors hover:opacity-80"
                     style={{
-                      background: n.gelesen ? 'transparent' : 'rgba(201,168,76,0.04)',
+                      background: n.gelesen ? 'transparent' : 'rgba(128,0,32,0.04)',
                       borderBottom: i < notifs.length - 1 ? '1px solid #222' : 'none',
                     }}
                     onClick={() => handleRead(n.id)}

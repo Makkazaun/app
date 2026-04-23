@@ -113,12 +113,12 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           borderTop:    idx < total - 1 ? `1px solid rgba(0,0,0,0.45)` : 'none',
           borderBottom: idx > 0         ? `1px solid rgba(0,0,0,0.45)` : 'none',
           outline: isActive
-            ? '2px solid #c9a84c'
+            ? '2px solid #800020'
             : dragOver
-            ? '2px solid rgba(201,168,76,0.5)'
+            ? '2px solid rgba(128,0,32,0.5)'
             : 'none',
           outlineOffset: isActive ? '-2px' : '-2px',
-          boxShadow: isActive ? 'inset 0 0 20px rgba(201,168,76,0.08)' : 'none',
+          boxShadow: isActive ? 'inset 0 0 20px rgba(128,0,32,0.08)' : 'none',
         }}
       >
         {/* Echtes Bild, wenn vorhanden */}
@@ -150,7 +150,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           <span className="ml-2 px-1.5 py-0.5 rounded text-xs font-mono flex-shrink-0"
             style={{
               background: 'rgba(0,0,0,0.55)',
-              color: isActive ? '#c9a84c' : '#5a5a5a',
+              color: isActive ? '#800020' : '#5a5a5a',
               fontSize: '10px',
             }}
           >
@@ -171,7 +171,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
                 </p>
               </>
             ) : (
-              <p style={{ fontSize: '11px', color: isActive ? '#c9a84c' : '#333' }}>
+              <p style={{ fontSize: '11px', color: isActive ? '#800020' : '#333' }}>
                 {isActive ? '← Modell wählen' : '+ klicken'}
               </p>
             )}
@@ -181,7 +181,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           <span className="mr-2 flex-shrink-0"
             style={{
               fontSize: '9px',
-              color: isActive ? '#c9a84c' : '#333',
+              color: isActive ? '#800020' : '#333',
               writingMode: 'vertical-rl',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -194,13 +194,13 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
         {/* Aktiv-Indikator links */}
         {isActive && (
           <div className="absolute left-0 top-0 bottom-0 w-1"
-            style={{ background: '#c9a84c' }} />
+            style={{ background: '#800020' }} />
         )}
 
         {/* Drag-Over-Flash */}
         {dragOver && (
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'rgba(201,168,76,0.12)' }} />
+            style={{ background: 'rgba(128,0,32,0.12)' }} />
         )}
       </div>
 
@@ -212,9 +212,9 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100
                      transition-opacity duration-150 px-1.5 py-0.5 rounded text-xs z-10"
           style={{
-            background: 'rgba(201,168,76,0.15)',
-            border: '1px solid rgba(201,168,76,0.3)',
-            color: '#c9a84c',
+            background: 'rgba(128,0,32,0.15)',
+            border: '1px solid rgba(128,0,32,0.3)',
+            color: '#800020',
             fontSize: '9px',
             pointerEvents: 'auto',
           }}
@@ -369,7 +369,7 @@ function ModelPalette({
     <div className="flex flex-col gap-3">
       {/* Hinweis */}
       <p className="text-xs leading-relaxed"
-        style={{ color: activeId ? '#c9a84c' : '#4a4a4a' }}
+        style={{ color: activeId ? '#800020' : '#4a4a4a' }}
       >
         {activeId
           ? 'Reihe aktiv – Modell klicken oder hierher ziehen:'
@@ -382,9 +382,9 @@ function ModelPalette({
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium transition-all"
             style={{
-              background: kat === k ? 'rgba(201,168,76,0.14)' : '#1c1c1c',
-              border: kat === k ? '1px solid #c9a84c' : '1px solid #262626',
-              color: kat === k ? '#c9a84c' : '#4a4a4a',
+              background: kat === k ? 'rgba(128,0,32,0.14)' : '#1c1c1c',
+              border: kat === k ? '1px solid #800020' : '1px solid #262626',
+              color: kat === k ? '#800020' : '#4a4a4a',
             }}
           >
             {k}
@@ -530,7 +530,7 @@ function Stueckliste({
               {sl.pfosten} Stück
             </span>
           </div>
-          <span className="text-xs font-mono" style={{ color: '#c9a84c' }}>
+          <span className="text-xs font-mono" style={{ color: '#800020' }}>
             × {sl.pfosten}
           </span>
         </div>
@@ -582,7 +582,7 @@ function Stueckliste({
               </div>
 
               <span className="text-xs flex-shrink-0 font-mono"
-                style={{ color: '#c9a84c', minWidth: '40px', textAlign: 'right' }}
+                style={{ color: '#800020', minWidth: '40px', textAlign: 'right' }}
               >
                 × {sl.plattenProReihe}
               </span>
@@ -656,8 +656,8 @@ function PfeilerAuswahl({
               style={{
                 padding: '10px 12px 8px',
                 minWidth: '80px',
-                background: isSelected ? 'rgba(201,168,76,0.08)' : '#1a1a1a',
-                border: isSelected ? '2px solid #c9a84c' : '1px solid #252525',
+                background: isSelected ? 'rgba(128,0,32,0.08)' : '#1a1a1a',
+                border: isSelected ? '2px solid #800020' : '1px solid #252525',
               }}
             >
               {/* Pfosten-Vorschau */}
@@ -702,12 +702,12 @@ function PfeilerAuswahl({
 
               {/* Label */}
               <p className="text-xs font-semibold text-center leading-tight"
-                style={{ color: isSelected ? '#c9a84c' : '#7a7a7a', maxWidth: '72px' }}
+                style={{ color: isSelected ? '#800020' : '#7a7a7a', maxWidth: '72px' }}
               >
                 {typ.label}
               </p>
               {isSelected && (
-                <span style={{ fontSize: '10px', color: '#c9a84c' }}>✓</span>
+                <span style={{ fontSize: '10px', color: '#800020' }}>✓</span>
               )}
             </button>
           )
@@ -823,7 +823,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
       {/* ── Titel ──────────────────────────────────────────────────────── */}
       <div>
         <p className="text-xs font-bold uppercase tracking-widest mb-1"
-          style={{ color: '#c9a84c', letterSpacing: '0.2em' }}
+          style={{ color: '#800020', letterSpacing: '0.2em' }}
         >
           Betonzaun-Designer
         </p>
@@ -841,9 +841,9 @@ export default function BetonzaunDesigner({ data, update }: Props) {
               onClick={() => applyHeight(h.value)}
               className="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-95"
               style={{
-                background: bz.hoehe === h.value ? 'rgba(201,168,76,0.12)' : '#1e1e1e',
-                border: bz.hoehe === h.value ? '2px solid #c9a84c' : '1px solid #2a2a2a',
-                color: bz.hoehe === h.value ? '#c9a84c' : '#7a7a7a',
+                background: bz.hoehe === h.value ? 'rgba(128,0,32,0.12)' : '#1e1e1e',
+                border: bz.hoehe === h.value ? '2px solid #800020' : '1px solid #2a2a2a',
+                color: bz.hoehe === h.value ? '#800020' : '#7a7a7a',
                 minWidth: '78px',
               }}
             >

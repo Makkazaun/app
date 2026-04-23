@@ -180,7 +180,7 @@ function PdfModal({
         }}
       >
         <div className="flex items-center gap-2">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: '#c9a84c' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: '#800020' }}>
             <rect x="1.5" y="0.5" width="11" height="13" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
             <path d="M4 5h6M4 7.5h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>

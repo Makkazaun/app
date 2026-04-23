@@ -20,7 +20,7 @@ export default function ImpressumPage() {
         </div>
 
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
           <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>Impressum</h1>
@@ -125,7 +125,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 className="text-xs font-semibold uppercase tracking-wider mb-4"
-        style={{ color: '#c9a84c', letterSpacing: '0.14em' }}
+        style={{ color: '#800020', letterSpacing: '0.14em' }}
       >
         {title}
       </h2>

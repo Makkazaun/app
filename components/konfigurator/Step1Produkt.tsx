@@ -32,7 +32,7 @@ export default function Step1Produkt({ data, update }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 1
         </p>
         <h2 className="text-2xl font-bold mb-1" style={{ color: '#e8e8e8' }}>

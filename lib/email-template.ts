@@ -40,7 +40,7 @@ function section(title: string, rows: string) {
   return `
     <div style="margin-bottom:28px;">
       <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.14em;
-                text-transform:uppercase;color:#c9a84c;border-bottom:1px solid #2d2d2d;padding-bottom:6px;">
+                text-transform:uppercase;color:#800020;border-bottom:1px solid #2d2d2d;padding-bottom:6px;">
         ${title}
       </p>
       <table style="border-collapse:collapse;width:100%;">
@@ -175,7 +175,7 @@ export function buildAdminHtml(p: EmailPayload): string {
       <!-- Header -->
       <tr>
         <td style="background:linear-gradient(135deg,#1e1a0a,#2d250d);padding:28px 32px;border-bottom:1px solid #3d3210;">
-          <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;">
+          <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#800020;">
             TR Edelzaun &amp; Tor GmbH
           </p>
           <h1 style="margin:6px 0 0;font-size:20px;font-weight:700;color:#e8e8e8;">
@@ -249,7 +249,7 @@ export function buildCustomerHtml(p: EmailPayload): string {
       <!-- Header -->
       <tr>
         <td style="background:linear-gradient(135deg,#1e1a0a,#2d250d);padding:28px 32px;border-bottom:1px solid #3d3210;text-align:center;">
-          <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;">
+          <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#800020;">
             TR Edelzaun &amp; Tor GmbH
           </p>
           <div style="margin:12px 0 8px;font-size:36px;">✓</div>
@@ -271,7 +271,7 @@ export function buildCustomerHtml(p: EmailPayload): string {
 
         <!-- Zusammenfassung -->
         <div style="background:#242424;border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid #333;">
-          <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#c9a84c;">
+          <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#800020;">
             Ihre Anfrage im Überblick
           </p>
           <table style="border-collapse:collapse;width:100%;">
@@ -297,16 +297,16 @@ export function buildCustomerHtml(p: EmailPayload): string {
 
         <!-- Nächste Schritte -->
         <div style="background:#1e1a0a;border-radius:12px;padding:20px 24px;border:1px solid #3d3210;">
-          <p style="margin:0 0 10px;font-size:13px;font-weight:600;color:#e0c068;">Was passiert als nächstes?</p>
+          <p style="margin:0 0 10px;font-size:13px;font-weight:600;color:#a0002a;">Was passiert als nächstes?</p>
           ${[
             ['1', 'Wir prüfen Ihre Anfrage und kalkulieren das individuelle Angebot.'],
             ['2', 'Sie erhalten das Angebot per E-Mail (1–2 Werktage).'],
             ['3', 'Auf Wunsch vereinbaren wir einen Vor-Ort-Termin zur Aufmaßnahme.'],
           ].map(([n, t]) => `
           <div style="display:flex;gap:12px;margin-bottom:8px;">
-            <span style="width:22px;height:22px;border-radius:50%;background:rgba(201,168,76,0.15);
-                         border:1px solid rgba(201,168,76,0.3);flex-shrink:0;text-align:center;
-                         line-height:22px;font-size:11px;font-weight:700;color:#c9a84c;">${n}</span>
+            <span style="width:22px;height:22px;border-radius:50%;background:rgba(128,0,32,0.15);
+                         border:1px solid rgba(128,0,32,0.3);flex-shrink:0;text-align:center;
+                         line-height:22px;font-size:11px;font-weight:700;color:#800020;">${n}</span>
             <span style="font-size:13px;color:#7a6a3a;line-height:1.5;">${t}</span>
           </div>`).join('')}
         </div>
@@ -317,7 +317,7 @@ export function buildCustomerHtml(p: EmailPayload): string {
       <tr>
         <td style="padding:20px 32px;border-top:1px solid #2d2d2d;">
           <p style="margin:0 0 8px;font-size:12px;color:#5a5a5a;">Fragen? Wir sind für Sie erreichbar:</p>
-          <p style="margin:0;font-size:14px;color:#c9a84c;font-weight:600;">
+          <p style="margin:0;font-size:14px;color:#800020;font-weight:600;">
             📞 03496-7005181 &nbsp;&nbsp; ✉ info@edelzaun-tor.de
           </p>
         </td>

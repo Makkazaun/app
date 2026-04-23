@@ -40,7 +40,7 @@ export default function Step4Upload({ data, update }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 4
         </p>
         <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Fotos &amp; Unterlagen</h2>
@@ -57,8 +57,8 @@ export default function Step4Upload({ data, update }: Props) {
         onClick={() => inputRef.current?.click()}
         className="cursor-pointer rounded-2xl flex flex-col items-center justify-center gap-3 py-12 px-6 text-center transition-all duration-200"
         style={{
-          border: `2px dashed ${dragging ? '#c9a84c' : '#3a3a3a'}`,
-          background: dragging ? 'rgba(201,168,76,0.05)' : '#1e1e1e',
+          border: `2px dashed ${dragging ? '#800020' : '#3a3a3a'}`,
+          background: dragging ? 'rgba(128,0,32,0.05)' : '#1e1e1e',
         }}
       >
         <div className="text-5xl">{dragging ? '📂' : '📎'}</div>

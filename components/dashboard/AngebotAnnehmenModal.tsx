@@ -97,7 +97,7 @@ export default function AngebotAnnehmenModal({
         <div className="flex items-center justify-between px-5 py-4"
           style={{ borderBottom: '1px solid #2d2d2d', background: '#161616' }}>
           <div className="flex items-center gap-2.5">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#c9a84c' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#800020' }}>
               <path d="M13.5 2.5l-9 9L2 14l2.5-2.5 9-9z" stroke="currentColor" strokeWidth="1.3"
                 strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M10.5 2.5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
@@ -123,7 +123,7 @@ export default function AngebotAnnehmenModal({
           <div className="rounded-xl px-4 py-3 space-y-1"
             style={{ background: '#212121', border: '1px solid #2d2d2d' }}>
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>{belegnummer}</span>
+              <span className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{belegnummer}</span>
               <span className="text-sm font-bold" style={{ color: '#e8e8e8' }}>{betrag}</span>
             </div>
             <p className="text-xs leading-snug" style={{ color: '#7a7a7a' }}>{betreff}</p>
@@ -149,7 +149,7 @@ export default function AngebotAnnehmenModal({
                         cursor: 'crosshair',
                       },
                     }}
-                    penColor="#c9a84c"
+                    penColor="#800020"
                     onEnd={handleEnd}
                   />
                 </div>
@@ -186,10 +186,10 @@ export default function AngebotAnnehmenModal({
                   className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
                   style={{
                     background: isEmpty
-                      ? '#3a3020'
-                      : 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-                    color: '#1a1a1a',
-                    boxShadow: isEmpty ? 'none' : '0 2px 12px rgba(201,168,76,0.30)',
+                      ? '#2a1018'
+                      : 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+                    color: '#ffffff',
+                    boxShadow: isEmpty ? 'none' : '0 2px 12px rgba(128,0,32,0.30)',
                   }}
                 >
                   Angebot verbindlich annehmen
@@ -202,7 +202,7 @@ export default function AngebotAnnehmenModal({
           {step === 'submitting' && (
             <div className="flex flex-col items-center gap-4 py-8">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                style={{ animation: 'spin 0.8s linear infinite', color: '#c9a84c' }}>
+                style={{ animation: 'spin 0.8s linear infinite', color: '#800020' }}>
                 <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                 <circle cx="16" cy="16" r="13" stroke="currentColor" strokeWidth="2.5"
                   strokeDasharray="45 25" strokeLinecap="round"/>
@@ -249,7 +249,7 @@ export default function AngebotAnnehmenModal({
                 </button>
                 <button onClick={handleSubmit}
                   className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-                  style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.25)' }}>
+                  style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.25)' }}>
                   Erneut versuchen
                 </button>
               </div>

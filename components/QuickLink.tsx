@@ -26,7 +26,7 @@ export default function QuickLink({ title, description, icon, href }: QuickLinkP
       <p className="text-xs leading-relaxed" style={{ color: '#5a5a5a' }}>
         {description}
       </p>
-      <div className="mt-3 text-xs font-medium" style={{ color: '#c9a84c' }}>
+      <div className="mt-3 text-xs font-medium" style={{ color: '#800020' }}>
         Öffnen →
       </div>
     </Link>

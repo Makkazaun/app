@@ -61,7 +61,7 @@ export default function AnfragenSection() {
           </p>
           <Link href="/konfigurator"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
-            style={{ background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)', color: '#1a1a1a' }}
+            style={{ background: 'linear-gradient(135deg, #400010, #800020)', color: '#ffffff' }}
           >
             Konfigurator starten →
           </Link>
@@ -118,7 +118,7 @@ export default function AnfragenSection() {
                 {a.jtlAngebotId && (
                   <div className="flex items-center justify-between text-xs">
                     <span style={{ color: '#5a5a5a' }}>Angebots-Nr.</span>
-                    <span className="font-mono" style={{ color: '#c9a84c' }}>{a.jtlAngebotId}</span>
+                    <span className="font-mono" style={{ color: '#800020' }}>{a.jtlAngebotId}</span>
                   </div>
                 )}
               </div>
@@ -128,7 +128,7 @@ export default function AnfragenSection() {
                 style={{ borderTop: '1px solid #2d2d2d' }}
               >
                 <span className="text-xs" style={{ color: '#3d3d3d' }}>Details</span>
-                <span className="text-xs" style={{ color: '#c9a84c' }}>→</span>
+                <span className="text-xs" style={{ color: '#800020' }}>→</span>
               </div>
             </div>
           )
@@ -145,7 +145,7 @@ export default function AnfragenSection() {
           }}
         >
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
-            style={{ background: '#252525', color: '#c9a84c' }}
+            style={{ background: '#252525', color: '#800020' }}
           >
             +
           </div>

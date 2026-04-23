@@ -72,7 +72,7 @@ function mapJtlAngebot(a: JtlAngebot): Angebot {
 
 
 const STATUS_STYLES: Record<AngebotStatus, { label: string; color: string }> = {
-  offen:              { label: 'Offen – Unterschrift ausstehend', color: '#c9a84c' },
+  offen:              { label: 'Offen – Unterschrift ausstehend', color: '#800020' },
   angenommen:         { label: 'Angenommen',                      color: '#5bc97a' },
   abgelaufen:         { label: 'Abgelaufen',                      color: '#5a5a5a' },
   auftrag_bestaetigt: { label: 'Auftrag bestätigt ✓',             color: '#5bc97a' },
@@ -202,7 +202,7 @@ export default function AngeboteSection() {
       {/* Status-Übersicht */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         {[
-          { label: 'Offen', count: offen,     color: '#c9a84c', sub: 'Warten auf Unterschrift' },
+          { label: 'Offen', count: offen,     color: '#800020', sub: 'Warten auf Unterschrift' },
           { label: 'Angenommen', count: angenomm, color: '#5bc97a', sub: 'Aufträge aktiv' },
           { label: 'Abgelaufen', count: abgelauf, color: '#5a5a5a', sub: 'Nicht mehr gültig' },
         ].map((item) => (
@@ -275,7 +275,7 @@ export default function AngeboteSection() {
                 style={{ gridTemplateColumns: '140px 1fr 110px 180px 80px' }}
               >
                 <div>
-                  <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>{a.id}</p>
+                  <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{a.id}</p>
                   <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{a.datum}</p>
                 </div>
                 <p className="text-xs leading-snug" style={{ color: '#b0b0b0' }}>{a.leistung}</p>
@@ -308,7 +308,7 @@ export default function AngeboteSection() {
               <div className="sm:hidden px-4 py-4 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>{a.id}</p>
+                    <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{a.id}</p>
                     <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>Gültig bis {a.gueltigBis}</p>
                   </div>
                   <span
@@ -363,9 +363,9 @@ export default function AngeboteSection() {
           <div
             className="w-full max-w-sm rounded-2xl p-8 text-center"
             style={{
-              background: 'linear-gradient(160deg, #1e1e18, #141410)',
-              border: '1px solid #3d3210',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.08)',
+              background: 'linear-gradient(160deg, #1e1010, #140810)',
+              border: '1px solid #3d1020',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(128,0,32,0.08)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -390,8 +390,8 @@ export default function AngeboteSection() {
             </p>
 
             <div className="text-xs px-3 py-2 rounded-lg mb-6"
-              style={{ background: '#1a1a14', border: '1px solid #2a2a1a', color: '#6a6a4a' }}>
-              Auftrags-Nr.: <span style={{ color: '#c9a84c' }}>{dankModal}</span>
+              style={{ background: '#1a0a10', border: '1px solid #2a0a18', color: '#6a4050' }}>
+              Auftrags-Nr.: <span style={{ color: '#800020' }}>{dankModal}</span>
             </div>
 
             <button
@@ -399,9 +399,9 @@ export default function AngeboteSection() {
               onClick={() => setDankModal(null)}
               className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-150 hover:opacity-90 active:scale-95"
               style={{
-                background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
-                color: '#1a1a1a',
-                boxShadow: '0 4px 16px rgba(201,168,76,0.25)',
+                background: 'linear-gradient(135deg, #400010, #800020)',
+                color: '#ffffff',
+                boxShadow: '0 4px 16px rgba(128,0,32,0.25)',
               }}
             >
               Verstanden
@@ -422,12 +422,12 @@ function SignButton({ onClick, small }: { onClick: () => void; small?: boolean }
       onClick={onClick}
       className="inline-flex items-center gap-1.5 font-semibold transition-all duration-150 hover:opacity-90 active:scale-95"
       style={{
-        background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
-        color: '#1a1a1a',
+        background: 'linear-gradient(135deg, #400010, #800020)',
+        color: '#ffffff',
         borderRadius: '8px',
         padding: small ? '6px 12px' : '7px 14px',
         fontSize: small ? '11px' : '12px',
-        boxShadow: '0 2px 8px rgba(201,168,76,0.25)',
+        boxShadow: '0 2px 8px rgba(128,0,32,0.25)',
         whiteSpace: 'nowrap',
       }}
     >

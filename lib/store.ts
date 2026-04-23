@@ -46,7 +46,7 @@ export const STATUS_LABELS: Record<AnfrageStatus, string> = {
 }
 
 export const STATUS_COLORS: Record<AnfrageStatus, string> = {
-  in_pruefung:      '#c9a84c',
+  in_pruefung:      '#800020',
   in_bearbeitung:   '#5b9bd5',
   angebot_erstellt: '#b07bdc',
   angenommen:       '#5bc97a',

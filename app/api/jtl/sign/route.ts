@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
                 <td style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:16px 20px;">
                   <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
                     <span style="color:#5a5a5a;display:inline-block;width:150px;">Angebotsnummer</span>
-                    <strong style="color:#c9a84c;font-family:monospace;">${esc(belegnummer)}</strong>
+                    <strong style="color:#800020;font-family:monospace;">${esc(belegnummer)}</strong>
                   </p>
                   <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
                     <span style="color:#5a5a5a;display:inline-block;width:150px;">Kundenname</span>

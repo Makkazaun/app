@@ -21,7 +21,7 @@ export interface Notif {
 }
 
 export const NOTIF_META: Record<NotifTyp, { icon: string; color: string; label: string }> = {
-  neues_angebot:           { icon: '📄', color: '#c9a84c', label: 'Neues Angebot'       },
+  neues_angebot:           { icon: '📄', color: '#800020', label: 'Neues Angebot'       },
   auftrag_bestaetigt:      { icon: '✅', color: '#5bc97a', label: 'Auftrag bestätigt'   },
   rechnung_verfuegbar:     { icon: '🧾', color: '#5b9bd5', label: 'Rechnung verfügbar'  },
   montagetermin_festgelegt:{ icon: '🗓️', color: '#b07bdc', label: 'Montagetermin'        },

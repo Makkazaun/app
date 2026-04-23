@@ -22,7 +22,7 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#1a1a1a' }}>
         <div className="w-6 h-6 rounded-full border-2 animate-spin"
-          style={{ borderColor: '#3d3d3d', borderTopColor: '#c9a84c' }}
+          style={{ borderColor: '#3d3d3d', borderTopColor: '#800020' }}
         />
       </div>
     )
@@ -33,7 +33,7 @@ export default function HomePage() {
       {/* Goldener Schimmer oben */}
       <div className="fixed inset-0 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201,168,76,0.08) 0%, transparent 60%)`,
+          backgroundImage: `radial-gradient(ellipse 80% 50% at 50% -20%, rgba(128,0,32,0.08) 0%, transparent 60%)`,
         }}
       />
 
@@ -57,7 +57,7 @@ export default function HomePage() {
           <Logo variant="hero" />
         </div>
 
-        <p className="text-xs font-medium tracking-[0.4em] uppercase mb-4" style={{ color: '#c9a84c' }}>
+        <p className="text-xs font-medium tracking-[0.4em] uppercase mb-4" style={{ color: '#800020' }}>
           Zäune &amp; Tore nach Maß
         </p>
         <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#e8e8e8' }}>
@@ -73,9 +73,9 @@ export default function HomePage() {
           <Link href="/konfigurator"
             className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm uppercase transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
             style={{
-              background: 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-              color: '#1a1a1a',
-              boxShadow: '0 4px 20px rgba(201,168,76,0.35)',
+              background: 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+              color: '#ffffff',
+              boxShadow: '0 4px 20px rgba(128,0,32,0.35)',
               letterSpacing: '0.12em',
             }}
           >

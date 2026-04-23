@@ -39,7 +39,7 @@ export default function DashboardHeader() {
       label: 'Offene Angebote',
       value: loading ? '…' : offeneAngebote > 0 ? EUR.format(angebotVolumen) : '–',
       sub:   loading ? '' : offeneAngebote > 0 ? `${offeneAngebote} Angebot${offeneAngebote !== 1 ? 'e' : ''}` : 'Keine offenen Angebote',
-      color: '#c9a84c',
+      color: '#800020',
     },
     {
       label: 'Auftragsvolumen',
@@ -58,7 +58,7 @@ export default function DashboardHeader() {
   return (
     <div className="pb-8" style={{ borderBottom: '1px solid #2a2a2a' }}>
       {/* Begrüßung */}
-      <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+      <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
         Willkommen zurück
       </p>
       <h1 className="text-3xl font-bold mb-2" style={{ color: '#e8e8e8' }}>

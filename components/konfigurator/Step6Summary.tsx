@@ -19,7 +19,7 @@ export default function Step6Summary({ data, goToStep }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+        <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 6 · Fast fertig!
         </p>
         <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Zusammenfassung</h2>
@@ -151,7 +151,7 @@ function SummaryBlock({ title, children, onEdit }: {
         </h3>
         <button type="button" onClick={onEdit}
           className="text-xs hover:opacity-80 transition-opacity"
-          style={{ color: '#c9a84c' }}
+          style={{ color: '#800020' }}
         >
           ✎ Bearbeiten
         </button>
@@ -174,7 +174,7 @@ function Row({ label, value, highlight, multiline }: {
       )}
       <span
         className={`text-sm ${multiline ? '' : 'text-right'} leading-relaxed`}
-        style={{ color: highlight ? '#c9a84c' : value === '–' ? '#3a3a3a' : '#c8c8c8', fontWeight: highlight ? 600 : 400 }}
+        style={{ color: highlight ? '#800020' : value === '–' ? '#3a3a3a' : '#c8c8c8', fontWeight: highlight ? 600 : 400 }}
       >
         {value}
       </span>

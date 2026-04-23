@@ -62,9 +62,9 @@ function KompaktPicker({
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all"
             style={{
-              background: kat === k ? 'rgba(201,168,76,0.15)' : 'transparent',
-              border: kat === k ? '1px solid #c9a84c' : '1px solid transparent',
-              color: kat === k ? '#c9a84c' : '#5a5a5a',
+              background: kat === k ? 'rgba(128,0,32,0.15)' : 'transparent',
+              border: kat === k ? '1px solid #800020' : '1px solid transparent',
+              color: kat === k ? '#800020' : '#5a5a5a',
             }}
           >
             {k}
@@ -80,7 +80,7 @@ function KompaktPicker({
             <button key={m.nr} type="button" onClick={() => { onSelect(m); onClose() }}
               className="rounded-lg overflow-hidden transition-all active:scale-95"
               style={{
-                border: sel ? '2px solid #c9a84c' : '1px solid #2d2d2d',
+                border: sel ? '2px solid #800020' : '1px solid #2d2d2d',
                 background: '#141414',
               }}
             >
@@ -89,13 +89,13 @@ function KompaktPicker({
                   onError={() => {}} />
                 {sel && (
                   <div className="absolute inset-0 flex items-center justify-center"
-                    style={{ background: 'rgba(201,168,76,0.2)' }}
+                    style={{ background: 'rgba(128,0,32,0.2)' }}
                   >
-                    <span className="text-sm font-bold" style={{ color: '#c9a84c' }}>✓</span>
+                    <span className="text-sm font-bold" style={{ color: '#800020' }}>✓</span>
                   </div>
                 )}
               </div>
-              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#c9a84c' : '#7a7a7a' }}>
+              <p className="text-xs p-1 truncate text-center" style={{ color: sel ? '#800020' : '#7a7a7a' }}>
                 {m.name}
               </p>
             </button>
@@ -138,7 +138,7 @@ function ReihenZeile({
       <div className="flex items-center gap-3 p-3 rounded-xl transition-all"
         style={{
           background: '#1e1e1e',
-          border: open ? '1px solid #c9a84c' : '1px solid #2d2d2d',
+          border: open ? '1px solid #800020' : '1px solid #2d2d2d',
           borderRadius: open ? '12px 12px 0 0' : '12px',
         }}
       >
@@ -177,9 +177,9 @@ function ReihenZeile({
         <button type="button" onClick={() => setOpen((o) => !o)}
           className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{
-            background: open ? 'rgba(201,168,76,0.12)' : '#252525',
-            border: open ? '1px solid rgba(201,168,76,0.3)' : '1px solid #333',
-            color: open ? '#c9a84c' : '#7a7a7a',
+            background: open ? 'rgba(128,0,32,0.12)' : '#252525',
+            border: open ? '1px solid rgba(128,0,32,0.3)' : '1px solid #333',
+            color: open ? '#800020' : '#7a7a7a',
           }}
         >
           {open ? 'Schließen' : modell ? 'Ändern' : 'Wählen'}
@@ -376,7 +376,7 @@ function StuecklistenAnzeige({
               <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{sl.reihen} Reihen × {sl.plattenProReihe} Felder</p>
             </div>
             <div className="text-right">
-              <span className="text-xl font-bold" style={{ color: '#c9a84c' }}>{sl.plattenGesamt}</span>
+              <span className="text-xl font-bold" style={{ color: '#800020' }}>{sl.plattenGesamt}</span>
               <span className="text-xs ml-1" style={{ color: '#5a5a5a' }}>Stück</span>
             </div>
           </div>
@@ -489,22 +489,22 @@ export default function ZaunPlaner({ data, update }: Props) {
               onClick={() => update({ betonzaun: { ...bz, pfeiler: p.value } })}
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all"
               style={{
-                background: bz.pfeiler === p.value ? 'rgba(201,168,76,0.08)' : '#1a1a1a',
-                border: bz.pfeiler === p.value ? '1px solid rgba(201,168,76,0.35)' : '1px solid #2a2a2a',
+                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#1a1a1a',
+                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #2a2a2a',
               }}
             >
               <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
                 style={{
-                  borderColor: bz.pfeiler === p.value ? '#c9a84c' : '#3a3a3a',
-                  background: bz.pfeiler === p.value ? '#c9a84c' : 'transparent',
+                  borderColor: bz.pfeiler === p.value ? '#800020' : '#3a3a3a',
+                  background: bz.pfeiler === p.value ? '#800020' : 'transparent',
                 }}
               >
                 {bz.pfeiler === p.value && (
-                  <span style={{ fontSize: '10px', color: '#1a1a1a', fontWeight: 700 }}>✓</span>
+                  <span style={{ fontSize: '10px', color: '#ffffff', fontWeight: 700 }}>✓</span>
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium" style={{ color: bz.pfeiler === p.value ? '#c9a84c' : '#c0c0c0' }}>
+                <p className="text-sm font-medium" style={{ color: bz.pfeiler === p.value ? '#800020' : '#c0c0c0' }}>
                   {p.label}
                 </p>
                 <p className="text-xs" style={{ color: '#4a4a4a' }}>{p.beschreibung}</p>

@@ -151,7 +151,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
 
         {/* Header */}
         <div className="mb-6">
-          <p className="text-xs uppercase tracking-[0.18em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.18em] mb-1" style={{ color: '#800020' }}>
             Digitale Unterschrift
           </p>
           <h2 className="text-xl font-bold mb-4" style={{ color: '#e8e8e8' }}>
@@ -164,7 +164,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
           >
             <div className="flex items-center justify-between text-xs">
               <span style={{ color: '#5a5a5a' }}>Angebots-Nr.</span>
-              <span className="font-mono font-semibold" style={{ color: '#c9a84c' }}>{angebotId}</span>
+              <span className="font-mono font-semibold" style={{ color: '#800020' }}>{angebotId}</span>
             </div>
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-xs leading-snug" style={{ color: '#9a9a9a' }}>{leistung}</span>
@@ -247,10 +247,10 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             style={{
               background: signed
                 ? 'linear-gradient(135deg, #3a7a3a, #5bc97a)'
-                : 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-              color: '#1a1a1a',
+                : 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+              color: '#ffffff',
               letterSpacing: '0.08em',
-              boxShadow: !isEmpty && !signed ? '0 4px 16px rgba(201,168,76,0.3)' : 'none',
+              boxShadow: !isEmpty && !signed ? '0 4px 16px rgba(128,0,32,0.3)' : 'none',
             }}
           >
             {signed ? '✓ Angenommen' : 'Verbindlich unterschreiben'}

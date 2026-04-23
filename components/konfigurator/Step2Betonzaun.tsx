@@ -199,9 +199,9 @@ function StickyFarbVorschau({ data }: { data: FormData }) {
       {bz.hoehe && (
         <span style={{
           flexShrink: 0, fontSize: '11px', fontWeight: 600,
-          color: '#c9a84c',
-          background: 'rgba(201,168,76,0.08)',
-          border: '1px solid rgba(201,168,76,0.18)',
+          color: '#800020',
+          background: 'rgba(128,0,32,0.08)',
+          border: '1px solid rgba(128,0,32,0.18)',
           borderRadius: '6px',
           padding: '3px 8px',
         }}>
@@ -268,7 +268,7 @@ function FarbPicker({
             borderRadius: '6px',
             position: 'relative',
             background: key === 'individuell'
-              ? 'conic-gradient(#c9a84c, #e8c870, #b87840, #d4a850, #c9a84c)'
+              ? 'conic-gradient(#800020, #e8c870, #b87840, #d4a850, #800020)'
               : (hex || '#1e1e1e'),
             border: isSelected
               ? '2px solid #ffffff'
@@ -276,7 +276,7 @@ function FarbPicker({
               ? '2px solid rgba(255,255,255,0.35)'
               : '2px solid rgba(255,255,255,0.07)',
             boxShadow: isSelected
-              ? '0 0 0 2px rgba(201,168,76,0.55), 0 2px 8px rgba(0,0,0,0.5)'
+              ? '0 0 0 2px rgba(128,0,32,0.55), 0 2px 8px rgba(0,0,0,0.5)'
               : isHovered
               ? '0 2px 8px rgba(0,0,0,0.4)'
               : '0 1px 3px rgba(0,0,0,0.3)',
@@ -313,7 +313,7 @@ function FarbPicker({
         <span style={{
           fontSize: '9px', lineHeight: 1.2,
           textAlign: 'center', width: '100%',
-          color: isSelected ? '#c9a84c' : '#4a4a4a',
+          color: isSelected ? '#800020' : '#4a4a4a',
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
           {tileLabel.replace(' (RAL 9010)', '').replace(' (RAL 7016)', '')}
@@ -381,17 +381,17 @@ function FarbPicker({
                 fontWeight: isActive ? 600 : 400,
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: isActive ? '#c9a84c'
-                  : hasSelection ? 'rgba(201,168,76,0.12)' : '#1e1e1e',
-                border: isActive ? '1px solid #c9a84c'
-                  : hasSelection ? '1px solid rgba(201,168,76,0.3)' : '1px solid #2a2a2a',
-                color: isActive ? '#1a1a1a' : hasSelection ? '#c9a84c' : '#666',
+                background: isActive ? '#800020'
+                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#1e1e1e',
+                border: isActive ? '1px solid #800020'
+                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #2a2a2a',
+                color: isActive ? '#ffffff' : hasSelection ? '#800020' : '#666',
                 transition: 'all 0.1s',
               }}
             >
               {label}
               {hasSelection && !isActive && (
-                <span style={{ marginLeft: '4px', fontSize: '7px', color: '#c9a84c' }}>●</span>
+                <span style={{ marginLeft: '4px', fontSize: '7px', color: '#800020' }}>●</span>
               )}
             </button>
           )
@@ -479,7 +479,7 @@ function FarbAuswahl({ data, update }: Props) {
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xs font-bold px-2 py-0.5 rounded"
-            style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.2)' }}>
+            style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.2)' }}>
             A
           </span>
           <FieldLabel>Farbe der Zaunfelder</FieldLabel>
@@ -504,7 +504,7 @@ function FarbAuswahl({ data, update }: Props) {
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xs font-bold px-2 py-0.5 rounded"
-            style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.2)' }}>
+            style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.2)' }}>
             B
           </span>
           <FieldLabel>Pfeiler &amp; Abdeckkappen</FieldLabel>
@@ -516,9 +516,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(false)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: !kontrastfarbe ? 'rgba(201,168,76,0.10)' : '#1a1a1a',
-              border: !kontrastfarbe ? '2px solid #c9a84c' : '1px solid #252525',
-              color: !kontrastfarbe ? '#c9a84c' : '#5a5a5a',
+              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#1a1a1a',
+              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #252525',
+              color: !kontrastfarbe ? '#800020' : '#5a5a5a',
             }}
           >
             Gleich wie Zaunfelder
@@ -527,9 +527,9 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(true)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: kontrastfarbe ? 'rgba(201,168,76,0.10)' : '#1a1a1a',
-              border: kontrastfarbe ? '2px solid #c9a84c' : '1px solid #252525',
-              color: kontrastfarbe ? '#c9a84c' : '#5a5a5a',
+              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#1a1a1a',
+              border: kontrastfarbe ? '2px solid #800020' : '1px solid #252525',
+              color: kontrastfarbe ? '#800020' : '#5a5a5a',
             }}
           >
             Kontrastfarbe wählen
@@ -613,7 +613,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
       {/* Schritt-Header */}
       <div>
         <p className="text-xs uppercase tracking-widest mb-1"
-          style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+          style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 2 · Betonzaun
         </p>
         <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Konfiguration</h2>
@@ -688,7 +688,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
             style={{ background: '#161616', border: '1px solid #242424' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider mb-1"
-              style={{ color: '#c9a84c', letterSpacing: '0.14em' }}>
+              style={{ color: '#800020', letterSpacing: '0.14em' }}>
               Farbgestaltung
             </p>
             <p className="text-xs mb-5" style={{ color: '#4a4a4a' }}>

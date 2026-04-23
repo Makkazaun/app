@@ -22,7 +22,7 @@ const STATUS_LABEL: Record<JtlAngebot['status'], string> = {
   abgelehnt:  'Abgelehnt',
 }
 const STATUS_COLOR: Record<JtlAngebot['status'], string> = {
-  offen:      '#c9a84c',
+  offen:      '#800020',
   angenommen: '#5bc97a',
   storniert:  '#5a5a5a',
   abgelehnt:  '#c07070',
@@ -133,9 +133,9 @@ function AngebotAktionen({
         onClick={() => onAnnehmen(angebot)}
         className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:opacity-90 active:scale-95"
         style={{
-          background: 'linear-gradient(135deg, #7a5c10, #c9a84c)',
-          color:      '#1a1a1a',
-          boxShadow:  '0 1px 8px rgba(201,168,76,0.25)',
+          background: 'linear-gradient(135deg, #5a0016, #800020)',
+          color:      '#ffffff',
+          boxShadow:  '0 1px 8px rgba(128,0,32,0.25)',
           whiteSpace: 'nowrap',
           minHeight:  '34px',
         }}
@@ -171,7 +171,7 @@ export default function AngebotePage() {
       : angebote.filter((a) => a.status === activeFilter)
 
   const filterCards: { label: string; count: number; color: string; sub: string; key: FilterKey }[] = [
-    { label: 'Offen',                 count: offen,      color: '#c9a84c', sub: 'Warten auf Unterschrift', key: 'offen' },
+    { label: 'Offen',                 count: offen,      color: '#800020', sub: 'Warten auf Unterschrift', key: 'offen' },
     { label: 'Angenommen',            count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv',          key: 'angenommen' },
     { label: 'Abgelehnt / Storniert', count: inaktiv,    color: '#5a5a5a', sub: 'Nicht mehr gültig',       key: 'inaktiv' },
   ]
@@ -180,7 +180,7 @@ export default function AngebotePage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Angebote
           </p>
           <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Angebote</h1>
@@ -246,7 +246,7 @@ export default function AngebotePage() {
             <div className="flex items-center gap-2">
               <p className="text-xs" style={{ color: '#5a5a5a' }}>
                 Filter aktiv:
-                <span className="ml-1.5 font-medium" style={{ color: '#c9a84c' }}>
+                <span className="ml-1.5 font-medium" style={{ color: '#800020' }}>
                   {filterCards.find(c => c.key === activeFilter)?.label}
                 </span>
               </p>
@@ -276,7 +276,7 @@ export default function AngebotePage() {
                 type="button"
                 onClick={() => setActiveFilter(null)}
                 className="text-sm transition-opacity hover:opacity-70"
-                style={{ color: '#c9a84c', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+                style={{ color: '#800020', textDecoration: 'underline', textUnderlineOffset: '2px' }}
               >
                 Alle anzeigen
               </button>
@@ -335,7 +335,7 @@ export default function AngebotePage() {
                   style={{ gridTemplateColumns: '130px 1fr 120px 110px 160px 60px' }}
                 >
                   <div>
-                    <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                    <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                       {a.belegnummer}
                     </p>
                     <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
@@ -371,7 +371,7 @@ export default function AngebotePage() {
                   {/* Kopfzeile: Nummer + Status */}
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                      <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                         {a.belegnummer}
                       </p>
                       <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>

@@ -113,9 +113,9 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                 onClick={onClose}
                 className="flex items-center gap-3 px-3 rounded-lg transition-all duration-150 text-sm"
                 style={{
-                  background:  isActive ? 'rgba(201,168,76,0.10)' : 'transparent',
-                  color:       isActive ? '#c9a84c' : '#7a7a7a',
-                  borderLeft:  isActive ? '2px solid #c9a84c' : '2px solid transparent',
+                  background:  isActive ? 'rgba(128,0,32,0.10)' : 'transparent',
+                  color:       isActive ? '#800020' : '#7a7a7a',
+                  borderLeft:  isActive ? '2px solid #800020' : '2px solid transparent',
                   fontWeight:  isActive ? '600' : '400',
                   minHeight:   '44px',
                   display:     'flex',
@@ -125,7 +125,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                 <Icon
                   size={16}
                   strokeWidth={isActive ? 2.2 : 1.8}
-                  style={{ flexShrink: 0, color: isActive ? '#c9a84c' : '#5a5a5a' }}
+                  style={{ flexShrink: 0, color: isActive ? '#800020' : '#5a5a5a' }}
                 />
                 {label}
               </Link>
@@ -142,7 +142,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #c9a84c, #8a6914)', color: '#1a1a1a' }}
+                style={{ background: 'linear-gradient(135deg, #5a0016, #800020)', color: '#ffffff' }}
               >
                 {initials}
               </div>

@@ -61,7 +61,7 @@ export function generateEmailHtml({ title, content, preheader = '' }: WrapperPar
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
     img { -ms-interpolation-mode: bicubic; border: 0; display: block; }
-    a { color: #c9a84c; }
+    a { color: #800020; }
   </style>
 </head>
 <body style="margin:0;padding:0;background:#0d0d0d;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
@@ -86,8 +86,8 @@ export function generateEmailHtml({ title, content, preheader = '' }: WrapperPar
     <!-- ── Logo-Header ─────────────────────────────────────────────────── -->
     <tr>
       <td align="center"
-        style="background:linear-gradient(160deg,#1c1208 0%,#2a1c0a 50%,#1c1208 100%);
-               padding:28px 36px 24px;border-bottom:2px solid #c9a84c;">
+        style="background:linear-gradient(160deg,#1c0808 0%,#2a0810 50%,#1c0808 100%);
+               padding:28px 36px 24px;border-bottom:2px solid #800020;">
         <img
           src="cid:${LOGO_CID}"
           alt="TR Edelzaun &amp; Tor GmbH"
@@ -122,12 +122,12 @@ export function generateEmailHtml({ title, content, preheader = '' }: WrapperPar
               <p style="margin:0 0 10px;font-size:12px;color:#5a5a5a;text-align:center;
                          line-height:1.6;">
                 <a href="mailto:info@edelzaun-tor.de"
-                  style="color:#c9a84c;text-decoration:none;font-weight:600;">
+                  style="color:#800020;text-decoration:none;font-weight:600;">
                   info@edelzaun-tor.de
                 </a>
                 &nbsp;&nbsp;·&nbsp;&nbsp;
                 <a href="tel:034967005181"
-                  style="color:#c9a84c;text-decoration:none;font-weight:600;">
+                  style="color:#800020;text-decoration:none;font-weight:600;">
                   03496&nbsp;700&nbsp;5181
                 </a>
                 &nbsp;&nbsp;·&nbsp;&nbsp;
@@ -212,11 +212,11 @@ export function buildPasswordResetEmail({
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
             style="margin-bottom:28px;">
             <tr>
-              <td style="background:#1c1810;border:1px solid #3a2e10;border-radius:10px;
+              <td style="background:#1c0810;border:1px solid #3a1020;border-radius:10px;
                          padding:12px 16px;">
                 <p style="margin:0;font-size:12px;color:#8a7a4a;line-height:1.6;">
                   ⏱&nbsp; Der Link ist
-                  <strong style="color:#c9a84c;">30 Minuten gültig</strong>
+                  <strong style="color:#800020;">30 Minuten gültig</strong>
                   und kann nur einmal verwendet werden.
                 </p>
               </td>
@@ -228,11 +228,11 @@ export function buildPasswordResetEmail({
             style="margin:0 auto 28px;">
             <tr>
               <td style="border-radius:10px;
-                         background:linear-gradient(135deg,#6a4a0a,#c9a84c,#e0c068,#c9a84c,#6a4a0a);
-                         box-shadow:0 4px 20px rgba(201,168,76,0.3);">
+                         background:linear-gradient(135deg,#400010,#800020,#a0002a,#800020,#400010);
+                         box-shadow:0 4px 20px rgba(128,0,32,0.3);">
                 <a href="${resetLink}"
                   style="display:inline-block;padding:14px 38px;font-size:14px;
-                         font-weight:700;color:#1a1a1a;text-decoration:none;
+                         font-weight:700;color:#ffffff;text-decoration:none;
                          letter-spacing:0.07em;border-radius:10px;white-space:nowrap;">
                   Neues Passwort vergeben
                 </a>
@@ -250,7 +250,7 @@ export function buildPasswordResetEmail({
               <td style="background:#141414;border:1px solid #2a2a2a;border-radius:8px;
                          padding:10px 14px;word-break:break-all;">
                 <a href="${resetLink}"
-                  style="font-size:11px;color:#c9a84c;text-decoration:none;
+                  style="font-size:11px;color:#800020;text-decoration:none;
                          line-height:1.5;">${resetLink}</a>
               </td>
             </tr>
@@ -328,7 +328,7 @@ export function buildTestEmail({
               <td style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;
                          padding:16px 20px;">
                 <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.14em;
-                           text-transform:uppercase;color:#c9a84c;">Konfiguration</p>
+                           text-transform:uppercase;color:#800020;">Konfiguration</p>
                 ${[
                   ['HOST', host],
                   ['PORT', port],

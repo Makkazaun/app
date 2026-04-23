@@ -54,10 +54,10 @@ const statusStyles: Record<Phase['status'], { dot: string; line: string; label: 
     labelColor: '#5bc97a',
   },
   active: {
-    dot: 'linear-gradient(135deg, #8a6914, #c9a84c)',
+    dot: 'linear-gradient(135deg, #5a0016, #800020)',
     line: '#4a3a1a',
     label: 'Aktuell',
-    labelColor: '#c9a84c',
+    labelColor: '#800020',
   },
   pending: {
     dot: '#2a2a2a',
@@ -87,14 +87,14 @@ export default function AuftragSection() {
           <span className="text-xs font-medium" style={{ color: '#7a7a7a' }}>
             Gesamtfortschritt · Auftrag ANG-2025-0028
           </span>
-          <span className="text-sm font-bold" style={{ color: '#c9a84c' }}>{progress}%</span>
+          <span className="text-sm font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
         <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#2d2d2d' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #8a6914, #c9a84c, #e0c068)',
+              background: 'linear-gradient(90deg, #5a0016, #800020, #a0002a)',
             }}
           />
         </div>

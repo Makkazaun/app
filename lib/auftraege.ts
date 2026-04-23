@@ -24,7 +24,7 @@ export const AUFTRAG_STATUS_LABELS: Record<AuftragStatus, string> = {
   abgeschlossen:   'Abgeschlossen',
 }
 export const AUFTRAG_STATUS_COLORS: Record<AuftragStatus, string> = {
-  bestaetigt:      '#c9a84c',
+  bestaetigt:      '#800020',
   in_vorbereitung: '#5b9bd5',
   in_montage:      '#b07bdc',
   abgeschlossen:   '#5bc97a',

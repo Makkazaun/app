@@ -45,10 +45,10 @@ export default function NavButtons({
         style={{
           background: isLast
             ? 'linear-gradient(135deg, #5a7a3a, #7ab85a)'
-            : 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-          color: '#1a1a1a',
+            : 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+          color: '#ffffff',
           letterSpacing: '0.1em',
-          boxShadow: nextDisabled ? 'none' : '0 4px 16px rgba(201,168,76,0.25)',
+          boxShadow: nextDisabled ? 'none' : '0 4px 16px rgba(128,0,32,0.3)',
         }}
       >
         {loading ? '…' : isLast ? '✓ Anfrage senden' : nextLabel + ' →'}

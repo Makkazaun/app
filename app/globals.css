@@ -8,8 +8,8 @@
   --silber: #b8b8b8;
   --silber-light: #d4d4d4;
   --silber-bright: #e8e8e8;
-  --gold-accent: #c9a84c;
-  --gold-light: #e0c068;
+  --gold-accent: #800020;
+  --gold-light: #a0002a;
   --background: var(--anthrazit-dark);
   --foreground: var(--silber-bright);
 }
@@ -57,7 +57,7 @@ body {
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #8a6914 0%, #c9a84c 30%, #e0c068 50%, #c9a84c 70%, #8a6914 100%);
+  background: linear-gradient(135deg, #5a0016 0%, #800020 30%, #a0002a 50%, #800020 70%, #5a0016 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

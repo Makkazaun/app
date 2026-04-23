@@ -48,7 +48,7 @@ export default function RechnungenPage() {
       {/* Seitentitel */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Rechnungen
           </p>
           <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Rechnungen</h1>
@@ -167,7 +167,7 @@ export default function RechnungenPage() {
                 className="hidden md:grid items-center px-5 py-3.5 gap-3"
                 style={{ gridTemplateColumns: '140px 90px 1fr 130px 110px 100px' }}
               >
-                <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                   {r.belegnummer}
                 </p>
                 <p className="text-xs" style={{ color: '#5a5a5a' }}>{formatDate(r.datum)}</p>
@@ -191,7 +191,7 @@ export default function RechnungenPage() {
               <div className="md:hidden px-4 py-4 space-y-2.5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                    <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                       {r.belegnummer}
                     </p>
                     <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(r.datum)}</p>

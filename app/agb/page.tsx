@@ -20,7 +20,7 @@ export default function AgbPage() {
         </div>
 
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#c9a84c', letterSpacing: '0.2em' }}>
+          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
           <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>
@@ -146,7 +146,7 @@ function Para({ num, title, children }: { num: string; title: string; children: 
   return (
     <div>
       <div className="flex items-baseline gap-3 mb-3">
-        <span className="text-xs font-bold flex-shrink-0" style={{ color: '#c9a84c' }}>{num}</span>
+        <span className="text-xs font-bold flex-shrink-0" style={{ color: '#800020' }}>{num}</span>
         <h2 className="text-sm font-semibold" style={{ color: '#d4d4d4' }}>{title}</h2>
       </div>
       <p className="text-sm leading-relaxed pl-8" style={{ color: '#8a8a8a' }}>{children}</p>

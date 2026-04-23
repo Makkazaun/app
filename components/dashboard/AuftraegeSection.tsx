@@ -86,7 +86,7 @@ function mapJtlAuftrag(a: JtlAuftrag): AuftragRecord {
 function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
   const phaseColors = {
     done:    { dot: 'linear-gradient(135deg, #3a7a4a, #5bc97a)', text: '#5bc97a', bg: '#1a1e1a', border: '#2a3a2a' },
-    active:  { dot: 'linear-gradient(135deg, #8a6914, #c9a84c)', text: '#c9a84c', bg: '#1e1a0a', border: '#3d3210' },
+    active:  { dot: 'linear-gradient(135deg, #5a0016, #800020)', text: '#800020', bg: '#1e1a0a', border: '#3d3210' },
     pending: { dot: '#2a2a2a',                                   text: '#4a4a4a', bg: '#1a1a1a', border: '#272727' },
   }
   const labels = { done: 'Erledigt', active: 'Aktuell', pending: 'Ausstehend' }
@@ -100,12 +100,12 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
       <div className="mb-5">
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-xs" style={{ color: '#5a5a5a' }}>Gesamtfortschritt</span>
-          <span className="text-xs font-bold" style={{ color: '#c9a84c' }}>{progress}%</span>
+          <span className="text-xs font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
         <div className="w-full h-1 rounded-full" style={{ background: '#2d2d2d' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
-            style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #8a6914, #c9a84c)' }}
+            style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #5a0016, #800020)' }}
           />
         </div>
       </div>
@@ -123,7 +123,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
                 style={{
                   background: s.dot,
                   border: phase.status === 'pending' ? '1px solid #3a3a3a' : 'none',
-                  boxShadow: phase.status === 'active' ? '0 0 8px rgba(201,168,76,0.4)' : 'none',
+                  boxShadow: phase.status === 'active' ? '0 0 8px rgba(128,0,32,0.4)' : 'none',
                 }}
               >
                 {phase.status === 'done' && (
@@ -215,7 +215,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
       >
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="font-mono text-sm font-bold" style={{ color: '#c9a84c' }}>
+            <span className="font-mono text-sm font-bold" style={{ color: '#800020' }}>
               {auftrag.id}
             </span>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-medium"
@@ -442,7 +442,7 @@ export default function AuftraegeSection() {
       {/* Übersichts-Kacheln */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         {[
-          { label: 'Aktiv',         value: String(aktiv),   color: '#c9a84c' },
+          { label: 'Aktiv',         value: String(aktiv),   color: '#800020' },
           { label: 'Abgeschlossen', value: String(fertig),  color: '#5bc97a' },
           { label: 'Gesamtvolumen', value: gesamtVol,       color: '#5b9bd5' },
         ].map((kachel) => (
@@ -499,7 +499,7 @@ export default function AuftraegeSection() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono text-sm font-bold" style={{ color: '#c9a84c' }}>
+                        <span className="font-mono text-sm font-bold" style={{ color: '#800020' }}>
                           {auftrag.id}
                         </span>
                         <span className="px-2 py-0.5 rounded-full text-xs"

@@ -44,7 +44,7 @@ function ZahlungsBadge({ a }: { a: JtlAuftrag }) {
     return (
       <div className="space-y-1">
         <span className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium"
-          style={{ background: 'rgba(201,168,76,0.12)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.25)' }}>
+          style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.25)' }}>
           Anzahlung erhalten
         </span>
         <p className="text-[10px] pl-0.5" style={{ color: '#5a5a5a' }}>
@@ -117,7 +117,7 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
               style={{ gridTemplateColumns: '130px 90px 1fr 150px 190px 90px' }}
             >
               <div>
-                <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                   {a.belegnummer}
                 </p>
                 {a.montagetermin && (
@@ -148,7 +148,7 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
             <div className="sm:hidden px-4 py-4 space-y-2.5">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="font-mono text-xs font-semibold" style={{ color: '#c9a84c' }}>
+                  <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                     {a.belegnummer}
                   </p>
                   <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
@@ -201,7 +201,7 @@ export default function AuftraegePage() {
       {/* Seitentitel */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Aufträge
           </p>
           <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Aufträge</h1>
@@ -249,7 +249,7 @@ export default function AuftraegePage() {
                   onClick={() => setActiveTab(key)}
                   className="relative flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors"
                   style={{
-                    color:      active ? '#c9a84c' : '#5a5a5a',
+                    color:      active ? '#800020' : '#5a5a5a',
                     background: 'transparent',
                     border:     'none',
                     cursor:     'pointer',
@@ -260,8 +260,8 @@ export default function AuftraegePage() {
                     <span
                       className="inline-flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 py-0.5 min-w-[18px]"
                       style={{
-                        background: active ? 'rgba(201,168,76,0.18)' : 'rgba(90,90,90,0.18)',
-                        color:      active ? '#c9a84c' : '#5a5a5a',
+                        background: active ? 'rgba(128,0,32,0.18)' : 'rgba(90,90,90,0.18)',
+                        color:      active ? '#800020' : '#5a5a5a',
                       }}
                     >
                       {count}
@@ -270,7 +270,7 @@ export default function AuftraegePage() {
                   {active && (
                     <span
                       className="absolute bottom-0 left-0 right-0 h-0.5 rounded-t"
-                      style={{ background: '#c9a84c' }}
+                      style={{ background: '#800020' }}
                     />
                   )}
                 </button>

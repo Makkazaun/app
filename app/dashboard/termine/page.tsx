@@ -36,7 +36,7 @@ export default function TerminePage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Termine
           </p>
           <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Montagetermine</h1>
@@ -118,7 +118,7 @@ export default function TerminePage() {
             const istVergangen = new Date(auftrag.montagetermin!).getTime() < now
             const istNaechster = naechster?.kAuftrag === auftrag.kAuftrag
 
-            const statusColor = istVergangen ? '#5bc97a' : istNaechster ? '#c9a84c' : '#5b9bd5'
+            const statusColor = istVergangen ? '#5bc97a' : istNaechster ? '#800020' : '#5b9bd5'
             const statusLabel = istVergangen ? 'Durchgeführt' : istNaechster ? 'Nächster Termin' : 'Geplant'
 
             // Lieferadresse für Montageadresse
@@ -158,7 +158,7 @@ export default function TerminePage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="font-mono text-xs" style={{ color: '#c9a84c' }}>
+                      <span className="font-mono text-xs" style={{ color: '#800020' }}>
                         {auftrag.belegnummer}
                       </span>
                       <span

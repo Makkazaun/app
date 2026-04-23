@@ -120,8 +120,8 @@ function ResetPasswordForm() {
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px),
-                            repeating-linear-gradient(-45deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 60px)`,
+          backgroundImage: `repeating-linear-gradient(45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px),
+                            repeating-linear-gradient(-45deg, #800020 0px, #800020 1px, transparent 1px, transparent 60px)`,
         }}
       />
 
@@ -149,7 +149,7 @@ function ResetPasswordForm() {
             <div className="text-center py-8 space-y-3">
               <div
                 className="w-10 h-10 border-2 rounded-full animate-spin mx-auto"
-                style={{ borderColor: '#c9a84c', borderTopColor: 'transparent' }}
+                style={{ borderColor: '#800020', borderTopColor: 'transparent' }}
               />
               <p className="text-sm" style={{ color: '#7a7a7a' }}>Link wird geprüft …</p>
             </div>
@@ -178,9 +178,9 @@ function ResetPasswordForm() {
                 onClick={() => router.push('/login')}
                 className="w-full py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
-                  color: '#1a1a1a',
-                  boxShadow: '0 4px 14px rgba(201,168,76,0.22)',
+                  background: 'linear-gradient(135deg, #400010, #800020)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 14px rgba(128,0,32,0.22)',
                 }}
               >
                 Neuen Link anfordern
@@ -195,7 +195,7 @@ function ResetPasswordForm() {
                 Neues Passwort vergeben
               </h2>
               <p className="text-xs mb-1" style={{ color: '#7a7a7a' }}>
-                Konto: <span style={{ color: '#c9a84c' }}>{email}</span>
+                Konto: <span style={{ color: '#800020' }}>{email}</span>
               </p>
               <p className="text-xs mb-6" style={{ color: '#5a5a5a' }}>
                 Mindestens 8 Zeichen. Groß-/Kleinbuchstaben, Zahlen und Sonderzeichen empfohlen.
@@ -238,9 +238,9 @@ function ResetPasswordForm() {
                   className="w-full py-3 rounded-lg font-bold text-sm uppercase tracking-wider
                              transition-all duration-200 disabled:opacity-50 active:scale-[0.98]"
                   style={{
-                    background: 'linear-gradient(135deg, #8a6914, #c9a84c, #e0c068, #c9a84c, #8a6914)',
-                    color: '#1a1a1a',
-                    boxShadow: '0 4px 15px rgba(201,168,76,0.25)',
+                    background: 'linear-gradient(135deg, #5a0016, #800020, #a0002a, #800020, #5a0016)',
+                    color: '#ffffff',
+                    boxShadow: '0 4px 15px rgba(128,0,32,0.25)',
                     letterSpacing: '0.1em',
                   }}
                 >
@@ -334,13 +334,13 @@ function ResetPasswordForm() {
               <div
                 className="rounded-xl p-4 flex items-start gap-3"
                 style={{
-                  background: 'rgba(201,168,76,0.06)',
-                  border: '1px solid rgba(201,168,76,0.2)',
+                  background: 'rgba(128,0,32,0.06)',
+                  border: '1px solid rgba(128,0,32,0.2)',
                 }}
               >
                 <span className="text-lg flex-shrink-0">⚠</span>
                 <div>
-                  <p className="text-sm font-semibold mb-1" style={{ color: '#e0c068' }}>
+                  <p className="text-sm font-semibold mb-1" style={{ color: '#a0002a' }}>
                     Passwort wurde gespeichert
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: '#7a6a3a' }}>
@@ -354,9 +354,9 @@ function ResetPasswordForm() {
                 onClick={() => router.push('/login')}
                 className="w-full py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #6a4a0a, #c9a84c)',
-                  color: '#1a1a1a',
-                  boxShadow: '0 4px 14px rgba(201,168,76,0.22)',
+                  background: 'linear-gradient(135deg, #400010, #800020)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 14px rgba(128,0,32,0.22)',
                 }}
               >
                 Zur Anmeldung
@@ -409,10 +409,10 @@ function PasswordField({
           className="w-full px-4 py-3 pr-11 rounded-lg text-sm transition-all duration-150"
           style={{
             background: '#1a1a1a',
-            border: `1px solid ${focused ? '#c9a84c' : '#3d3d3d'}`,
+            border: `1px solid ${focused ? '#800020' : '#3d3d3d'}`,
             color: '#e8e8e8',
             outline: 'none',
-            boxShadow: focused ? '0 0 0 3px rgba(201,168,76,0.08)' : 'none',
+            boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',
           }}
         />
         <button

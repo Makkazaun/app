@@ -599,7 +599,7 @@ _LABEL['gleich']      = 'Gleich wie Zaunfelder'
 /** Gibt den Hex-Wert zurück; '' wenn keine Beschichtung (betongrau/leer). */
 export function getFarbHex(key: string): string {
   if (!key || key === 'betongrau' || key === 'gleich') return ''
-  if (key === 'individuell') return '#c9a84c'
+  if (key === 'individuell') return '#800020'
   return _HEX[key] ?? ''
 }
 
