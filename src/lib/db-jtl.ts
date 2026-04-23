@@ -14,9 +14,8 @@
  *
  *   Verkauf.tAuftrag            kAuftrag, kKunde, cAuftragsNr,
  *                               nType (0=Angebot, 1=Auftrag),
- *                               nAuftragStatus, nStorno,
- *                               dErstellt, dVoraussichtlichesLieferdatum,
- *                               cAnmerkung (Freitext – hier schreiben wir die Unterschrift rein)
+ *                               nAuftragStatus, nStorno, nFarbe,
+ *                               dErstellt, dVoraussichtlichesLieferdatum
  *
  *   Verkauf.tAuftragEckdaten    kAuftrag, fWertNetto, fWertBrutto
  *
@@ -27,7 +26,8 @@
  *                               cName, cStrasse, cPLZ, cOrt, cLand, cTel, cMobil, cMail
  *
  * ── Schreibzugriff ───────────────────────────────────────────────────────────
- *   Einzige Schreib-Op: markAngebotAngenommen() → UPDATE tAuftrag SET cAnmerkung
+ *   markAngebotAngenommen() → UPDATE tAuftrag SET nAuftragStatus, nFarbe
+ *   markAngebotAbgelehnt()  → UPDATE tAngebot SET cStatus, nStatus
  *   Alle anderen Ops sind READ-ONLY.
  */
 
@@ -899,38 +899,32 @@ export async function upsertKundeLieferadresse(
 /**
  * Markiert ein Angebot als "digital unterschrieben" durch den Kunden.
  *
- * Setzt nAuftragStatus=1 (→ mapAngebotStatus: 'angenommen'), schreibt Zeitstempel
- * in cAnmerkung und färbt den Vorgang grün in der Wawi-Liste (nFarbe=65280).
- * nFarbe-Fallback: wenn die Spalte in dieser JTL-Version fehlt, Update ohne Farbe.
+ * Setzt nAuftragStatus=1 und nFarbe=grün in Verkauf.tAuftrag.
+ * nFarbe-Fallback: wenn die Spalte fehlt, Update nur mit nAuftragStatus.
  */
 export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
   const pool = await getPool()
-  const ts   = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
-  const note = `[App] Vom Kunden digital unterschrieben am ${ts}`
 
   try {
     await pool.request()
-      .input('kAuftrag',  sql.Int,           kAuftrag)
-      .input('anmerkung', sql.NVarChar(500), note)
-      .input('nFarbe',    sql.Int,           FARBE_GRUEN)
+      .input('kAuftrag', sql.Int, kAuftrag)
+      .input('nFarbe',   sql.Int, FARBE_GRUEN)
       .query(`
         UPDATE [Verkauf].[tAuftrag]
-        SET cAnmerkung     = @anmerkung,
-            nAuftragStatus = 1,
+        SET nAuftragStatus = 1,
             nFarbe         = @nFarbe
         WHERE kAuftrag = @kAuftrag
           AND nType    = 0
           AND ISNULL(nStorno, 0) = 0
       `)
   } catch (err) {
-    if (err instanceof Error && err.message.includes('nFarbe')) {
+    if (err instanceof Error && /nFarbe|Invalid column name/i.test(err.message)) {
       console.warn('[markAngebotAngenommen] nFarbe-Spalte nicht verfügbar – Update ohne Farbe')
       await pool.request()
-        .input('kAuftrag',  sql.Int,           kAuftrag)
-        .input('anmerkung', sql.NVarChar(500), note)
+        .input('kAuftrag', sql.Int, kAuftrag)
         .query(`
           UPDATE [Verkauf].[tAuftrag]
-          SET cAnmerkung = @anmerkung, nAuftragStatus = 1
+          SET nAuftragStatus = 1
           WHERE kAuftrag = @kAuftrag AND nType = 0 AND ISNULL(nStorno, 0) = 0
         `)
     } else {
@@ -946,16 +940,17 @@ export interface FarbeResult {
 }
 
 /**
- * Setzt in der Wawi Vorgangsfarbe ROT (nFarbe=1) + Statusfelder.
+ * Setzt den Status eines Angebots in der Wawi auf "abgelehnt".
  *
  * Identifikation über cAngebotNr mit LTRIM/RTRIM (verhindert Leerzeichen-Fehler).
- * Probiert vier Varianten durch – erst tAngebot (vollständig → reduziert),
- * dann tAuftrag als Fallback. Wirft nie (Wawi-Update ist rein visuell).
+ * tAngebot hat in dieser JTL-Version KEIN nFarbe – nur cStatus/nStatus werden gesetzt.
+ * Fallback auf tAuftrag (mit nFarbe) falls tAngebot nicht existiert.
+ * Wirft nie (Wawi-Update ist non-fatal).
  *
  * Jede Variante wird übersprungen wenn:
  *   • "Invalid column name"  → Spalte existiert nicht in dieser JTL-Version
  *   • "Invalid object name"  → Tabelle existiert nicht
- *   • rowsAffected = 0       → Tabelle OK, cAngebotNr nicht gefunden → nächster Versuch
+ *   • rowsAffected = 0       → Angebotsnummer nicht gefunden → nächster Versuch
  */
 export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
   console.log('Versuche Update für AngebotNr:', cAngebotNr)
@@ -973,37 +968,29 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
 
   const attempts = [
     {
-      label: 'tAngebot / nFarbe + cStatus + nStatus',
+      // tAngebot hat kein nFarbe – nur cStatus + nStatus
+      label: 'tAngebot / cStatus + nStatus',
       run:   () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
-        .input('nFarbe',  sql.Int,           FARBE_ROT)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
         .input('nStatus', sql.Int,           2)
         .query(`UPDATE [Verkauf].[tAngebot]
-                SET nFarbe=@nFarbe, cStatus=@cStatus, nStatus=@nStatus
+                SET cStatus=@cStatus, nStatus=@nStatus
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAngebot / nFarbe + cStatus',
+      // nStatus fehlt evtl. auch → nur cStatus
+      label: 'tAngebot / cStatus',
       run:   () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
-        .input('nFarbe',  sql.Int,           FARBE_ROT)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
         .query(`UPDATE [Verkauf].[tAngebot]
-                SET nFarbe=@nFarbe, cStatus=@cStatus
+                SET cStatus=@cStatus
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      label: 'tAngebot / nFarbe',
-      run:   () => pool.request()
-        .input('nr',     sql.NVarChar(100), cAngebotNr)
-        .input('nFarbe', sql.Int,           FARBE_ROT)
-        .query(`UPDATE [Verkauf].[tAngebot]
-                SET nFarbe=@nFarbe
-                WHERE ${WHERE_ANGEBOT}`),
-    },
-    {
-      label: 'tAuftrag / cAuftragsNr (Fallback)',
+      // Fallback: tAuftrag (speichert Angebote via nType=0) – hat nFarbe
+      label: 'tAuftrag / nFarbe (Fallback)',
       run:   () => pool.request()
         .input('nr',     sql.NVarChar(100), cAngebotNr)
         .input('nFarbe', sql.Int,           FARBE_ROT)
@@ -1029,7 +1016,6 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
     } catch (err) {
       const msg = (err as Error).message
       if (/Invalid column name|Invalid object name/i.test(msg)) {
-        // Schema passt nicht – nächste Variante probieren
         continue
       }
       const short = msg.split('\n')[0]

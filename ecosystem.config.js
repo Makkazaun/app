@@ -3,9 +3,6 @@
  *
  * Deployment-Pfad: /var/www/edelzaun-app
  *
- * Dieser Prozess startet den Next.js Standalone-Server (server.js).
- * Das Standalone-Build liegt in /var/www/edelzaun-app/ (inkl. minimaler node_modules).
- *
  * Befehle:
  *   pm2 start ecosystem.config.js    # erstmalig starten
  *   pm2 reload edelzaun-app          # zero-downtime Neustart
@@ -22,8 +19,8 @@ module.exports = {
     {
       name:        'edelzaun-app',
 
-      // Standalone-Modus: server.js statt "next start"
-      script:      'server.js',
+      script:      'node_modules/.bin/next',
+      args:        'start',
       cwd:         '/var/www/edelzaun-app',
 
       instances:   1,
@@ -35,7 +32,7 @@ module.exports = {
       env: {
         NODE_ENV:    'production',
         PORT:        3000,
-        HOSTNAME:    '0.0.0.0',     // Server lauscht auf allen Interfaces (Nginx-Proxy)
+        HOSTNAME:    '0.0.0.0',
         JTL_API_KEY: '234652158934783A5',
       },
 
