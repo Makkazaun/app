@@ -916,8 +916,9 @@ async function setVorgangsstatus(
         UPDATE [Verkauf].[tAuftragText]
         SET cVorgangsstatus = @status
         WHERE kAuftrag = (
-          SELECT kAngebot FROM [Verkauf].[tAngebot]
-          WHERE LTRIM(RTRIM(cAngebotNr)) = @angebotNr
+          SELECT TOP 1 kAuftrag
+          FROM [Verkauf].[tAuftrag]
+          WHERE LTRIM(RTRIM(cAuftragsNr)) = @angebotNr
         )
       `)
     const rows = result.rowsAffected?.[0] ?? 0
