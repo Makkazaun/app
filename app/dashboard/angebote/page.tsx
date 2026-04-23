@@ -150,16 +150,31 @@ function AngebotAktionen({
   )
 }
 
+type FilterKey = 'offen' | 'angenommen' | 'inaktiv' | null
+
 // ── Haupt-Seite ───────────────────────────────────────────────────────────────
 
 export default function AngebotePage() {
   const { data, loading, error, reload } = useJtlAngebote()
-  const [signAngebot, setSignAngebot] = useState<JtlAngebot | null>(null)
+  const [signAngebot,  setSignAngebot]  = useState<JtlAngebot | null>(null)
+  const [activeFilter, setActiveFilter] = useState<FilterKey>(null)
 
   const angebote   = data ?? []
   const offen      = angebote.filter((a) => a.status === 'offen').length
   const angenommen = angebote.filter((a) => a.status === 'angenommen').length
-  const storniert  = angebote.filter((a) => a.status === 'storniert' || a.status === 'abgelehnt').length
+  const inaktiv    = angebote.filter((a) => a.status === 'storniert' || a.status === 'abgelehnt').length
+
+  const displayed = activeFilter === null
+    ? angebote
+    : activeFilter === 'inaktiv'
+      ? angebote.filter((a) => a.status === 'storniert' || a.status === 'abgelehnt')
+      : angebote.filter((a) => a.status === activeFilter)
+
+  const filterCards: { label: string; count: number; color: string; sub: string; key: FilterKey }[] = [
+    { label: 'Offen',                 count: offen,      color: '#c9a84c', sub: 'Warten auf Unterschrift', key: 'offen' },
+    { label: 'Angenommen',            count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv',          key: 'angenommen' },
+    { label: 'Abgelehnt / Storniert', count: inaktiv,    color: '#5a5a5a', sub: 'Nicht mehr gültig',       key: 'inaktiv' },
+  ]
 
   return (
     <div className="space-y-6">
@@ -199,36 +214,87 @@ export default function AngebotePage() {
       )}
 
       {!loading && angebote.length > 0 && (
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: 'Offen',                    count: offen,      color: '#c9a84c', sub: 'Warten auf Unterschrift' },
-            { label: 'Angenommen',               count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv' },
-            { label: 'Abgelehnt / Storniert',    count: storniert,  color: '#5a5a5a', sub: 'Nicht mehr gültig' },
-          ].map((item) => (
-            <div key={item.label} className="rounded-xl p-4 text-center"
-              style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}>
-              <p className="text-2xl font-bold" style={{ color: item.color }}>{item.count}</p>
-              <p className="text-xs font-medium mt-0.5" style={{ color: '#8a8a8a' }}>{item.label}</p>
-              <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#3a3a3a' }}>{item.sub}</p>
+        <>
+          <div className="grid grid-cols-3 gap-3">
+            {filterCards.map((item) => {
+              const isActive = activeFilter === item.key
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setActiveFilter(isActive ? null : item.key)}
+                  className="rounded-xl p-4 text-center transition-all duration-150 hover:opacity-90"
+                  style={{
+                    background:  isActive ? `${item.color}14` : '#1e1e1e',
+                    border:      isActive ? `1px solid ${item.color}50` : '1px solid #2d2d2d',
+                    boxShadow:   isActive ? `0 0 0 1px ${item.color}20` : 'none',
+                    cursor:      'pointer',
+                  }}
+                >
+                  <p className="text-2xl font-bold" style={{ color: item.color }}>{item.count}</p>
+                  <p className="text-xs font-medium mt-0.5" style={{ color: isActive ? item.color : '#8a8a8a' }}>
+                    {item.label}
+                  </p>
+                  <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#3a3a3a' }}>{item.sub}</p>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Filter-Indikator */}
+          {activeFilter !== null && (
+            <div className="flex items-center gap-2">
+              <p className="text-xs" style={{ color: '#5a5a5a' }}>
+                Filter aktiv:
+                <span className="ml-1.5 font-medium" style={{ color: '#c9a84c' }}>
+                  {filterCards.find(c => c.key === activeFilter)?.label}
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={() => setActiveFilter(null)}
+                className="text-xs transition-opacity hover:opacity-70"
+                style={{ color: '#5a5a5a', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+              >
+                Alle anzeigen
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
 
-      {!loading && angebote.length === 0 && (
+      {!loading && displayed.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
           style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
           <div className="text-4xl mb-4">📋</div>
-          <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
-            Aktuell liegen keine Angebote vor
-          </p>
-          <p className="text-sm" style={{ color: '#3a3a3a' }}>
-            Sobald ein Angebot für Ihr Konto erstellt wird, erscheint es hier.
-          </p>
+          {activeFilter !== null ? (
+            <>
+              <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+                Keine Angebote in dieser Kategorie
+              </p>
+              <button
+                type="button"
+                onClick={() => setActiveFilter(null)}
+                className="text-sm transition-opacity hover:opacity-70"
+                style={{ color: '#c9a84c', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+              >
+                Alle anzeigen
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+                Aktuell liegen keine Angebote vor
+              </p>
+              <p className="text-sm" style={{ color: '#3a3a3a' }}>
+                Sobald ein Angebot für Ihr Konto erstellt wird, erscheint es hier.
+              </p>
+            </>
+          )}
         </div>
       )}
 
-      {!loading && angebote.length > 0 && (
+      {!loading && displayed.length > 0 && (
         <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
 
           {/* Tabellenkopf – nur Desktop */}
@@ -250,7 +316,7 @@ export default function AngebotePage() {
             <span className="text-right">PDF</span>
           </div>
 
-          {angebote.map((a, i) => {
+          {displayed.map((a, i) => {
             const color  = STATUS_COLOR[a.status]
             const label  = STATUS_LABEL[a.status]
             const dimmed = a.status === 'storniert' || a.status === 'abgelehnt'
@@ -259,7 +325,7 @@ export default function AngebotePage() {
                 key={a.kAuftrag}
                 style={{
                   background:   i % 2 === 0 ? '#191919' : '#161616',
-                  borderBottom: i < angebote.length - 1 ? '1px solid #222' : 'none',
+                  borderBottom: i < displayed.length - 1 ? '1px solid #222' : 'none',
                   opacity:      dimmed ? 0.55 : 1,
                 }}
               >

@@ -169,16 +169,9 @@ export interface JtlAuftrag {
   lieferadresse:    JtlAdresse | null
 }
 
-// ── Farb-Konstanten für nFarbe in Verkauf.tAuftrag ───────────────────────────
-// JTL-Wawi speichert Vorgangsfarben als Integer-Index (nicht COLORREF).
-// Typische Werte: 0=keine, 1=Rot, 2=Gelb, 3=Grün, 4=Blau.
-// Falls Ihre Wawi andere Werte nutzt, passen Sie die Konstanten an.
-//
-// Für Annahme (grün) wird FARBE_GRUEN aktuell als COLORREF 65280 gesetzt –
-// falls das in Ihrer JTL-Version nicht funktioniert, auf 3 ändern.
-
-const FARBE_GRUEN = 65280  // COLORREF RGB(0,255,0) – ggf. auf 3 (Index) ändern
-const FARBE_ROT   = 1      // JTL-Index 1 = Rot (Alternativwert: 5)
+// ── Farb-Konstanten (JTL-Index, nicht COLORREF) ───────────────────────────────
+const FARBE_ROT   = 1   // Rot
+const FARBE_GRUEN = 2   // Grün
 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
@@ -897,40 +890,70 @@ export async function upsertKundeLieferadresse(
 // ── Schreib-Operation (einzige) ───────────────────────────────────────────────
 
 /**
- * Markiert ein Angebot als "digital unterschrieben" durch den Kunden.
+ * Markiert ein Angebot als "angenommen" in der JTL-Wawi.
  *
- * Setzt nAuftragStatus=1 und nFarbe=grün in Verkauf.tAuftrag.
- * nFarbe-Fallback: wenn die Spalte fehlt, Update nur mit nAuftragStatus.
+ * Identifikation via cAngebotNr (= belegnummer aus der App, z.B. "AN20021").
+ * Versuchskette: tAngebot cStatus+nFarbe → tAngebot cStatus → tAuftrag nAuftragStatus+nFarbe → tAuftrag nAuftragStatus.
+ * Wirft nie – JTL-Update ist non-fatal für den Unterschriften-Flow.
  */
-export async function markAngebotAngenommen(kAuftrag: number): Promise<void> {
-  const pool = await getPool()
+export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
+  let pool: sql.ConnectionPool
+  try { pool = await getPool() }
+  catch (err) {
+    console.warn('[annehmen] DB-Verbindung fehlgeschlagen:', (err as Error).message.split('\n')[0])
+    return
+  }
 
-  try {
-    await pool.request()
-      .input('kAuftrag', sql.Int, kAuftrag)
-      .input('nFarbe',   sql.Int, FARBE_GRUEN)
-      .query(`
-        UPDATE [Verkauf].[tAuftrag]
-        SET nAuftragStatus = 1,
-            nFarbe         = @nFarbe
-        WHERE kAuftrag = @kAuftrag
-          AND nType    = 0
-          AND ISNULL(nStorno, 0) = 0
-      `)
-  } catch (err) {
-    if (err instanceof Error && /nFarbe|Invalid column name/i.test(err.message)) {
-      console.warn('[markAngebotAngenommen] nFarbe-Spalte nicht verfügbar – Update ohne Farbe')
-      await pool.request()
-        .input('kAuftrag', sql.Int, kAuftrag)
-        .query(`
-          UPDATE [Verkauf].[tAuftrag]
-          SET nAuftragStatus = 1
-          WHERE kAuftrag = @kAuftrag AND nType = 0 AND ISNULL(nStorno, 0) = 0
-        `)
-    } else {
-      throw err
+  const WHERE_ANGEBOT = `LTRIM(RTRIM(cAngebotNr))  = LTRIM(RTRIM(@nr))`
+  const WHERE_AUFTRAG = `LTRIM(RTRIM(cAuftragsNr)) = LTRIM(RTRIM(@nr)) AND nType = 0`
+
+  const attempts = [
+    {
+      label: 'tAngebot / cStatus + nFarbe',
+      run:   () => pool.request()
+        .input('nr',      sql.NVarChar(100), cAngebotNr)
+        .input('cStatus', sql.NVarChar(50),  'angenommen')
+        .input('nFarbe',  sql.Int,           FARBE_GRUEN)
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus, nFarbe=@nFarbe WHERE ${WHERE_ANGEBOT}`),
+    },
+    {
+      label: 'tAngebot / cStatus',
+      run:   () => pool.request()
+        .input('nr',      sql.NVarChar(100), cAngebotNr)
+        .input('cStatus', sql.NVarChar(50),  'angenommen')
+        .query(`UPDATE [Verkauf].[tAngebot] SET cStatus=@cStatus WHERE ${WHERE_ANGEBOT}`),
+    },
+    {
+      label: 'tAuftrag / nAuftragStatus + nFarbe',
+      run:   () => pool.request()
+        .input('nr',     sql.NVarChar(100), cAngebotNr)
+        .input('nFarbe', sql.Int,           FARBE_GRUEN)
+        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1, nFarbe=@nFarbe WHERE ${WHERE_AUFTRAG}`),
+    },
+    {
+      label: 'tAuftrag / nAuftragStatus',
+      run:   () => pool.request()
+        .input('nr', sql.NVarChar(100), cAngebotNr)
+        .query(`UPDATE [Verkauf].[tAuftrag] SET nAuftragStatus=1 WHERE ${WHERE_AUFTRAG}`),
+    },
+  ] as const
+
+  for (const attempt of attempts) {
+    try {
+      const result = await attempt.run()
+      const rows   = result.rowsAffected?.[0] ?? 0
+      if (rows > 0) {
+        console.log(`Update erfolgreich für ${cAngebotNr} (${attempt.label})`)
+        return
+      }
+    } catch (err) {
+      if (/Invalid column name|Invalid object name/i.test((err as Error).message)) continue
+      console.warn(`[annehmen] Fehler bei ${attempt.label}:`, (err as Error).message.split('\n')[0])
+      return
     }
   }
+
+  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
 }
 
 export interface FarbeResult {
@@ -940,17 +963,11 @@ export interface FarbeResult {
 }
 
 /**
- * Setzt den Status eines Angebots in der Wawi auf "abgelehnt".
+ * Setzt den Status eines Angebots in der Wawi auf "abgelehnt" (cStatus + nFarbe=1).
  *
- * Identifikation über cAngebotNr mit LTRIM/RTRIM (verhindert Leerzeichen-Fehler).
- * tAngebot hat in dieser JTL-Version KEIN nFarbe – nur cStatus/nStatus werden gesetzt.
- * Fallback auf tAuftrag (mit nFarbe) falls tAngebot nicht existiert.
- * Wirft nie (Wawi-Update ist non-fatal).
- *
- * Jede Variante wird übersprungen wenn:
- *   • "Invalid column name"  → Spalte existiert nicht in dieser JTL-Version
- *   • "Invalid object name"  → Tabelle existiert nicht
- *   • rowsAffected = 0       → Angebotsnummer nicht gefunden → nächster Versuch
+ * Identifikation über cAngebotNr mit LTRIM/RTRIM.
+ * Versuchskette: tAngebot vollständig → tAngebot ohne nFarbe → tAngebot nur cStatus → tAuftrag nFarbe.
+ * Wirft nie – JTL-Update ist non-fatal.
  */
 export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
   console.log('Versuche Update für AngebotNr:', cAngebotNr)
@@ -959,7 +976,7 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
   try { pool = await getPool() }
   catch (err) {
     const msg = (err as Error).message.split('\n')[0]
-    console.warn('[reject] DB-Verbindung fehlgeschlagen:', msg)
+    console.warn('[ablehnen] DB-Verbindung fehlgeschlagen:', msg)
     return { rowsAffected: 0, error: msg }
   }
 
@@ -968,18 +985,27 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
 
   const attempts = [
     {
-      // tAngebot hat kein nFarbe – nur cStatus + nStatus
-      label: 'tAngebot / cStatus + nStatus',
+      label: 'tAngebot / cStatus + nFarbe + nStatus',
       run:   () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
         .input('cStatus', sql.NVarChar(50),  'abgelehnt')
+        .input('nFarbe',  sql.Int,           FARBE_ROT)
         .input('nStatus', sql.Int,           2)
         .query(`UPDATE [Verkauf].[tAngebot]
-                SET cStatus=@cStatus, nStatus=@nStatus
+                SET cStatus=@cStatus, nFarbe=@nFarbe, nStatus=@nStatus
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      // nStatus fehlt evtl. auch → nur cStatus
+      label: 'tAngebot / cStatus + nFarbe',
+      run:   () => pool.request()
+        .input('nr',      sql.NVarChar(100), cAngebotNr)
+        .input('cStatus', sql.NVarChar(50),  'abgelehnt')
+        .input('nFarbe',  sql.Int,           FARBE_ROT)
+        .query(`UPDATE [Verkauf].[tAngebot]
+                SET cStatus=@cStatus, nFarbe=@nFarbe
+                WHERE ${WHERE_ANGEBOT}`),
+    },
+    {
       label: 'tAngebot / cStatus',
       run:   () => pool.request()
         .input('nr',      sql.NVarChar(100), cAngebotNr)
@@ -989,7 +1015,6 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
                 WHERE ${WHERE_ANGEBOT}`),
     },
     {
-      // Fallback: tAuftrag (speichert Angebote via nType=0) – hat nFarbe
       label: 'tAuftrag / nFarbe (Fallback)',
       run:   () => pool.request()
         .input('nr',     sql.NVarChar(100), cAngebotNr)
@@ -1002,30 +1027,23 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
 
   for (const attempt of attempts) {
     try {
-      console.log('SQL Query ausgeführt...')
       const result = await attempt.run()
       const rows   = result.rowsAffected?.[0] ?? 0
-      console.log('Ergebnis - Betroffene Zeilen in JTL-DB:', rows)
 
       if (rows > 0) {
-        console.log('[reject] Erfolg via', attempt.label)
+        console.log(`Update erfolgreich für ${cAngebotNr} (${attempt.label})`)
         return { rowsAffected: rows, path: attempt.label }
       }
-      console.log('WARNUNG: Angebot in JTL nicht gefunden!')
-
     } catch (err) {
-      const msg = (err as Error).message
-      if (/Invalid column name|Invalid object name/i.test(msg)) {
-        continue
-      }
-      const short = msg.split('\n')[0]
-      console.warn('[reject] Unbekannter Fehler bei', attempt.label + ':', short)
+      if (/Invalid column name|Invalid object name/i.test((err as Error).message)) continue
+      const short = (err as Error).message.split('\n')[0]
+      console.warn(`[ablehnen] Fehler bei ${attempt.label}:`, short)
       return { rowsAffected: 0, error: short }
     }
   }
 
-  console.log('WARNUNG: Angebot in JTL nicht gefunden!')
-  return { rowsAffected: 0, error: 'Alle Varianten: 0 betroffene Zeilen' }
+  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
+  return { rowsAffected: 0, error: `Angebot ${cAngebotNr} in Wawi nicht gefunden` }
 }
 
 // ── Kunden-Neuanlage ──────────────────────────────────────────────────────────

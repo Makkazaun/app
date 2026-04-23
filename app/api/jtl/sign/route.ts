@@ -225,8 +225,8 @@ export async function POST(req: NextRequest) {
       ],
     })
 
-    // 5. In JTL markieren
-    await markAngebotAngenommen(kAngebot)
+    // 5. In JTL markieren (non-fatal – Email + PDF wurden bereits gespeichert)
+    await markAngebotAngenommen(belegnummer)
 
     return NextResponse.json({
       success:  true,
