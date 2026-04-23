@@ -1,3 +1,5 @@
+'use server'
+
 /**
  * JTL-Wawi Direkt-Datenbankzugriff (MS SQL Server 2017 / eazybusiness)
  *
@@ -909,49 +911,24 @@ async function setVorgangsstatus(
 
   const trimNr = cAngebotNr.trim()
   try {
-    // Schritt 1: kAuftrag über cAuftragsNr ermitteln (LTRIM/RTRIM gegen JTL-Leerzeichen)
-    const lookupRes = await pool.request()
+    // Schritt 1: kAuftrag aus tAuftrag per cAuftragsNr holen (LTRIM/RTRIM gegen JTL-Leerzeichen)
+    // Schritt 2: cVorgangsstatus in tAuftragText per kAuftrag-Subquery setzen
+    const res = await pool.request()
       .input('angebotNr', sql.NVarChar(50), trimNr)
-      .query<{ kAuftrag: number }>(`
-        SELECT TOP 1 kAuftrag
-        FROM [Verkauf].[tAuftrag]
-        WHERE LTRIM(RTRIM(cAuftragsNr)) = @angebotNr
-      `)
-
-    const kAuftrag = lookupRes.recordset[0]?.kAuftrag
-    if (!kAuftrag) {
-      console.warn(`[tAuftragText] kAuftrag für "${trimNr}" in tAuftrag nicht gefunden`)
-      return { rowsAffected: 0, path: 'lookup', error: `kAuftrag für "${trimNr}" nicht gefunden` }
-    }
-
-    // Schritt 2: UPDATE – Zeile in tAuftragText vorhanden?
-    const updRes = await pool.request()
-      .input('status',   sql.NVarChar(50), status)
-      .input('kAuftrag', sql.Int,          kAuftrag)
+      .input('status',    sql.NVarChar(50), status)
       .query(`
         UPDATE [Verkauf].[tAuftragText]
         SET cVorgangsstatus = @status
-        WHERE kAuftrag = @kAuftrag
+        WHERE kAuftrag = (
+          SELECT TOP 1 kAuftrag
+          FROM [Verkauf].[tAuftrag]
+          WHERE LTRIM(RTRIM(cAuftragsNr)) = @angebotNr
+        )
       `)
-    const updRows = updRes.rowsAffected?.[0] ?? 0
 
-    if (updRows > 0) {
-      console.log(`[tAuftragText] UPDATE: kAuftrag=${kAuftrag} (${trimNr}) → "${status}"`)
-      return { rowsAffected: updRows, path: 'update' }
-    }
-
-    // Schritt 3: Kein UPDATE-Treffer → tAuftragText hat noch keine Zeile → INSERT
-    console.warn(`[tAuftragText] UPDATE rowsAffected=0 für kAuftrag=${kAuftrag} – versuche INSERT`)
-    const insRes = await pool.request()
-      .input('status',   sql.NVarChar(50), status)
-      .input('kAuftrag', sql.Int,          kAuftrag)
-      .query(`
-        INSERT INTO [Verkauf].[tAuftragText] (kAuftrag, cVorgangsstatus)
-        VALUES (@kAuftrag, @status)
-      `)
-    const insRows = insRes.rowsAffected?.[0] ?? 0
-    console.log(`[tAuftragText] INSERT: kAuftrag=${kAuftrag} (${trimNr}) → "${status}" rowsAffected=${insRows}`)
-    return { rowsAffected: insRows, path: 'insert' }
+    const rowsAffected = res.rowsAffected?.[0] ?? 0
+    console.log(`[tAuftragText] UPDATE "${trimNr}" → "${status}" rowsAffected=${rowsAffected}`)
+    return { rowsAffected }
 
   } catch (err) {
     const msg = (err as Error).message.split('\n')[0]
