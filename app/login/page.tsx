@@ -175,7 +175,7 @@ function LoginForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(160deg, #2D000B 0%, #1A0008 50%, #2D000B 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #0D0003 0%, #040001 50%, #0D0003 100%)' }}
     >
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
@@ -215,7 +215,7 @@ function LoginForm() {
         {/* Tab-Toggle – nur im normalen Modus sichtbar */}
         {!forgotMode && (
           <div className="flex rounded-xl p-1 mb-6"
-            style={{ background: '#3A000F', border: '1px solid #9A0025' }}
+            style={{ background: '#080002', border: '1px solid #440011' }}
           >
             {(['login', 'register'] as const).map((t) => (
               <button key={t} type="button" onClick={() => { setTab(t); setError('') }}
@@ -235,8 +235,8 @@ function LoginForm() {
         {/* Karte */}
         <div className="rounded-2xl p-7 shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #4D0013, #3A000F)',
-            border: '1px solid #9A0025',
+            background: 'linear-gradient(145deg, #33000D, #080002)',
+            border: '1px solid #440011',
             boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}
         >
@@ -277,7 +277,7 @@ function LoginForm() {
                   </p>
                   <button type="button" onClick={closeForgot}
                     className="mt-2 w-full py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
-                    style={{ background: '#3A000F', color: '#C88090', border: '1px solid #700020' }}
+                    style={{ background: '#080002', color: '#C88090', border: '1px solid #1A0005' }}
                   >
                     Zurück zur Anmeldung
                   </button>
@@ -377,7 +377,7 @@ function LoginForm() {
                   onChange={setPassword} placeholder="Mindestens 6 Zeichen" required />
 
                 {/* Adressdaten (optional) */}
-                <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #9A0025' }}>
+                <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #440011' }}>
                   <p className="text-[11px] uppercase tracking-wider" style={{ color: '#C08898' }}>
                     Adressdaten <span style={{ color: '#C08898' }}>(optional)</span>
                   </p>
@@ -439,8 +439,8 @@ function Field({ label, id, type, value, onChange, placeholder, required }: {
         onBlur={() => setFocused(false)}
         className="w-full px-4 py-3 rounded-lg text-sm transition-all duration-150"
         style={{
-          background: '#3A000F',
-          border: `1px solid ${focused ? '#800020' : '#700020'}`,
+          background: '#080002',
+          border: `1px solid ${focused ? '#800020' : '#1A0005'}`,
           color: '#FFFFFF',
           outline: 'none',
           boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',

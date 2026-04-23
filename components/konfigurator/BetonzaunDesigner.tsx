@@ -171,7 +171,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
                 </p>
               </>
             ) : (
-              <p style={{ fontSize: '11px', color: isActive ? '#800020' : '#700020' }}>
+              <p style={{ fontSize: '11px', color: isActive ? '#800020' : '#1A0005' }}>
                 {isActive ? '← Modell wählen' : '+ klicken'}
               </p>
             )}
@@ -181,7 +181,7 @@ function PlatteSlot({ slot, idx, total, isActive, colorHex, onActivate, onDrop, 
           <span className="mr-2 flex-shrink-0"
             style={{
               fontSize: '9px',
-              color: isActive ? '#800020' : '#700020',
+              color: isActive ? '#800020' : '#1A0005',
               writingMode: 'vertical-rl',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -328,7 +328,7 @@ function FeldVorschau({ platten, pfeilerTyp, primaryTex, platteHex, pfeilerHex, 
       <div className="flex flex-col-reverse overflow-hidden"
         style={{
           width: '200px',
-          border: '1px solid #9A0025',
+          border: '1px solid #440011',
           borderTop: 'none',
           borderBottom: 'none',
         }}
@@ -382,8 +382,8 @@ function ModelPalette({
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium transition-all"
             style={{
-              background: kat === k ? 'rgba(255,255,255,0.10)' : '#4D0013',
-              border: kat === k ? '1px solid #800020' : '1px solid #700020',
+              background: kat === k ? 'rgba(255,255,255,0.10)' : '#33000D',
+              border: kat === k ? '1px solid #800020' : '1px solid #1A0005',
               color: kat === k ? '#800020' : '#C08898',
             }}
           >
@@ -407,7 +407,7 @@ function ModelPalette({
               onClick={() => onSelect(m)}
               className="rounded-xl overflow-hidden cursor-grab active:cursor-grabbing transition-all
                          duration-100 hover:brightness-110 active:scale-95"
-              style={{ border: '1px solid #282828', background: '#2D000B' }}
+              style={{ border: '1px solid #282828', background: '#0D0003' }}
             >
               {/* Textur-Vorschau */}
               <div className="relative overflow-hidden"
@@ -450,7 +450,7 @@ function ModelPalette({
         })}
       </div>
 
-      <p className="text-xs" style={{ color: '#9A0025' }}>
+      <p className="text-xs" style={{ color: '#440011' }}>
         Alle 100+ Modelle →{' '}
         <a href="https://www.edelzaun-tor.com/modelle" target="_blank" rel="noopener noreferrer"
           style={{ color: '#C08898' }}
@@ -484,10 +484,10 @@ function Stueckliste({
   const pfeilerInfo = PFEILER_TYPEN.find((p) => p.value === pfeilerTyp)
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5"
-        style={{ background: '#4D0013', borderBottom: '1px solid #9A0025' }}
+        style={{ background: '#33000D', borderBottom: '1px solid #440011' }}
       >
         <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
           Automatische Stückliste
@@ -519,7 +519,7 @@ function Stueckliste({
       {/* Pfeiler-Typ-Zeile */}
       {pfeilerInfo && (
         <div className="flex items-center gap-3 px-4 py-2.5"
-          style={{ background: '#3A000F', borderBottom: '1px solid #FFFFFF' }}
+          style={{ background: '#080002', borderBottom: '1px solid #FFFFFF' }}
         >
           <MiniPfostenChip typ={pfeilerInfo} />
           <div className="flex-1">
@@ -537,7 +537,7 @@ function Stueckliste({
       )}
 
       {/* Stapelreihenfolge */}
-      <div className="px-4 py-3 space-y-1.5" style={{ background: '#2D000B' }}>
+      <div className="px-4 py-3 space-y-1.5" style={{ background: '#0D0003' }}>
         <p className="text-xs font-bold uppercase tracking-wider mb-2"
           style={{ color: '#C08898', letterSpacing: '0.1em' }}
         >
@@ -592,7 +592,7 @@ function Stueckliste({
       </div>
 
       {/* Hinweis */}
-      <p className="px-4 pb-3 text-xs" style={{ color: '#F5D0D5', background: '#2D000B' }}>
+      <p className="px-4 pb-3 text-xs" style={{ color: '#F5D0D5', background: '#0D0003' }}>
         * Richtmengen inkl. {ecken} Eckpfosten. Exakter Aufmaß vor Ort.
       </p>
     </div>
@@ -656,8 +656,8 @@ function PfeilerAuswahl({
               style={{
                 padding: '10px 12px 8px',
                 minWidth: '80px',
-                background: isSelected ? 'rgba(128,0,32,0.08)' : '#3A000F',
-                border: isSelected ? '2px solid #800020' : '1px solid #9A0025',
+                background: isSelected ? 'rgba(128,0,32,0.08)' : '#080002',
+                border: isSelected ? '2px solid #800020' : '1px solid #440011',
               }}
             >
               {/* Pfosten-Vorschau */}
@@ -696,7 +696,7 @@ function PfeilerAuswahl({
                 {/* Sockel */}
                 <div style={{
                   width: '14px', height: '4px',
-                  background: '#700020', borderRadius: '0 0 2px 2px',
+                  background: '#1A0005', borderRadius: '0 0 2px 2px',
                 }} />
               </div>
 
@@ -841,8 +841,8 @@ export default function BetonzaunDesigner({ data, update }: Props) {
               onClick={() => applyHeight(h.value)}
               className="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-95"
               style={{
-                background: bz.hoehe === h.value ? 'rgba(255,255,255,0.10)' : '#4D0013',
-                border: bz.hoehe === h.value ? '2px solid #800020' : '1px solid #9A0025',
+                background: bz.hoehe === h.value ? 'rgba(255,255,255,0.10)' : '#33000D',
+                border: bz.hoehe === h.value ? '2px solid #800020' : '1px solid #440011',
                 color: bz.hoehe === h.value ? '#800020' : '#C88090',
                 minWidth: '78px',
               }}
@@ -958,7 +958,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
                 <button type="button"
                   onClick={() => update({ betonzaun: { ...bz, ecken: Math.max(0, bz.ecken - 1) } })}
                   className="w-12 h-12 rounded-xl text-xl font-bold transition-all active:scale-90"
-                  style={{ background: '#4D0013', border: '1px solid #9A0025', color: '#C88090' }}
+                  style={{ background: '#33000D', border: '1px solid #440011', color: '#C88090' }}
                 >
                   −
                 </button>
@@ -968,7 +968,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
                 <button type="button"
                   onClick={() => update({ betonzaun: { ...bz, ecken: Math.min(10, bz.ecken + 1) } })}
                   className="w-12 h-12 rounded-xl text-xl font-bold transition-all active:scale-90"
-                  style={{ background: '#4D0013', border: '1px solid #9A0025', color: '#C88090' }}
+                  style={{ background: '#33000D', border: '1px solid #440011', color: '#C88090' }}
                 >
                   +
                 </button>
@@ -989,7 +989,7 @@ export default function BetonzaunDesigner({ data, update }: Props) {
           />
         </>
       ) : (
-        <div className="rounded-xl p-6 text-center" style={{ background: '#2D000B', border: '1px dashed #9A0025' }}>
+        <div className="rounded-xl p-6 text-center" style={{ background: '#0D0003', border: '1px dashed #440011' }}>
           <p className="text-sm" style={{ color: '#C08898' }}>
             Bitte zuerst eine <strong style={{ color: '#C08898' }}>Gesamthöhe</strong> wählen.
           </p>

@@ -56,7 +56,7 @@ export default function DashboardHeader() {
   ]
 
   return (
-    <div className="pb-8" style={{ borderBottom: '1px solid #9A0025' }}>
+    <div className="pb-8" style={{ borderBottom: '1px solid #440011' }}>
       {/* Begrüßung */}
       <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
         Willkommen zurück
@@ -74,7 +74,7 @@ export default function DashboardHeader() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map((s) => (
           <div key={s.label} className="rounded-xl p-4"
-            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+            style={{ background: '#33000D', border: '1px solid #440011' }}
           >
             <p className="text-xs mb-2" style={{ color: '#C08898', letterSpacing: '0.08em' }}>
               {s.label}

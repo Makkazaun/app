@@ -67,8 +67,8 @@ export default function NotificationBell() {
         onClick={handleOpen}
         className="relative w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:opacity-80"
         style={{
-          background: open ? '#700020' : '#2D000B',
-          border: open ? '1px solid #700020' : '1px solid #9A0025',
+          background: open ? '#1A0005' : '#0D0003',
+          border: open ? '1px solid #1A0005' : '1px solid #440011',
           color: '#C88090',
           fontSize: '16px',
         }}
@@ -91,15 +91,15 @@ export default function NotificationBell() {
           ref={panelRef}
           className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl z-50"
           style={{
-            background: '#4D0013',
-            border: '1px solid #9A0025',
+            background: '#33000D',
+            border: '1px solid #440011',
             boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
             top: '100%',
           }}
         >
           {/* Panel-Header */}
           <div className="flex items-center justify-between px-5 py-4"
-            style={{ borderBottom: '1px solid #9A0025' }}
+            style={{ borderBottom: '1px solid #440011' }}
           >
             <div>
               <h3 className="text-sm font-bold" style={{ color: '#FFFFFF' }}>
@@ -140,7 +140,7 @@ export default function NotificationBell() {
                     className="flex gap-3 px-5 py-4 cursor-pointer transition-colors hover:opacity-80"
                     style={{
                       background: n.gelesen ? 'transparent' : 'rgba(128,0,32,0.04)',
-                      borderBottom: i < notifs.length - 1 ? '1px solid #9A0025' : 'none',
+                      borderBottom: i < notifs.length - 1 ? '1px solid #440011' : 'none',
                     }}
                     onClick={() => handleRead(n.id)}
                   >
@@ -181,7 +181,7 @@ export default function NotificationBell() {
           </div>
 
           {/* Footer */}
-          <div className="px-5 py-3" style={{ borderTop: '1px solid #9A0025' }}>
+          <div className="px-5 py-3" style={{ borderTop: '1px solid #440011' }}>
             <p className="text-[10px] text-center" style={{ color: '#C08898' }}>
               Push-Benachrichtigungen · Echtzeit-Integration in Vorbereitung
             </p>

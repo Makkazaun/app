@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function AgbPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#3A000F' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#080002' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
@@ -30,7 +30,7 @@ export default function AgbPage() {
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#4D0013', border: '1px solid #333333' }}
+          style={{ background: '#33000D', border: '1px solid #333333' }}
         >
           <Para num="§ 1" title="Geltungsbereich">
             Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge, Lieferungen und Leistungen
@@ -155,5 +155,5 @@ function Para({ num, title, children }: { num: string; title: string; children: 
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#700020' }} />
+  return <div className="w-full h-px" style={{ background: '#1A0005' }} />
 }

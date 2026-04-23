@@ -87,7 +87,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
   const phaseColors = {
     done:    { dot: 'linear-gradient(135deg, #3a7a4a, #5bc97a)', text: '#5bc97a', bg: '#1a1e1a', border: '#2a3a2a' },
     active:  { dot: 'linear-gradient(135deg, #5a0016, #800020)', text: '#800020', bg: '#1e1a0a', border: '#3d3210' },
-    pending: { dot: '#700020',                                   text: '#C08898', bg: '#3A000F', border: '#700020' },
+    pending: { dot: '#1A0005',                                   text: '#C08898', bg: '#080002', border: '#1A0005' },
   }
   const labels = { done: 'Erledigt', active: 'Aktuell', pending: 'Ausstehend' }
 
@@ -102,7 +102,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
           <span className="text-xs" style={{ color: '#C08898' }}>Gesamtfortschritt</span>
           <span className="text-xs font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
-        <div className="w-full h-1 rounded-full" style={{ background: '#700020' }}>
+        <div className="w-full h-1 rounded-full" style={{ background: '#1A0005' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #5a0016, #800020)' }}
@@ -112,7 +112,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
 
       {/* Schritte */}
       <div className="relative pl-7 space-y-2">
-        <div className="absolute left-2.5 top-2 bottom-2 w-px" style={{ background: '#700020' }} />
+        <div className="absolute left-2.5 top-2 bottom-2 w-px" style={{ background: '#1A0005' }} />
         {phasen.map((phase) => {
           const s = phaseColors[phase.status]
           return (
@@ -173,13 +173,13 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
 
 function AdressBlock({ adresse, label }: { adresse: Adresse | null; label: string }) {
   if (!adresse) return (
-    <div className="rounded-xl p-4" style={{ background: '#4D0013', border: '1px solid #9A0025' }}>
+    <div className="rounded-xl p-4" style={{ background: '#33000D', border: '1px solid #440011' }}>
       <p className="text-xs font-semibold mb-1" style={{ color: '#C08898' }}>{label}</p>
       <p className="text-xs" style={{ color: '#C08898' }}>Wird noch hinterlegt</p>
     </div>
   )
   return (
-    <div className="rounded-xl p-4 space-y-1" style={{ background: '#4D0013', border: '1px solid #9A0025' }}>
+    <div className="rounded-xl p-4 space-y-1" style={{ background: '#33000D', border: '1px solid #440011' }}>
       <p className="text-xs font-bold uppercase tracking-wider mb-2"
         style={{ color: '#C08898', letterSpacing: '0.1em' }}>
         {label}
@@ -207,11 +207,11 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
   return (
     <div className="rounded-2xl overflow-hidden"
-      style={{ background: '#3A000F', border: '1px solid #9A0025' }}
+      style={{ background: '#080002', border: '1px solid #440011' }}
     >
       {/* Kopfzeile */}
       <div className="px-5 py-4 flex items-start justify-between gap-4 flex-wrap"
-        style={{ background: 'linear-gradient(145deg, #4D0013, #3A000F)', borderBottom: '1px solid #9A0025' }}
+        style={{ background: 'linear-gradient(145deg, #33000D, #080002)', borderBottom: '1px solid #440011' }}
       >
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -243,7 +243,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
           {/* Technische Daten */}
           <div className="rounded-xl p-4 space-y-2.5"
-            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+            style={{ background: '#33000D', border: '1px solid #440011' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider"
               style={{ color: '#C08898', letterSpacing: '0.1em' }}>
@@ -306,7 +306,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
           {/* Termin-Card */}
           <div className="rounded-xl p-4 space-y-3"
-            style={{ background: '#4D0013', border: '1px solid #2a3040' }}
+            style={{ background: '#33000D', border: '1px solid #2a3040' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider"
               style={{ color: '#4a5a6a', letterSpacing: '0.1em' }}>
@@ -314,7 +314,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
             </p>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                style={{ background: '#3A000F' }}>
+                style={{ background: '#080002' }}>
                 🗓️
               </div>
               <div>
@@ -447,7 +447,7 @@ export default function AuftraegeSection() {
           { label: 'Gesamtvolumen', value: gesamtVol,       color: '#5b9bd5' },
         ].map((kachel) => (
           <div key={kachel.label} className="rounded-xl p-4 text-center"
-            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+            style={{ background: '#33000D', border: '1px solid #440011' }}
           >
             <p className="text-base sm:text-2xl font-bold truncate" style={{ color: kachel.color }}>
               {kachel.value}
@@ -460,7 +460,7 @@ export default function AuftraegeSection() {
       {/* Auftragsliste */}
       {auftraege.length === 0 ? (
         <div className="rounded-xl p-8 text-center"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}
+          style={{ background: '#33000D', border: '1px dashed #440011' }}
         >
           <p className="text-2xl mb-3">📋</p>
           <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
@@ -487,7 +487,7 @@ export default function AuftraegeSection() {
                     background: isOpen
                       ? 'linear-gradient(145deg, #222218, #1e1e18)'
                       : '#FFFFFF',
-                    border: isOpen ? '1px solid #3d3210' : '1px solid #9A0025',
+                    border: isOpen ? '1px solid #3d3210' : '1px solid #440011',
                   }}
                   onClick={() => setExpanded(isOpen ? null : auftrag.id)}
                 >

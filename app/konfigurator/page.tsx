@@ -114,9 +114,9 @@ export default function KonfiguratorPage() {
 
   // ── Formular ───────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#2D000B' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0D0003' }}>
       <header className="flex items-center justify-between px-4 sm:px-6 py-4 flex-shrink-0"
-        style={{ background: '#3A000F', borderBottom: '1px solid #9A0025' }}
+        style={{ background: '#080002', borderBottom: '1px solid #440011' }}
       >
         <Logo variant="header" />
         <Link href="/" className="text-xs hover:opacity-70 transition-opacity" style={{ color: '#C08898' }}>
@@ -125,7 +125,7 @@ export default function KonfiguratorPage() {
       </header>
 
       <div className="px-4 sm:px-6 pt-5 pb-3 flex-shrink-0"
-        style={{ background: '#3A000F', borderBottom: '1px solid #9A0025' }}
+        style={{ background: '#080002', borderBottom: '1px solid #440011' }}
       >
         <StepIndicator current={step} />
       </div>
@@ -159,7 +159,7 @@ export default function KonfiguratorPage() {
 
 function LoggedInSuccessScreen({ name }: { name: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: '#2D000B' }}>
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: '#0D0003' }}>
       <div className="max-w-sm w-full text-center space-y-5">
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full text-4xl"
           style={{ background: 'rgba(91,201,122,0.12)', border: '2px solid #5bc97a' }}
@@ -177,7 +177,7 @@ function LoggedInSuccessScreen({ name }: { name: string }) {
         </div>
         <div className="flex justify-center">
           <div className="w-6 h-6 rounded-full border-2 animate-spin"
-            style={{ borderColor: '#9A0025', borderTopColor: '#800020' }}
+            style={{ borderColor: '#440011', borderTopColor: '#800020' }}
           />
         </div>
         <Link href="/dashboard"
@@ -195,7 +195,7 @@ function LoggedInSuccessScreen({ name }: { name: string }) {
 
 function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{ background: '#2D000B' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{ background: '#0D0003' }}>
       <div className="max-w-md w-full space-y-6">
 
         {/* Bestätigung */}
@@ -250,7 +250,7 @@ function GuestSuccessScreen({ name, email }: { name: string; email: string }) {
 
         {/* Kontakt + weiter ohne Konto */}
         <div className="rounded-xl p-4 space-y-1"
-          style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+          style={{ background: '#33000D', border: '1px solid #440011' }}
         >
           <p className="text-xs" style={{ color: '#C08898' }}>📞 Telefonisch erreichbar</p>
           <p className="text-sm font-semibold" style={{ color: '#800020' }}>03496-7005181</p>

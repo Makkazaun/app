@@ -9,7 +9,7 @@ export default function SectionHeader({ number, title, subtitle }: SectionHeader
     <div className="flex items-start gap-4 mb-6">
       <span className="text-3xl font-black leading-none mt-0.5"
         style={{
-          color: '#9A0025',
+          color: '#440011',
           WebkitTextStroke: 'none',
           fontVariantNumeric: 'tabular-nums',
           letterSpacing: '-0.02em',

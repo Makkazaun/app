@@ -55,9 +55,9 @@ function KompaktPicker({
   const modelle = BETONZAUN_MODELLE.filter((m) => m.kategorie === kat)
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #700020', background: '#4D0013' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #1A0005', background: '#33000D' }}>
       {/* Kategorie-Tabs */}
-      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #9A0025' }}>
+      <div className="flex gap-1 p-2 overflow-x-auto" style={{ borderBottom: '1px solid #440011' }}>
         {KATEGORIEN.map((k) => (
           <button key={k} type="button" onClick={() => setKat(k)}
             className="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all"
@@ -80,11 +80,11 @@ function KompaktPicker({
             <button key={m.nr} type="button" onClick={() => { onSelect(m); onClose() }}
               className="rounded-lg overflow-hidden transition-all active:scale-95"
               style={{
-                border: sel ? '2px solid #800020' : '1px solid #9A0025',
-                background: '#3A000F',
+                border: sel ? '2px solid #800020' : '1px solid #440011',
+                background: '#080002',
               }}
             >
-              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#700020' }}>
+              <div className="relative w-full" style={{ paddingBottom: '60%', background: '#1A0005' }}>
                 <Image src={m.imageUrl} alt={m.name} fill sizes="100px" className="object-cover"
                   onError={() => {}} />
                 {sel && (
@@ -106,7 +106,7 @@ function KompaktPicker({
       <div className="px-3 pb-2 flex justify-end">
         <button type="button" onClick={onClose}
           className="text-xs px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
-          style={{ background: '#700020', color: '#C08898' }}
+          style={{ background: '#1A0005', color: '#C08898' }}
         >
           Schließen
         </button>
@@ -137,8 +137,8 @@ function ReihenZeile({
     <div>
       <div className="flex items-center gap-3 p-3 rounded-xl transition-all"
         style={{
-          background: '#4D0013',
-          border: open ? '1px solid #800020' : '1px solid #9A0025',
+          background: '#33000D',
+          border: open ? '1px solid #800020' : '1px solid #440011',
           borderRadius: open ? '12px 12px 0 0' : '12px',
         }}
       >
@@ -153,7 +153,7 @@ function ReihenZeile({
         {modell ? (
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="w-12 h-8 rounded-md overflow-hidden flex-shrink-0 relative"
-              style={{ background: '#700020' }}
+              style={{ background: '#1A0005' }}
             >
               <Image src={modell.imageUrl} alt={modell.name} fill sizes="48px" className="object-cover" />
             </div>
@@ -165,7 +165,7 @@ function ReihenZeile({
         ) : (
           <div className="flex-1 flex items-center gap-2">
             <div className="w-12 h-8 rounded-md flex items-center justify-center flex-shrink-0"
-              style={{ background: '#2D000B', border: '1px dashed #333' }}
+              style={{ background: '#0D0003', border: '1px dashed #333' }}
             >
               <span style={{ color: '#C08898', fontSize: '10px' }}>?</span>
             </div>
@@ -177,7 +177,7 @@ function ReihenZeile({
         <button type="button" onClick={() => setOpen((o) => !o)}
           className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{
-            background: open ? 'rgba(128,0,32,0.12)' : '#2D000B',
+            background: open ? 'rgba(128,0,32,0.12)' : '#0D0003',
             border: open ? '1px solid rgba(128,0,32,0.3)' : '1px solid #333',
             color: open ? '#800020' : '#C88090',
           }}
@@ -208,7 +208,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
     <div>
       <FieldLabel>Live-Vorschau</FieldLabel>
       <div className="rounded-xl overflow-hidden p-4"
-        style={{ background: '#3A000F', border: '1px solid #9A0025' }}
+        style={{ background: '#080002', border: '1px solid #440011' }}
       >
         {/* Himmel */}
         <div className="h-3" />
@@ -241,7 +241,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
                         className="relative overflow-hidden"
                         style={{
                           height: '44px',
-                          background: '#700020',
+                          background: '#1A0005',
                           borderTop: li > 0 ? '1px solid rgba(0,0,0,0.4)' : 'none',
                         }}
                       >
@@ -281,7 +281,7 @@ function LiveVorschau({ ebenen, pfeiler }: { ebenen: EbenenKonfig[]; pfeiler: st
             return (
               <div key={li} className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-sm overflow-hidden relative flex-shrink-0"
-                  style={{ background: '#700020' }}
+                  style={{ background: '#1A0005' }}
                 >
                   {m && <Image src={m.imageUrl} alt="" fill sizes="12px" className="object-cover" />}
                 </div>
@@ -328,10 +328,10 @@ function StuecklistenAnzeige({
   return (
     <div>
       <FieldLabel>Automatische Stückliste</FieldLabel>
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
         {/* Kopfzeile */}
         <div className="px-4 py-2.5 flex items-center justify-between"
-          style={{ background: '#4D0013', borderBottom: '1px solid #9A0025' }}
+          style={{ background: '#33000D', borderBottom: '1px solid #440011' }}
         >
           <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090' }}>
             Stückliste · {sl.laengeMeter} m Zaun
@@ -369,7 +369,7 @@ function StuecklistenAnzeige({
 
           {/* Summe */}
           <div className="px-4 py-3 flex items-center justify-between"
-            style={{ background: '#3A000F' }}
+            style={{ background: '#080002' }}
           >
             <div>
               <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>Platten gesamt</p>
@@ -396,9 +396,9 @@ function SLZeile({
   highlight?: boolean; modellBild?: string
 }) {
   return (
-    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#2D000B' }}>
+    <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#0D0003' }}>
       {modellBild ? (
-        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#700020' }}>
+        <div className="w-8 h-6 rounded overflow-hidden relative flex-shrink-0" style={{ background: '#1A0005' }}>
           <Image src={modellBild} alt="" fill sizes="32px" className="object-cover" />
         </div>
       ) : (
@@ -441,7 +441,7 @@ export default function ZaunPlaner({ data, update }: Props) {
   // Nicht anzeigen wenn Höhe oder Länge fehlen
   if (!bz.hoehe || !bz.laenge) {
     return (
-      <div className="rounded-xl p-5 text-center" style={{ background: '#2D000B', border: '1px dashed #9A0025' }}>
+      <div className="rounded-xl p-5 text-center" style={{ background: '#0D0003', border: '1px dashed #440011' }}>
         <p className="text-sm" style={{ color: '#C08898' }}>
           Bitte zuerst <strong style={{ color: '#C88090' }}>Höhe</strong> und{' '}
           <strong style={{ color: '#C88090' }}>Gesamtlänge</strong> angeben.
@@ -489,8 +489,8 @@ export default function ZaunPlaner({ data, update }: Props) {
               onClick={() => update({ betonzaun: { ...bz, pfeiler: p.value } })}
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all"
               style={{
-                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#3A000F',
-                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #9A0025',
+                background: bz.pfeiler === p.value ? 'rgba(128,0,32,0.08)' : '#080002',
+                border: bz.pfeiler === p.value ? '1px solid rgba(128,0,32,0.35)' : '1px solid #440011',
               }}
             >
               <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"

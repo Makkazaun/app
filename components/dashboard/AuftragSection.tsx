@@ -60,8 +60,8 @@ const statusStyles: Record<Phase['status'], { dot: string; line: string; label: 
     labelColor: '#800020',
   },
   pending: {
-    dot: '#700020',
-    line: '#2D000B',
+    dot: '#1A0005',
+    line: '#0D0003',
     label: 'Ausstehend',
     labelColor: '#C08898',
   },
@@ -81,7 +81,7 @@ export default function AuftragSection() {
 
       {/* Fortschrittsbalken */}
       <div className="mb-8 rounded-xl p-5"
-        style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+        style={{ background: '#33000D', border: '1px solid #440011' }}
       >
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-medium" style={{ color: '#C88090' }}>
@@ -89,7 +89,7 @@ export default function AuftragSection() {
           </span>
           <span className="text-sm font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
-        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#700020' }}>
+        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#1A0005' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
@@ -107,7 +107,7 @@ export default function AuftragSection() {
       {/* Timeline */}
       <div className="relative pl-8">
         {/* Vertikale Linie */}
-        <div className="absolute left-3 top-2 bottom-2 w-px" style={{ background: '#700020' }} />
+        <div className="absolute left-3 top-2 bottom-2 w-px" style={{ background: '#1A0005' }} />
 
         <div className="space-y-2">
           {phasen.map((phase, i) => {
@@ -143,8 +143,8 @@ export default function AuftragSection() {
                       ? 'linear-gradient(135deg, #1e1a0a, #28200e)'
                       : phase.status === 'done'
                         ? '#1a1e1a'
-                        : '#3A000F',
-                    border: `1px solid ${phase.status === 'active' ? '#3d3210' : phase.status === 'done' ? '#2a3a2a' : '#700020'}`,
+                        : '#080002',
+                    border: `1px solid ${phase.status === 'active' ? '#3d3210' : phase.status === 'done' ? '#2a3a2a' : '#1A0005'}`,
                   }}
                 >
                   <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -182,10 +182,10 @@ export default function AuftragSection() {
 
       {/* Nächster Termin Banner */}
       <div className="mt-4 rounded-xl p-4 flex items-center gap-4"
-        style={{ background: '#4D0013', border: '1px solid #2a3040' }}
+        style={{ background: '#33000D', border: '1px solid #2a3040' }}
       >
         <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-lg"
-          style={{ background: '#3A000F' }}
+          style={{ background: '#080002' }}
         >
           🗓️
         </div>

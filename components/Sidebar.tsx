@@ -70,14 +70,14 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           isOpen ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
         style={{
-          background:  '#2D000B',
-          borderRight: '1px solid #9A0025',
+          background:  '#0D0003',
+          borderRight: '1px solid #440011',
         }}
       >
         {/* Logo + mobile close button */}
         <div
           className="flex items-center justify-between px-5 py-5"
-          style={{ borderBottom: '1px solid #9A0025' }}
+          style={{ borderBottom: '1px solid #440011' }}
         >
           <div className="flex flex-col items-start gap-1">
             <Logo variant="sidebar" />
@@ -87,7 +87,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           </div>
           <button
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg"
-            style={{ background: '#2D000B', color: '#C88090', border: '1px solid #700020' }}
+            style={{ background: '#0D0003', color: '#C88090', border: '1px solid #1A0005' }}
             onClick={onClose}
             aria-label="Menü schließen"
           >
@@ -134,11 +134,11 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         </nav>
 
         {/* Benutzer-Info */}
-        <div className="px-4 py-4" style={{ borderTop: '1px solid #9A0025' }}>
+        <div className="px-4 py-4" style={{ borderTop: '1px solid #440011' }}>
           {mounted ? (
             <div
               className="flex items-center gap-3 px-2 py-2 rounded-lg"
-              style={{ background: '#3A000F' }}
+              style={{ background: '#080002' }}
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -162,7 +162,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
               </button>
             </div>
           ) : (
-            <div className="h-10 rounded-lg" style={{ background: '#3A000F' }} />
+            <div className="h-10 rounded-lg" style={{ background: '#080002' }} />
           )}
         </div>
       </aside>

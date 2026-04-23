@@ -51,7 +51,7 @@ export default function AnfragenSection() {
 
       {anfragen.length === 0 && (
         <div className="rounded-xl p-8 text-center mb-4"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
+          style={{ background: '#33000D', border: '1px dashed #440011' }}>
           <p className="text-2xl mb-3">📋</p>
           <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
             Noch keine Anfragen vorhanden
@@ -78,8 +78,8 @@ export default function AnfragenSection() {
             <div key={a.id}
               className="rounded-xl p-5 card-hover cursor-pointer flex flex-col"
               style={{
-                background: 'linear-gradient(145deg, #4D0013, #3A000F)',
-                border: '1px solid #9A0025',
+                background: 'linear-gradient(145deg, #33000D, #080002)',
+                border: '1px solid #440011',
               }}
             >
               {/* ID + Status */}
@@ -125,7 +125,7 @@ export default function AnfragenSection() {
 
               {/* Footer */}
               <div className="pt-3 flex items-center justify-between"
-                style={{ borderTop: '1px solid #9A0025' }}
+                style={{ borderTop: '1px solid #440011' }}
               >
                 <span className="text-xs" style={{ color: '#C88090' }}>Details</span>
                 <span className="text-xs" style={{ color: '#800020' }}>→</span>
@@ -139,13 +139,13 @@ export default function AnfragenSection() {
           className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 transition-all duration-200 hover:opacity-80 hover:border-[#9CA3AF]"
           style={{
             background: 'transparent',
-            border: '1px dashed #700020',
+            border: '1px dashed #1A0005',
             minHeight: '160px',
             textDecoration: 'none',
           }}
         >
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
-            style={{ background: '#2D000B', color: '#800020' }}
+            style={{ background: '#0D0003', color: '#800020' }}
           >
             +
           </div>

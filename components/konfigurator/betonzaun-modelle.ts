@@ -217,7 +217,7 @@ export const PFEILER_TYPEN: PfeilerTyp[] = [
     capColor: '#C08898',
     capBg: 'linear-gradient(180deg, #9CA3AF 0%, #3e3e3e 100%)',
     bodyBg: '',   // wird dynamisch aus der Plattenstruktur abgeleitet
-    borderColor: '#9A0025',
+    borderColor: '#440011',
   },
   {
     value: 'schmuckhaube',

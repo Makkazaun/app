@@ -106,7 +106,7 @@ export default function Step3Tore({ data, update }: Props) {
         )}
       </div>
 
-      <div className="w-full h-px" style={{ background: '#700020' }} />
+      <div className="w-full h-px" style={{ background: '#1A0005' }} />
 
       {/* ── GARTENTÜR ── */}
       <div className="space-y-5">

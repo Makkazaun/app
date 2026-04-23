@@ -7,12 +7,12 @@
 export default function PlaceholderTable({ columns, rows, emptyMessage }: PlaceholderTableProps) {
   return (
     <div className="rounded-xl overflow-hidden"
-      style={{ border: '1px solid #700020' }}
+      style={{ border: '1px solid #1A0005' }}
     >
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: '#2D000B', borderBottom: '1px solid #700020' }}>
+            <tr style={{ background: '#0D0003', borderBottom: '1px solid #1A0005' }}>
               {columns.map((col) => (
                 <th
                   key={col}
@@ -37,8 +37,8 @@ export default function PlaceholderTable({ columns, rows, emptyMessage }: Placeh
               rows.map((row, i) => (
                 <tr key={i}
                   style={{
-                    background: i % 2 === 0 ? '#4D0013' : '#3A000F',
-                    borderBottom: i < rows.length - 1 ? '1px solid #9A0025' : 'none',
+                    background: i % 2 === 0 ? '#33000D' : '#080002',
+                    borderBottom: i < rows.length - 1 ? '1px solid #440011' : 'none',
                   }}
                 >
                   {row.map((cell, j) => (

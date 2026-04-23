@@ -60,7 +60,7 @@ export default function RechnungenPage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#4D0013', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#33000D', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -87,7 +87,7 @@ export default function RechnungenPage() {
               {formatEur(offenSum)}
             </p>
           </div>
-          <div className="rounded-xl p-5" style={{ background: '#4D0013', border: '1px solid #9A0025' }}>
+          <div className="rounded-xl p-5" style={{ background: '#33000D', border: '1px solid #440011' }}>
             <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
               Offene Rechnungen
             </p>
@@ -95,7 +95,7 @@ export default function RechnungenPage() {
               {offen.length}
             </p>
           </div>
-          <div className="rounded-xl p-5" style={{ background: '#4D0013', border: '1px solid #9A0025' }}>
+          <div className="rounded-xl p-5" style={{ background: '#33000D', border: '1px solid #440011' }}>
             <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
               Bezahlt (gesamt)
             </p>
@@ -109,7 +109,7 @@ export default function RechnungenPage() {
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#4D0013', border: '1px solid #9A0025', height: '56px' }} />
+              style={{ background: '#33000D', border: '1px solid #440011', height: '56px' }} />
           ))}
         </div>
       )}
@@ -117,7 +117,7 @@ export default function RechnungenPage() {
       {/* Leer-Zustand */}
       {!loading && rechnungen.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
+          style={{ background: '#33000D', border: '1px dashed #440011' }}>
           <div className="text-4xl mb-4">🧾</div>
           <p className="text-base font-semibold mb-2" style={{ color: '#C08898' }}>
             Keine Dokumente vorhanden
@@ -131,14 +131,14 @@ export default function RechnungenPage() {
 
       {/* Tabelle */}
       {!loading && rechnungen.length > 0 && (
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
 
           {/* Tabellenkopf */}
           <div
             className="hidden md:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
             style={{
-              background: '#4D0013',
-              borderBottom: '1px solid #9A0025',
+              background: '#33000D',
+              borderBottom: '1px solid #440011',
               color: '#C08898',
               gridTemplateColumns: '140px 90px 1fr 130px 110px 100px',
               gap: '12px',
@@ -156,9 +156,9 @@ export default function RechnungenPage() {
               key={r.kRechnung}
               style={{
                 background: r.storniert
-                  ? '#2D000B'
-                  : i % 2 === 0 ? '#4D0013' : '#3A000F',
-                borderBottom: i < rechnungen.length - 1 ? '1px solid #9A0025' : 'none',
+                  ? '#0D0003'
+                  : i % 2 === 0 ? '#33000D' : '#080002',
+                borderBottom: i < rechnungen.length - 1 ? '1px solid #440011' : 'none',
                 opacity: r.storniert ? 0.5 : 1,
               }}
             >
@@ -218,7 +218,7 @@ export default function RechnungenPage() {
       {/* Hinweis */}
       {!loading && (
         <div className="rounded-xl px-4 py-3 text-xs flex items-start gap-2.5"
-          style={{ background: '#3A000F', border: '1px solid #9A0025', color: '#C08898' }}>
+          style={{ background: '#080002', border: '1px solid #440011', color: '#C08898' }}>
           <span style={{ color: '#C08898' }}>🔒</span>
           <span>
             Rechnungen sind unveränderlich. Für Fragen wenden Sie sich bitte an uns.

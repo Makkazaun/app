@@ -12,8 +12,8 @@ export default function QuickLink({ title, description, icon, href }: QuickLinkP
     <Link href={href}
       className="block rounded-xl p-5 card-hover"
       style={{
-        background: 'linear-gradient(145deg, #4D0013, #3A000F)',
-        border: '1px solid #9A0025',
+        background: 'linear-gradient(145deg, #33000D, #080002)',
+        border: '1px solid #440011',
         textDecoration: 'none',
       }}
     >

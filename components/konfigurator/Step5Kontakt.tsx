@@ -104,8 +104,8 @@ export default function Step5Kontakt({ data, update }: Props) {
           <div
             className="w-5 h-5 rounded flex items-center justify-center transition-all duration-150"
             style={{
-              background: k.datenschutz ? '#800020' : '#3A000F',
-              border: `2px solid ${k.datenschutz ? '#800020' : '#700020'}`,
+              background: k.datenschutz ? '#800020' : '#080002',
+              border: `2px solid ${k.datenschutz ? '#800020' : '#1A0005'}`,
             }}
           >
             {k.datenschutz && <span style={{ color: '#ffffff', fontSize: '11px', fontWeight: 'bold' }}>✓</span>}

@@ -13,8 +13,8 @@ export default function StatCard({ label, value, icon, color, href }: StatCardPr
     <Link href={href}
       className="block rounded-xl p-5 card-hover"
       style={{
-        background: 'linear-gradient(145deg, #4D0013, #3A000F)',
-        border: '1px solid #700020',
+        background: 'linear-gradient(145deg, #33000D, #080002)',
+        border: '1px solid #1A0005',
         textDecoration: 'none',
       }}
     >

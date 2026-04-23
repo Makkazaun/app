@@ -82,8 +82,8 @@ function Field({
         placeholder={placeholder}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none transition-all"
         style={{
-          background: readOnly ? '#2D000B' : '#3A000F',
-          border:     `1px solid ${error ? '#883333' : '#700020'}`,
+          background: readOnly ? '#0D0003' : '#080002',
+          border:     `1px solid ${error ? '#883333' : '#1A0005'}`,
           color:      readOnly ? '#C08898' : '#FFFFFF',
           cursor:     readOnly ? 'default' : 'text',
         }}
@@ -92,7 +92,7 @@ function Field({
           e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(128,0,32,0.12)'
         }}
         onBlur={readOnly ? undefined : (e) => {
-          e.currentTarget.style.borderColor = error ? '#883333' : '#700020'
+          e.currentTarget.style.borderColor = error ? '#883333' : '#1A0005'
           e.currentTarget.style.boxShadow   = ''
         }}
       />
@@ -126,12 +126,12 @@ function PwField({
           autoComplete="new-password"
           className="w-full rounded-xl px-3 py-2.5 pr-10 text-sm outline-none"
           style={{
-            background: '#3A000F',
-            border: `1px solid ${matchErr ? '#883333' : '#700020'}`,
+            background: '#080002',
+            border: `1px solid ${matchErr ? '#883333' : '#1A0005'}`,
             color: '#FFFFFF',
           }}
           onFocus={(e) => { e.currentTarget.style.borderColor = '#800020' }}
-          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#700020' }}
+          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#1A0005' }}
         />
         <button
           type="button"
@@ -189,7 +189,7 @@ function LandSelect({ value, onChange }: { value: string; onChange: (v: string) 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
-        style={{ background: '#3A000F', border: '1px solid #9A0025', color: '#FFFFFF' }}
+        style={{ background: '#080002', border: '1px solid #440011', color: '#FFFFFF' }}
       >
         {LAENDER.map((l) => <option key={l} value={l}>{l}</option>)}
       </select>
@@ -373,10 +373,10 @@ function AdressKarte({
 
   return (
     <div className="rounded-2xl overflow-hidden flex flex-col h-full"
-      style={{ border: '1px solid #9A0025', background: '#4D0013' }}>
+      style={{ border: '1px solid #440011', background: '#33000D' }}>
       {/* Karten-Kopf */}
       <div className="px-5 py-4 flex items-center gap-3"
-        style={{ background: 'linear-gradient(145deg, #4D0013, #3A000F)', borderBottom: '1px solid #9A0025' }}>
+        style={{ background: 'linear-gradient(145deg, #33000D, #080002)', borderBottom: '1px solid #440011' }}>
         <span className="text-lg">{cardIcon}</span>
         <div>
           <p className="text-xs font-bold uppercase tracking-widest"
@@ -400,7 +400,7 @@ function AdressKarte({
               className="w-4.5 h-4.5 rounded flex items-center justify-center flex-shrink-0 transition-all"
               style={{
                 width: '18px', height: '18px',
-                background: sameAsRechnung ? '#800020' : '#3A000F',
+                background: sameAsRechnung ? '#800020' : '#080002',
                 border:     sameAsRechnung ? '2px solid #800020' : '2px solid #9CA3AF',
                 boxShadow:  sameAsRechnung ? '0 0 6px rgba(128,0,32,0.3)' : 'none',
               }}
@@ -481,7 +481,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
   const [err,   setErr]   = useState('')
 
   function strength(pw: string) {
-    if (!pw) return { pct: 0, color: '#9A0025', label: '' }
+    if (!pw) return { pct: 0, color: '#440011', label: '' }
     let s = 0
     if (pw.length >= 8)  s++
     if (pw.length >= 12) s++
@@ -545,7 +545,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
               <span className="text-[10px]" style={{ color: '#C08898' }}>Stärke</span>
               <span className="text-[10px] font-semibold" style={{ color: st.color }}>{st.label}</span>
             </div>
-            <div className="h-1 rounded-full" style={{ background: '#700020' }}>
+            <div className="h-1 rounded-full" style={{ background: '#1A0005' }}>
               <div className="h-full rounded-full transition-all duration-300"
                 style={{ width: `${st.pct}%`, background: st.color }} />
             </div>
@@ -580,7 +580,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
 
       {/* Hinweis */}
       <div className="rounded-xl px-4 py-3 text-xs space-y-1"
-        style={{ background: '#3A000F', border: '1px solid #9A0025', color: '#C08898' }}>
+        style={{ background: '#080002', border: '1px solid #440011', color: '#C08898' }}>
         <p className="font-semibold" style={{ color: '#C08898' }}>Passwort-Anforderungen</p>
         <p>Mindestens 8 Zeichen · Groß- und Kleinbuchstaben empfohlen · Sonderzeichen erhöhen die Sicherheit</p>
       </div>
@@ -700,7 +700,7 @@ export default function ProfilPage() {
       <div className="max-w-3xl space-y-6">
 
         {/* ── Seiten-Header ──────────────────────────────────────────────── */}
-        <div className="pb-4" style={{ borderBottom: '1px solid #9A0025' }}>
+        <div className="pb-4" style={{ borderBottom: '1px solid #440011' }}>
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Mein Konto
           </p>
@@ -720,7 +720,7 @@ export default function ProfilPage() {
 
         {/* ── Nutzer-Chip ────────────────────────────────────────────────── */}
         <div className="flex items-center gap-4 rounded-2xl p-4"
-          style={{ background: '#3A000F', border: '1px solid #9A0025' }}>
+          style={{ background: '#080002', border: '1px solid #440011' }}>
           <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #800020, #5a0016)', color: '#ffffff' }}>
             {rechnung.vorname ? rechnung.vorname[0].toUpperCase() : email.slice(0, 2).toUpperCase()}
@@ -744,7 +744,7 @@ export default function ProfilPage() {
 
         {/* ── Tab-Navigation ─────────────────────────────────────────────── */}
         <div className="flex"
-          style={{ borderBottom: '1px solid #9A0025' }}>
+          style={{ borderBottom: '1px solid #440011' }}>
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
               return (
@@ -772,7 +772,7 @@ export default function ProfilPage() {
         </div>
 
         {/* ── Tab-Content ────────────────────────────────────────────────── */}
-        <div className="rounded-2xl p-6" style={{ background: '#4D0013', border: '1px solid #9A0025' }}>
+        <div className="rounded-2xl p-6" style={{ background: '#33000D', border: '1px solid #440011' }}>
 
           {/* Tab: Persönliche Daten */}
           {activeTab === 'persoenlich' && kKunde && (
@@ -827,7 +827,7 @@ export default function ProfilPage() {
         </div>
 
         {/* ── Footer-Hinweis ──────────────────────────────────────────────── */}
-        <p className="text-xs text-center pb-2" style={{ color: '#9A0025' }}>
+        <p className="text-xs text-center pb-2" style={{ color: '#440011' }}>
           Änderungen wirken sich auf alle zukünftigen Vorgänge aus ·
           Bestehende Rechnungen bleiben unverändert
         </p>

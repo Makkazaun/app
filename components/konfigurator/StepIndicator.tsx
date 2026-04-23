@@ -11,7 +11,7 @@ export default function StepIndicator({ current }: { current: number }) {
   return (
     <div className="w-full">
       {/* Fortschrittsbalken */}
-      <div className="w-full h-0.5 mb-4" style={{ background: '#700020' }}>
+      <div className="w-full h-0.5 mb-4" style={{ background: '#1A0005' }}>
         <div
           className="h-full transition-all duration-500"
           style={{

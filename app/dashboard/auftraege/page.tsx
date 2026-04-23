@@ -67,7 +67,7 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
   if (rows.length === 0) {
     return (
       <div className="rounded-2xl p-12 text-center"
-        style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
+        style={{ background: '#33000D', border: '1px dashed #440011' }}>
         <div className="text-3xl mb-3">🔨</div>
         <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
           Keine Aufträge in dieser Kategorie
@@ -80,13 +80,13 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
   }
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
       {/* Tabellenkopf */}
       <div
         className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
         style={{
-          background: '#4D0013',
-          borderBottom: '1px solid #9A0025',
+          background: '#33000D',
+          borderBottom: '1px solid #440011',
           color: '#C08898',
           gridTemplateColumns: '130px 90px 1fr 150px 190px 90px',
           gap: '12px',
@@ -106,8 +106,8 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
           <div
             key={a.kAuftrag}
             style={{
-              background:   i % 2 === 0 ? '#4D0013' : '#3A000F',
-              borderBottom: i < rows.length - 1 ? '1px solid #9A0025' : 'none',
+              background:   i % 2 === 0 ? '#33000D' : '#080002',
+              borderBottom: i < rows.length - 1 ? '1px solid #440011' : 'none',
               opacity:      dimmed ? 0.5 : 1,
             }}
           >
@@ -211,7 +211,7 @@ export default function AuftraegePage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#4D0013', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#33000D', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -231,7 +231,7 @@ export default function AuftraegePage() {
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#4D0013', border: '1px solid #9A0025', height: '56px' }} />
+              style={{ background: '#33000D', border: '1px solid #440011', height: '56px' }} />
           ))}
         </div>
       )}
@@ -240,7 +240,7 @@ export default function AuftraegePage() {
       {!loading && (
         <>
           {/* Tab-Leiste */}
-          <div style={{ borderBottom: '1px solid #9A0025' }} className="flex">
+          <div style={{ borderBottom: '1px solid #440011' }} className="flex">
             {tabs.map(({ key, label, count }) => {
               const active = activeTab === key
               return (
@@ -281,7 +281,7 @@ export default function AuftraegePage() {
           <AuftraegeTabelle rows={tabRows} />
 
           {alle.length > 0 && (
-            <p className="text-xs text-center" style={{ color: '#9A0025' }}>
+            <p className="text-xs text-center" style={{ color: '#440011' }}>
               Live-Daten · Alle Beträge inkl. MwSt.
             </p>
           )}

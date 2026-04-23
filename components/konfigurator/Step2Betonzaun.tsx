@@ -382,9 +382,9 @@ function FarbPicker({
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: isActive ? '#800020'
-                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#4D0013',
+                  : hasSelection ? 'rgba(128,0,32,0.12)' : '#33000D',
                 border: isActive ? '1px solid #800020'
-                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #9A0025',
+                  : hasSelection ? '1px solid rgba(128,0,32,0.3)' : '1px solid #440011',
                 color: isActive ? '#ffffff' : hasSelection ? '#800020' : '#666',
                 transition: 'all 0.1s',
               }}
@@ -400,10 +400,10 @@ function FarbPicker({
 
       {/* ── Farbkachel-Raster (anthrazit-dunkler Hintergrund) ────────── */}
       <div style={{
-        background: '#3A000F',
+        background: '#080002',
         borderRadius: '10px',
         padding: '12px',
-        border: '1px solid #9A0025',
+        border: '1px solid #440011',
       }}>
         {renderTabContent()}
       </div>
@@ -516,8 +516,8 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(false)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#3A000F',
-              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #9A0025',
+              background: !kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#080002',
+              border: !kontrastfarbe ? '2px solid #800020' : '1px solid #440011',
               color: !kontrastfarbe ? '#800020' : '#C08898',
             }}
           >
@@ -527,8 +527,8 @@ function FarbAuswahl({ data, update }: Props) {
             onClick={() => toggleKontrastfarbe(true)}
             className="flex-1 rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150"
             style={{
-              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#3A000F',
-              border: kontrastfarbe ? '2px solid #800020' : '1px solid #9A0025',
+              background: kontrastfarbe ? 'rgba(128,0,32,0.10)' : '#080002',
+              border: kontrastfarbe ? '2px solid #800020' : '1px solid #440011',
               color: kontrastfarbe ? '#800020' : '#C08898',
             }}
           >
@@ -562,8 +562,8 @@ function FarbAuswahl({ data, update }: Props) {
             style={{
               width: '100%',
               padding: '12px 16px',
-              background: '#4D0013',
-              border: '1px solid #9A0025',
+              background: '#33000D',
+              border: '1px solid #440011',
               borderRadius: '10px',
               color: '#FFFFFF',
               fontSize: '14px',
@@ -685,7 +685,7 @@ export default function Step2Betonzaun({ data, update }: Props) {
           <StickyFarbVorschau data={data} />
 
           <div className="rounded-xl p-5"
-            style={{ background: '#2D000B', border: '1px solid #9A0025' }}
+            style={{ background: '#0D0003', border: '1px solid #440011' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider mb-1"
               style={{ color: '#800020', letterSpacing: '0.14em' }}>

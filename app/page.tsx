@@ -20,7 +20,7 @@ export default function HomePage() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#3A000F' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#080002' }}>
         <div className="w-6 h-6 rounded-full border-2 animate-spin"
           style={{ borderColor: '#C88090', borderTopColor: '#800020' }}
         />
@@ -29,7 +29,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#3A000F' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#080002' }}>
       {/* Goldener Schimmer oben */}
       <div className="fixed inset-0 pointer-events-none"
         style={{
@@ -39,12 +39,12 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="relative flex items-center justify-between px-8 py-5"
-        style={{ borderBottom: '1px solid #9A0025' }}
+        style={{ borderBottom: '1px solid #440011' }}
       >
         <Logo variant="header" />
         <Link href="/login"
           className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-80"
-          style={{ background: '#2D000B', color: '#F5D0D5', border: '1px solid #700020' }}
+          style={{ background: '#0D0003', color: '#F5D0D5', border: '1px solid #1A0005' }}
         >
           Edelzaun App
         </Link>
@@ -91,7 +91,7 @@ export default function HomePage() {
             style={{
               background: 'transparent',
               color: '#C88090',
-              border: '1px solid #700020',
+              border: '1px solid #1A0005',
               letterSpacing: '0.12em',
             }}
           >
@@ -111,7 +111,7 @@ export default function HomePage() {
             { icon: '🛡️', title: 'Langlebige Qualität', text: 'Hochwertige Materialien mit langer Lebensdauer.' },
           ].map((f) => (
             <div key={f.title} className="rounded-xl p-6 text-left"
-              style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+              style={{ background: '#33000D', border: '1px solid #440011' }}
             >
               <span className="text-2xl mb-3 block">{f.icon}</span>
               <h3 className="text-sm font-semibold mb-1" style={{ color: '#F5D0D5' }}>{f.title}</h3>

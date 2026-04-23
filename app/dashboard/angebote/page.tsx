@@ -81,7 +81,7 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
             onClick={() => { setConfirm(false); setErrorMsg(null) }}
             disabled={loading}
             className="px-2 py-1 rounded text-[10px] transition-opacity hover:opacity-80"
-            style={{ background: '#2D000B', color: '#C88090', border: '1px solid #333' }}
+            style={{ background: '#0D0003', color: '#C88090', border: '1px solid #333' }}
           >
             Abbrechen
           </button>
@@ -190,7 +190,7 @@ export default function AngebotePage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#4D0013', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#33000D', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -208,7 +208,7 @@ export default function AngebotePage() {
         <div className="grid grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl p-4 animate-pulse"
-              style={{ background: '#4D0013', border: '1px solid #9A0025', height: '72px' }} />
+              style={{ background: '#33000D', border: '1px solid #440011', height: '72px' }} />
           ))}
         </div>
       )}
@@ -225,8 +225,8 @@ export default function AngebotePage() {
                   onClick={() => setActiveFilter(isActive ? null : item.key)}
                   className="rounded-xl p-4 text-center transition-all duration-150 hover:opacity-90"
                   style={{
-                    background:  isActive ? `${item.color}14` : '#4D0013',
-                    border:      isActive ? `1px solid ${item.color}50` : '1px solid #9A0025',
+                    background:  isActive ? `${item.color}14` : '#33000D',
+                    border:      isActive ? `1px solid ${item.color}50` : '1px solid #440011',
                     boxShadow:   isActive ? `0 0 0 1px ${item.color}20` : 'none',
                     cursor:      'pointer',
                   }}
@@ -265,7 +265,7 @@ export default function AngebotePage() {
 
       {!loading && displayed.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
+          style={{ background: '#33000D', border: '1px dashed #440011' }}>
           <div className="text-4xl mb-4">📋</div>
           {activeFilter !== null ? (
             <>
@@ -295,14 +295,14 @@ export default function AngebotePage() {
       )}
 
       {!loading && displayed.length > 0 && (
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
 
           {/* Tabellenkopf – nur Desktop */}
           <div
             className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
             style={{
-              background:          '#4D0013',
-              borderBottom:        '1px solid #9A0025',
+              background:          '#33000D',
+              borderBottom:        '1px solid #440011',
               color:               '#C08898',
               gridTemplateColumns: '130px 1fr 120px 110px 160px 60px',
               gap:                 '12px',
@@ -324,8 +324,8 @@ export default function AngebotePage() {
               <div
                 key={a.kAuftrag}
                 style={{
-                  background:   i % 2 === 0 ? '#4D0013' : '#3A000F',
-                  borderBottom: i < displayed.length - 1 ? '1px solid #9A0025' : 'none',
+                  background:   i % 2 === 0 ? '#33000D' : '#080002',
+                  borderBottom: i < displayed.length - 1 ? '1px solid #440011' : 'none',
                   opacity:      dimmed ? 0.55 : 1,
                 }}
               >
@@ -397,7 +397,7 @@ export default function AngebotePage() {
 
                   {/* Aktionen (nur bei offenen Angeboten) – eigene Zeile */}
                   {a.status === 'offen' && (
-                    <div className="pt-2" style={{ borderTop: '1px solid #9A0025' }}>
+                    <div className="pt-2" style={{ borderTop: '1px solid #440011' }}>
                       <AngebotAktionen
                         angebot={a}
                         onAnnehmen={setSignAngebot}
@@ -413,7 +413,7 @@ export default function AngebotePage() {
       )}
 
       {!loading && (
-        <p className="text-xs text-center" style={{ color: '#9A0025' }}>
+        <p className="text-xs text-center" style={{ color: '#440011' }}>
           Live-Daten · Alle Beträge inkl. MwSt.
         </p>
       )}

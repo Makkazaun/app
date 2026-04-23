@@ -48,7 +48,7 @@ export default function TerminePage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#4D0013', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#33000D', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -68,7 +68,7 @@ export default function TerminePage() {
         <div className="space-y-3">
           {[1, 2].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#4D0013', border: '1px solid #9A0025', height: '110px' }} />
+              style={{ background: '#33000D', border: '1px solid #440011', height: '110px' }} />
           ))}
         </div>
       )}
@@ -78,7 +78,7 @@ export default function TerminePage() {
         <div className="rounded-2xl p-5 flex items-center gap-4"
           style={{ background: '#1A0818', border: '1px solid #4D0035' }}>
           <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
-            style={{ background: '#3A000F' }}>
+            style={{ background: '#080002' }}>
             📅
           </div>
           <div className="flex-1 min-w-0">
@@ -98,7 +98,7 @@ export default function TerminePage() {
       {/* Leer-Zustand */}
       {!loading && auftraege.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}>
+          style={{ background: '#33000D', border: '1px dashed #440011' }}>
           <div className="text-4xl mb-4">🔧</div>
           <p className="text-base font-semibold mb-2" style={{ color: '#C08898' }}>
             Keine Dokumente vorhanden
@@ -133,8 +133,8 @@ export default function TerminePage() {
                 style={{
                   background: istNaechster
                     ? 'linear-gradient(145deg, #1e1c0a, #181608)'
-                    : 'linear-gradient(145deg, #4D0013, #3A000F)',
-                  border: istNaechster ? '1px solid #3d3210' : '1px solid #9A0025',
+                    : 'linear-gradient(145deg, #33000D, #080002)',
+                  border: istNaechster ? '1px solid #3d3210' : '1px solid #440011',
                   opacity: istVergangen ? 0.6 : 1,
                 }}
               >
@@ -143,8 +143,8 @@ export default function TerminePage() {
                   <div
                     className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
                     style={{
-                      background: istVergangen ? '#2D000B' : istNaechster ? '#FFFBEB' : '#3A000F',
-                      border: `1px solid ${istNaechster ? '#FDE68A' : '#700020'}`,
+                      background: istVergangen ? '#0D0003' : istNaechster ? '#FFFBEB' : '#080002',
+                      border: `1px solid ${istNaechster ? '#FDE68A' : '#1A0005'}`,
                     }}
                   >
                     <span className="text-xs font-medium" style={{ color: statusColor }}>
@@ -189,7 +189,7 @@ export default function TerminePage() {
       {/* Hinweis */}
       {!loading && (
         <div className="rounded-xl px-4 py-3 text-xs"
-          style={{ background: '#3A000F', border: '1px solid #9A0025', color: '#C08898' }}>
+          style={{ background: '#080002', border: '1px solid #440011', color: '#C08898' }}>
           ℹ Terminänderungen werden von unserem Team kommuniziert. Alle Zeiten sind voraussichtliche Werte.
         </div>
       )}

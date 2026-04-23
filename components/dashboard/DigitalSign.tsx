@@ -129,8 +129,8 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
       <div
         className="relative w-full sm:max-w-lg flex flex-col"
         style={{
-          background: '#3A000F',
-          border:     '1px solid #9A0025',
+          background: '#080002',
+          border:     '1px solid #440011',
           borderRadius: '20px 20px 0 0',
           padding: '28px 24px 32px',
         }}
@@ -144,7 +144,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
         <button
           onClick={onClose}
           className="hidden sm:flex absolute top-5 right-5 w-8 h-8 items-center justify-center rounded-lg transition-opacity hover:opacity-70"
-          style={{ background: '#700020', color: '#C88090', fontSize: '14px' }}
+          style={{ background: '#1A0005', color: '#C88090', fontSize: '14px' }}
         >
           ✕
         </button>
@@ -160,7 +160,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
 
           {/* Angebots-Info */}
           <div className="rounded-xl p-4 space-y-2.5"
-            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+            style={{ background: '#33000D', border: '1px solid #440011' }}
           >
             <div className="flex items-center justify-between text-xs">
               <span style={{ color: '#C08898' }}>Angebots-Nr.</span>
@@ -195,10 +195,10 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             ref={wrapRef}
             className="w-full rounded-xl overflow-hidden relative"
             style={{
-              background: '#3A000F',
+              background: '#080002',
               border: isEmpty
-                ? '1.5px dashed #9A0025'
-                : '1.5px solid #700020',
+                ? '1.5px dashed #440011'
+                : '1.5px solid #1A0005',
             }}
           >
             <canvas
@@ -235,7 +235,7 @@ export default function DigitalSign({ angebotId, leistung, betrag, onSign, onClo
             type="button"
             onClick={onClose}
             className="flex-1 py-3.5 rounded-xl font-medium text-sm transition-opacity hover:opacity-80"
-            style={{ background: '#2D000B', color: '#C88090', border: '1px solid #9A0025' }}
+            style={{ background: '#0D0003', color: '#C88090', border: '1px solid #440011' }}
           >
             Abbrechen
           </button>

@@ -207,7 +207,7 @@ export default function AngeboteSection() {
           { label: 'Abgelaufen', count: abgelauf, color: '#C08898', sub: 'Nicht mehr gültig' },
         ].map((item) => (
           <div key={item.label} className="rounded-xl p-4 text-center"
-            style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+            style={{ background: '#33000D', border: '1px solid #440011' }}
           >
             <p className="text-2xl font-bold" style={{ color: item.color }}>{item.count}</p>
             <p className="text-xs font-medium mt-0.5" style={{ color: '#C88090' }}>{item.label}</p>
@@ -219,7 +219,7 @@ export default function AngeboteSection() {
       {/* Leer-Zustand */}
       {!jtlLoading && jtlLoaded && angebote.length === 0 && (
         <div className="rounded-xl p-10 text-center"
-          style={{ background: '#4D0013', border: '1px dashed #9A0025' }}
+          style={{ background: '#33000D', border: '1px dashed #440011' }}
         >
           <p className="text-2xl mb-3">📋</p>
           <p className="text-sm font-medium mb-1" style={{ color: '#C08898' }}>
@@ -233,14 +233,14 @@ export default function AngeboteSection() {
 
       {/* Angebots-Tabelle */}
       {angebote.length > 0 && (
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
 
         {/* Header */}
         <div
           className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
           style={{
-            background: '#4D0013',
-            borderBottom: '1px solid #9A0025',
+            background: '#33000D',
+            borderBottom: '1px solid #440011',
             color: '#C08898',
             letterSpacing: '0.1em',
             gridTemplateColumns: '140px 1fr 110px 180px 80px',
@@ -264,8 +264,8 @@ export default function AngeboteSection() {
               style={{
                 background: isJustSigned
                   ? 'rgba(91,201,122,0.06)'
-                  : i % 2 === 0 ? '#4D0013' : '#3A000F',
-                borderBottom: i < angebote.length - 1 ? '1px solid #9A0025' : 'none',
+                  : i % 2 === 0 ? '#33000D' : '#080002',
+                borderBottom: i < angebote.length - 1 ? '1px solid #440011' : 'none',
                 transition: 'background 0.5s',
               }}
             >
@@ -363,8 +363,8 @@ export default function AngeboteSection() {
           <div
             className="w-full max-w-sm rounded-2xl p-8 text-center"
             style={{
-              background: '#4D0013',
-              border: '1px solid #9A0025',
+              background: '#33000D',
+              border: '1px solid #440011',
               boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
             }}
             onClick={(e) => e.stopPropagation()}
@@ -390,7 +390,7 @@ export default function AngeboteSection() {
             </p>
 
             <div className="text-xs px-3 py-2 rounded-lg mb-6"
-              style={{ background: '#3A000F', border: '1px solid #9A0025', color: '#C88090' }}>
+              style={{ background: '#080002', border: '1px solid #440011', color: '#C88090' }}>
               Auftrags-Nr.: <span style={{ color: '#800020' }}>{dankModal}</span>
             </div>
 

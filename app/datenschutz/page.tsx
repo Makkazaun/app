@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function DatenschutzPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#3A000F' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#080002' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
@@ -27,7 +27,7 @@ export default function DatenschutzPage() {
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#4D0013', border: '1px solid #333333' }}
+          style={{ background: '#33000D', border: '1px solid #333333' }}
         >
           <Section title="Personenbezogene Daten">
             <Prose>
@@ -171,7 +171,7 @@ export default function DatenschutzPage() {
               Berichtigungs- oder Löschanfragen an:
             </Prose>
             <div className="mt-3 pl-4 py-3 rounded-lg text-sm space-y-1"
-              style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+              style={{ background: '#33000D', border: '1px solid #440011' }}
             >
               <p style={{ color: '#c8c8c8' }}>TR Edelzaun &amp; Tor GmbH</p>
               <p style={{ color: '#C88090' }}>Kastanienplatz 2, 06369 Großwülknitz</p>
@@ -205,5 +205,5 @@ function Prose({ children }: { children: React.ReactNode }) {
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#700020' }} />
+  return <div className="w-full h-px" style={{ background: '#1A0005' }} />
 }

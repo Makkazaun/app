@@ -30,7 +30,7 @@ export default function NavButtons({
           className="flex-1 py-4 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-80 active:scale-[0.98]"
           style={{
             background: 'transparent',
-            border: '1px solid #700020',
+            border: '1px solid #1A0005',
             color: '#C88090',
           }}
         >

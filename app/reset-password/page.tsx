@@ -115,7 +115,7 @@ function ResetPasswordForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(160deg, #2D000B 0%, #1A0008 50%, #2D000B 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #0D0003 0%, #040001 50%, #0D0003 100%)' }}
     >
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
@@ -138,8 +138,8 @@ function ResetPasswordForm() {
         <div
           className="rounded-2xl p-7 shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #4D0013, #3A000F)',
-            border: '1px solid #700020',
+            background: 'linear-gradient(145deg, #33000D, #080002)',
+            border: '1px solid #1A0005',
             boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}
         >
@@ -305,7 +305,7 @@ function ResetPasswordForm() {
               </div>
 
               {/* Fortschrittsbalken */}
-              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#700020' }}>
+              <div className="h-0.5 rounded-full overflow-hidden" style={{ background: '#1A0005' }}>
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -408,8 +408,8 @@ function PasswordField({
           onBlur={() => setFocused(false)}
           className="w-full px-4 py-3 pr-11 rounded-lg text-sm transition-all duration-150"
           style={{
-            background: '#3A000F',
-            border: `1px solid ${focused ? '#800020' : '#700020'}`,
+            background: '#080002',
+            border: `1px solid ${focused ? '#800020' : '#1A0005'}`,
             color: '#FFFFFF',
             outline: 'none',
             boxShadow: focused ? '0 0 0 3px rgba(128,0,32,0.08)' : 'none',
@@ -457,7 +457,7 @@ function StrengthBar({ password }: { password: string }) {
           <div
             key={i}
             className="flex-1 h-1 rounded-full transition-all duration-300"
-            style={{ background: i < score ? lvl.color : '#700020' }}
+            style={{ background: i < score ? lvl.color : '#1A0005' }}
           />
         ))}
       </div>

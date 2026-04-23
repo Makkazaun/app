@@ -19,8 +19,8 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
 
 export function inputStyle(focused = false): React.CSSProperties {
   return {
-    background: '#3A000F',
-    border: `1px solid ${focused ? '#800020' : '#700020'}`,
+    background: '#080002',
+    border: `1px solid ${focused ? '#800020' : '#1A0005'}`,
     color: '#FFFFFF',
     borderRadius: '12px',
     padding: '14px 16px',

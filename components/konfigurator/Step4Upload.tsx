@@ -58,7 +58,7 @@ export default function Step4Upload({ data, update }: Props) {
         className="cursor-pointer rounded-2xl flex flex-col items-center justify-center gap-3 py-12 px-6 text-center transition-all duration-200"
         style={{
           border: `2px dashed ${dragging ? '#800020' : '#C08898'}`,
-          background: dragging ? 'rgba(128,0,32,0.15)' : '#3A000F',
+          background: dragging ? 'rgba(128,0,32,0.15)' : '#080002',
         }}
       >
         <div className="text-5xl">{dragging ? '📂' : '📎'}</div>
@@ -71,7 +71,7 @@ export default function Step4Upload({ data, update }: Props) {
           </p>
         </div>
         <div className="px-5 py-2.5 rounded-xl text-sm font-medium"
-          style={{ background: '#700020', color: '#C88090', border: '1px solid #700020' }}
+          style={{ background: '#1A0005', color: '#C88090', border: '1px solid #1A0005' }}
         >
           Datei auswählen
         </div>
@@ -102,7 +102,7 @@ export default function Step4Upload({ data, update }: Props) {
           {data.dateien.map((f, i) => (
             <div key={i}
               className="flex items-center gap-3 rounded-xl px-4 py-3"
-              style={{ background: '#4D0013', border: '1px solid #9A0025' }}
+              style={{ background: '#33000D', border: '1px solid #440011' }}
             >
               <span className="text-xl flex-shrink-0">
                 {f.type === 'application/pdf' ? '📄' : '🖼️'}
@@ -115,7 +115,7 @@ export default function Step4Upload({ data, update }: Props) {
               </div>
               <button type="button" onClick={() => removeFile(i)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-opacity hover:opacity-80"
-                style={{ background: '#700020', color: '#C88090' }}
+                style={{ background: '#1A0005', color: '#C88090' }}
               >
                 ✕
               </button>

@@ -142,9 +142,9 @@ function SummaryBlock({ title, children, onEdit }: {
   title: string; children: React.ReactNode; onEdit: () => void
 }) {
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #9A0025' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #440011' }}>
       <div className="flex items-center justify-between px-4 py-3"
-        style={{ background: '#4D0013', borderBottom: '1px solid #9A0025' }}
+        style={{ background: '#33000D', borderBottom: '1px solid #440011' }}
       >
         <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: '#C88090', letterSpacing: '0.12em' }}>
           {title}
@@ -156,7 +156,7 @@ function SummaryBlock({ title, children, onEdit }: {
           ✎ Bearbeiten
         </button>
       </div>
-      <div className="px-4 py-3 space-y-2" style={{ background: '#3A000F' }}>
+      <div className="px-4 py-3 space-y-2" style={{ background: '#080002' }}>
         {children}
       </div>
     </div>

@@ -9,11 +9,11 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#3A000F' }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: '#080002' }}>
       <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       <div className="flex flex-col flex-1 overflow-hidden min-w-0">
         <TopBar onMenuOpen={() => setMobileMenuOpen(true)} />
-        <main className="flex-1 overflow-y-auto" style={{ background: '#2D000B' }}>
+        <main className="flex-1 overflow-y-auto" style={{ background: '#0D0003' }}>
           <div className="p-4 md:p-6">{children}</div>
           <Footer />
         </main>

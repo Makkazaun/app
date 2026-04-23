@@ -17,8 +17,8 @@ export default function SelectCard({
       onClick={onClick}
       className={`relative flex items-center gap-3 rounded-xl px-4 py-4 text-left transition-all duration-200 active:scale-[0.97] ${fullWidth ? 'w-full' : ''}`}
       style={{
-        background: selected ? 'rgba(255,255,255,0.08)' : '#4D0013',
-        border: selected ? '2px solid #800020' : '1px solid #9A0025',
+        background: selected ? 'rgba(255,255,255,0.08)' : '#33000D',
+        border: selected ? '2px solid #800020' : '1px solid #440011',
         boxShadow: selected ? '0 0 20px rgba(128,0,32,0.1)' : 'none',
       }}
     >
