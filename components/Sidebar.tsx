@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -70,24 +70,24 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           isOpen ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
         style={{
-          background:  'linear-gradient(180deg, #222222 0%, #1e1e1e 100%)',
-          borderRight: '1px solid #2d2d2d',
+          background:  'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)',
+          borderRight: '1px solid #E5E7EB',
         }}
       >
         {/* Logo + mobile close button */}
         <div
           className="flex items-center justify-between px-5 py-5"
-          style={{ borderBottom: '1px solid #2d2d2d' }}
+          style={{ borderBottom: '1px solid #E5E7EB' }}
         >
           <div className="flex flex-col items-start gap-1">
             <Logo variant="sidebar" />
-            <p className="text-xs pl-0.5" style={{ color: '#4a4a4a', letterSpacing: '0.12em' }}>
+            <p className="text-xs pl-0.5" style={{ color: '#9CA3AF', letterSpacing: '0.12em' }}>
               Edelzaun App
             </p>
           </div>
           <button
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg"
-            style={{ background: '#2a2a2a', color: '#7a7a7a', border: '1px solid #333' }}
+            style={{ background: '#F3F4F6', color: '#6B7280', border: '1px solid #D1D5DB' }}
             onClick={onClose}
             aria-label="Menü schließen"
           >
@@ -99,7 +99,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         <nav className="flex-1 px-3 py-4 space-y-0.5">
           <p
             className="px-3 py-2 text-xs font-medium tracking-widest uppercase"
-            style={{ color: '#4a4a4a', letterSpacing: '0.15em' }}
+            style={{ color: '#9CA3AF', letterSpacing: '0.15em' }}
           >
             Navigation
           </p>
@@ -114,7 +114,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                 className="flex items-center gap-3 px-3 rounded-lg transition-all duration-150 text-sm"
                 style={{
                   background:  isActive ? 'rgba(128,0,32,0.10)' : 'transparent',
-                  color:       isActive ? '#800020' : '#7a7a7a',
+                  color:       isActive ? '#800020' : '#6B7280',
                   borderLeft:  isActive ? '2px solid #800020' : '2px solid transparent',
                   fontWeight:  isActive ? '600' : '400',
                   minHeight:   '44px',
@@ -125,7 +125,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                 <Icon
                   size={16}
                   strokeWidth={isActive ? 2.2 : 1.8}
-                  style={{ flexShrink: 0, color: isActive ? '#800020' : '#5a5a5a' }}
+                  style={{ flexShrink: 0, color: isActive ? '#800020' : '#9CA3AF' }}
                 />
                 {label}
               </Link>
@@ -134,11 +134,11 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         </nav>
 
         {/* Benutzer-Info */}
-        <div className="px-4 py-4" style={{ borderTop: '1px solid #2d2d2d' }}>
+        <div className="px-4 py-4" style={{ borderTop: '1px solid #E5E7EB' }}>
           {mounted ? (
             <div
               className="flex items-center gap-3 px-2 py-2 rounded-lg"
-              style={{ background: '#1a1a1a' }}
+              style={{ background: '#F9FAFB' }}
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -147,22 +147,22 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                 {initials}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium truncate" style={{ color: '#d4d4d4' }}>
+                <p className="text-xs font-medium truncate" style={{ color: '#374151' }}>
                   {session?.email ?? 'Gast'}
                 </p>
-                <p className="text-xs" style={{ color: '#4a4a4a' }}>Kunde</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>Kunde</p>
               </div>
               <button
                 onClick={handleLogout}
                 className="flex-shrink-0 w-8 h-8 rounded flex items-center justify-center transition-opacity hover:opacity-80"
-                style={{ color: '#5a5a5a' }}
+                style={{ color: '#9CA3AF' }}
                 title="Abmelden"
               >
                 <LogOut size={14} strokeWidth={1.8} />
               </button>
             </div>
           ) : (
-            <div className="h-10 rounded-lg" style={{ background: '#1a1a1a' }} />
+            <div className="h-10 rounded-lg" style={{ background: '#F9FAFB' }} />
           )}
         </div>
       </aside>

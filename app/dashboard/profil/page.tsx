@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getSession } from '@/lib/auth'
@@ -68,11 +68,11 @@ function Field({
   return (
     <div>
       <label className="block text-xs font-medium mb-1.5"
-        style={{ color: error ? '#e08080' : readOnly ? '#3a3a3a' : '#7a7a7a' }}>
+        style={{ color: error ? '#e08080' : readOnly ? '#9CA3AF' : '#6B7280' }}>
         {label}
         {required && <span style={{ color: '#800020' }}> *</span>}
         {readOnly && <span className="ml-1.5 text-[10px] uppercase tracking-wider"
-          style={{ color: '#3a3a3a' }}>(schreibgeschützt)</span>}
+          style={{ color: '#9CA3AF' }}>(schreibgeschützt)</span>}
       </label>
       <input
         type={type}
@@ -82,9 +82,9 @@ function Field({
         placeholder={placeholder}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none transition-all"
         style={{
-          background: readOnly ? '#0f0f0f' : '#141414',
-          border:     `1px solid ${error ? '#883333' : '#2a2a2a'}`,
-          color:      readOnly ? '#4a4a4a' : '#e0e0e0',
+          background: readOnly ? '#F3F4F6' : '#F9FAFB',
+          border:     `1px solid ${error ? '#883333' : '#E5E7EB'}`,
+          color:      readOnly ? '#9CA3AF' : '#1F2937',
           cursor:     readOnly ? 'default' : 'text',
         }}
         onFocus={readOnly ? undefined : (e) => {
@@ -92,7 +92,7 @@ function Field({
           e.currentTarget.style.boxShadow   = '0 0 0 2px rgba(128,0,32,0.12)'
         }}
         onBlur={readOnly ? undefined : (e) => {
-          e.currentTarget.style.borderColor = error ? '#883333' : '#2a2a2a'
+          e.currentTarget.style.borderColor = error ? '#883333' : '#E5E7EB'
           e.currentTarget.style.boxShadow   = ''
         }}
       />
@@ -115,7 +115,7 @@ function PwField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium mb-1.5" style={{ color: '#7a7a7a' }}>
+      <label className="block text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>
         {label} <span style={{ color: '#800020' }}>*</span>
       </label>
       <div className="relative">
@@ -126,18 +126,18 @@ function PwField({
           autoComplete="new-password"
           className="w-full rounded-xl px-3 py-2.5 pr-10 text-sm outline-none"
           style={{
-            background: '#141414',
-            border: `1px solid ${matchErr ? '#883333' : '#2a2a2a'}`,
-            color: '#e0e0e0',
+            background: '#F9FAFB',
+            border: `1px solid ${matchErr ? '#883333' : '#E5E7EB'}`,
+            color: '#1F2937',
           }}
           onFocus={(e) => { e.currentTarget.style.borderColor = '#800020' }}
-          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#2a2a2a' }}
+          onBlur={(e)  => { e.currentTarget.style.borderColor = matchErr ? '#883333' : '#E5E7EB' }}
         />
         <button
           type="button"
           onClick={onToggle}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-sm leading-none"
-          style={{ color: '#5a5a5a' }}
+          style={{ color: '#9CA3AF' }}
           tabIndex={-1}
         >
           {show ? '🙈' : '👁'}
@@ -184,12 +184,12 @@ const LAENDER = ['Deutschland', 'Österreich', 'Schweiz', 'Polen', 'Tschechien',
 function LandSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <label className="block text-xs font-medium mb-1.5" style={{ color: '#7a7a7a' }}>Land</label>
+      <label className="block text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Land</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
-        style={{ background: '#141414', border: '1px solid #2a2a2a', color: '#e0e0e0' }}
+        style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', color: '#1F2937' }}
       >
         {LAENDER.map((l) => <option key={l} value={l}>{l}</option>)}
       </select>
@@ -373,15 +373,15 @@ function AdressKarte({
 
   return (
     <div className="rounded-2xl overflow-hidden flex flex-col h-full"
-      style={{ border: '1px solid #2d2d2d', background: '#191919' }}>
+      style={{ border: '1px solid #E5E7EB', background: '#FFFFFF' }}>
       {/* Karten-Kopf */}
       <div className="px-5 py-4 flex items-center gap-3"
-        style={{ background: 'linear-gradient(145deg, #1e1e1e, #1c1c1c)', borderBottom: '1px solid #252525' }}>
+        style={{ background: 'linear-gradient(145deg, #FFFFFF, #FFFFFF)', borderBottom: '1px solid #F3F4F6' }}>
         <span className="text-lg">{cardIcon}</span>
         <div>
           <p className="text-xs font-bold uppercase tracking-widest"
             style={{ color: '#800020', letterSpacing: '0.14em' }}>{cardTitle}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
+          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
             {isLieferung ? 'Für Lieferungen und Montage' : 'Für Rechnungen und Korrespondenz'}
           </p>
         </div>
@@ -400,8 +400,8 @@ function AdressKarte({
               className="w-4.5 h-4.5 rounded flex items-center justify-center flex-shrink-0 transition-all"
               style={{
                 width: '18px', height: '18px',
-                background: sameAsRechnung ? '#800020' : '#141414',
-                border:     sameAsRechnung ? '2px solid #800020' : '2px solid #3a3a3a',
+                background: sameAsRechnung ? '#800020' : '#F9FAFB',
+                border:     sameAsRechnung ? '2px solid #800020' : '2px solid #9CA3AF',
                 boxShadow:  sameAsRechnung ? '0 0 6px rgba(128,0,32,0.3)' : 'none',
               }}
             >
@@ -412,7 +412,7 @@ function AdressKarte({
                 </svg>
               )}
             </div>
-            <span className="text-xs" style={{ color: sameAsRechnung ? '#800020' : '#6a6a6a' }}>
+            <span className="text-xs" style={{ color: sameAsRechnung ? '#800020' : '#6B7280' }}>
               Gleich wie Rechnungsadresse
             </span>
           </button>
@@ -481,7 +481,7 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
   const [err,   setErr]   = useState('')
 
   function strength(pw: string) {
-    if (!pw) return { pct: 0, color: '#2a2a2a', label: '' }
+    if (!pw) return { pct: 0, color: '#E5E7EB', label: '' }
     let s = 0
     if (pw.length >= 8)  s++
     if (pw.length >= 12) s++
@@ -542,10 +542,10 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
         {neu && (
           <div className="mt-2">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px]" style={{ color: '#4a4a4a' }}>Stärke</span>
+              <span className="text-[10px]" style={{ color: '#9CA3AF' }}>Stärke</span>
               <span className="text-[10px] font-semibold" style={{ color: st.color }}>{st.label}</span>
             </div>
-            <div className="h-1 rounded-full" style={{ background: '#2a2a2a' }}>
+            <div className="h-1 rounded-full" style={{ background: '#E5E7EB' }}>
               <div className="h-full rounded-full transition-all duration-300"
                 style={{ width: `${st.pct}%`, background: st.color }} />
             </div>
@@ -580,8 +580,8 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
 
       {/* Hinweis */}
       <div className="rounded-xl px-4 py-3 text-xs space-y-1"
-        style={{ background: '#141414', border: '1px solid #222', color: '#4a4a4a' }}>
-        <p className="font-semibold" style={{ color: '#5a5a5a' }}>Passwort-Anforderungen</p>
+        style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', color: '#9CA3AF' }}>
+        <p className="font-semibold" style={{ color: '#9CA3AF' }}>Passwort-Anforderungen</p>
         <p>Mindestens 8 Zeichen · Groß- und Kleinbuchstaben empfohlen · Sonderzeichen erhöhen die Sicherheit</p>
       </div>
     </div>
@@ -686,7 +686,7 @@ export default function ProfilPage() {
         <div className="text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 animate-spin mx-auto"
             style={{ borderColor: '#800020', borderTopColor: 'transparent' }} />
-          <p className="text-sm" style={{ color: '#5a5a5a' }}>Profil wird geladen …</p>
+          <p className="text-sm" style={{ color: '#9CA3AF' }}>Profil wird geladen …</p>
         </div>
       </div>
     )
@@ -700,12 +700,12 @@ export default function ProfilPage() {
       <div className="max-w-3xl space-y-6">
 
         {/* ── Seiten-Header ──────────────────────────────────────────────── */}
-        <div className="pb-4" style={{ borderBottom: '1px solid #2a2a2a' }}>
+        <div className="pb-4" style={{ borderBottom: '1px solid #E5E7EB' }}>
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Mein Konto
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Profilverwaltung</h1>
-          <p className="mt-1 text-sm" style={{ color: '#5a5a5a' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Profilverwaltung</h1>
+          <p className="mt-1 text-sm" style={{ color: '#9CA3AF' }}>
             Änderungen werden direkt im System gespeichert.
           </p>
         </div>
@@ -720,16 +720,16 @@ export default function ProfilPage() {
 
         {/* ── Nutzer-Chip ────────────────────────────────────────────────── */}
         <div className="flex items-center gap-4 rounded-2xl p-4"
-          style={{ background: '#1a1a1a', border: '1px solid #2a2a2a' }}>
+          style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}>
           <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #800020, #5a0016)', color: '#ffffff' }}>
             {rechnung.vorname ? rechnung.vorname[0].toUpperCase() : email.slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold truncate" style={{ color: '#e8e8e8' }}>
+            <p className="text-sm font-semibold truncate" style={{ color: '#1F2937' }}>
               {[rechnung.vorname, rechnung.nachname].filter(Boolean).join(' ') || email}
             </p>
-            <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
+            <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
               {email}
               {kundennr && (
                 <> · <span style={{ color: '#800020' }}>KD-{kundennr}</span></>
@@ -744,7 +744,7 @@ export default function ProfilPage() {
 
         {/* ── Tab-Navigation ─────────────────────────────────────────────── */}
         <div className="flex"
-          style={{ borderBottom: '1px solid #252525' }}>
+          style={{ borderBottom: '1px solid #F3F4F6' }}>
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
               return (
@@ -755,7 +755,7 @@ export default function ProfilPage() {
                   className="flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all duration-200 whitespace-nowrap"
                   style={{
                     background:   'transparent',
-                    color:        isActive ? '#800020' : '#5a5a5a',
+                    color:        isActive ? '#800020' : '#9CA3AF',
                     borderBottom: isActive ? '2px solid #800020' : '2px solid transparent',
                     marginBottom: '-1px',
                   }}
@@ -772,7 +772,7 @@ export default function ProfilPage() {
         </div>
 
         {/* ── Tab-Content ────────────────────────────────────────────────── */}
-        <div className="rounded-2xl p-6" style={{ background: '#191919', border: '1px solid #2a2a2a' }}>
+        <div className="rounded-2xl p-6" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
 
           {/* Tab: Persönliche Daten */}
           {activeTab === 'persoenlich' && kKunde && (
@@ -820,14 +820,14 @@ export default function ProfilPage() {
 
           {/* Nicht eingeloggt */}
           {!kKunde && activeTab !== 'sicherheit' && (
-            <p className="text-sm text-center py-8" style={{ color: '#5a5a5a' }}>
+            <p className="text-sm text-center py-8" style={{ color: '#9CA3AF' }}>
               Kunden-ID nicht gefunden. Bitte neu anmelden.
             </p>
           )}
         </div>
 
         {/* ── Footer-Hinweis ──────────────────────────────────────────────── */}
-        <p className="text-xs text-center pb-2" style={{ color: '#2a2a2a' }}>
+        <p className="text-xs text-center pb-2" style={{ color: '#E5E7EB' }}>
           Änderungen wirken sich auf alle zukünftigen Vorgänge aus ·
           Bestehende Rechnungen bleiben unverändert
         </p>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useJtlAngebote, type JtlAngebot } from '@/lib/useJtlData'
@@ -24,7 +24,7 @@ const STATUS_LABEL: Record<JtlAngebot['status'], string> = {
 const STATUS_COLOR: Record<JtlAngebot['status'], string> = {
   offen:      '#800020',
   angenommen: '#5bc97a',
-  storniert:  '#5a5a5a',
+  storniert:  '#9CA3AF',
   abgelehnt:  '#c07070',
 }
 
@@ -81,7 +81,7 @@ function AblehnenButton({ angebot, onSuccess }: { angebot: JtlAngebot; onSuccess
             onClick={() => { setConfirm(false); setErrorMsg(null) }}
             disabled={loading}
             className="px-2 py-1 rounded text-[10px] transition-opacity hover:opacity-80"
-            style={{ background: '#252525', color: '#6a6a6a', border: '1px solid #333' }}
+            style={{ background: '#F3F4F6', color: '#6B7280', border: '1px solid #333' }}
           >
             Abbrechen
           </button>
@@ -173,7 +173,7 @@ export default function AngebotePage() {
   const filterCards: { label: string; count: number; color: string; sub: string; key: FilterKey }[] = [
     { label: 'Offen',                 count: offen,      color: '#800020', sub: 'Warten auf Unterschrift', key: 'offen' },
     { label: 'Angenommen',            count: angenommen, color: '#5bc97a', sub: 'Aufträge aktiv',          key: 'angenommen' },
-    { label: 'Abgelehnt / Storniert', count: inaktiv,    color: '#5a5a5a', sub: 'Nicht mehr gültig',       key: 'inaktiv' },
+    { label: 'Abgelehnt / Storniert', count: inaktiv,    color: '#9CA3AF', sub: 'Nicht mehr gültig',       key: 'inaktiv' },
   ]
 
   return (
@@ -183,14 +183,14 @@ export default function AngebotePage() {
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Angebote
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Angebote</h1>
-          <p className="mt-1 text-sm" style={{ color: '#6a6a6a' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Meine Angebote</h1>
+          <p className="mt-1 text-sm" style={{ color: '#6B7280' }}>
             {loading ? 'Daten werden geladen …' : 'Aktuelle Daten aus dem System'}
           </p>
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#1e1e1e', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#FFFFFF', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -208,7 +208,7 @@ export default function AngebotePage() {
         <div className="grid grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl p-4 animate-pulse"
-              style={{ background: '#1e1e1e', border: '1px solid #2d2d2d', height: '72px' }} />
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', height: '72px' }} />
           ))}
         </div>
       )}
@@ -225,17 +225,17 @@ export default function AngebotePage() {
                   onClick={() => setActiveFilter(isActive ? null : item.key)}
                   className="rounded-xl p-4 text-center transition-all duration-150 hover:opacity-90"
                   style={{
-                    background:  isActive ? `${item.color}14` : '#1e1e1e',
-                    border:      isActive ? `1px solid ${item.color}50` : '1px solid #2d2d2d',
+                    background:  isActive ? `${item.color}14` : '#FFFFFF',
+                    border:      isActive ? `1px solid ${item.color}50` : '1px solid #E5E7EB',
                     boxShadow:   isActive ? `0 0 0 1px ${item.color}20` : 'none',
                     cursor:      'pointer',
                   }}
                 >
                   <p className="text-2xl font-bold" style={{ color: item.color }}>{item.count}</p>
-                  <p className="text-xs font-medium mt-0.5" style={{ color: isActive ? item.color : '#8a8a8a' }}>
+                  <p className="text-xs font-medium mt-0.5" style={{ color: isActive ? item.color : '#6B7280' }}>
                     {item.label}
                   </p>
-                  <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#3a3a3a' }}>{item.sub}</p>
+                  <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#9CA3AF' }}>{item.sub}</p>
                 </button>
               )
             })}
@@ -244,7 +244,7 @@ export default function AngebotePage() {
           {/* Filter-Indikator */}
           {activeFilter !== null && (
             <div className="flex items-center gap-2">
-              <p className="text-xs" style={{ color: '#5a5a5a' }}>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>
                 Filter aktiv:
                 <span className="ml-1.5 font-medium" style={{ color: '#800020' }}>
                   {filterCards.find(c => c.key === activeFilter)?.label}
@@ -254,7 +254,7 @@ export default function AngebotePage() {
                 type="button"
                 onClick={() => setActiveFilter(null)}
                 className="text-xs transition-opacity hover:opacity-70"
-                style={{ color: '#5a5a5a', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+                style={{ color: '#9CA3AF', textDecoration: 'underline', textUnderlineOffset: '2px' }}
               >
                 Alle anzeigen
               </button>
@@ -265,11 +265,11 @@ export default function AngebotePage() {
 
       {!loading && displayed.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
+          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}>
           <div className="text-4xl mb-4">📋</div>
           {activeFilter !== null ? (
             <>
-              <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+              <p className="text-base font-semibold mb-2" style={{ color: '#9CA3AF' }}>
                 Keine Angebote in dieser Kategorie
               </p>
               <button
@@ -283,10 +283,10 @@ export default function AngebotePage() {
             </>
           ) : (
             <>
-              <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+              <p className="text-base font-semibold mb-2" style={{ color: '#9CA3AF' }}>
                 Aktuell liegen keine Angebote vor
               </p>
-              <p className="text-sm" style={{ color: '#3a3a3a' }}>
+              <p className="text-sm" style={{ color: '#9CA3AF' }}>
                 Sobald ein Angebot für Ihr Konto erstellt wird, erscheint es hier.
               </p>
             </>
@@ -295,15 +295,15 @@ export default function AngebotePage() {
       )}
 
       {!loading && displayed.length > 0 && (
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
 
           {/* Tabellenkopf – nur Desktop */}
           <div
             className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
             style={{
-              background:          '#1e1e1e',
-              borderBottom:        '1px solid #2d2d2d',
-              color:               '#4a4a4a',
+              background:          '#FFFFFF',
+              borderBottom:        '1px solid #E5E7EB',
+              color:               '#9CA3AF',
               gridTemplateColumns: '130px 1fr 120px 110px 160px 60px',
               gap:                 '12px',
             }}
@@ -324,8 +324,8 @@ export default function AngebotePage() {
               <div
                 key={a.kAuftrag}
                 style={{
-                  background:   i % 2 === 0 ? '#191919' : '#161616',
-                  borderBottom: i < displayed.length - 1 ? '1px solid #222' : 'none',
+                  background:   i % 2 === 0 ? '#FFFFFF' : '#F3F4F6',
+                  borderBottom: i < displayed.length - 1 ? '1px solid #E5E7EB' : 'none',
                   opacity:      dimmed ? 0.55 : 1,
                 }}
               >
@@ -338,10 +338,10 @@ export default function AngebotePage() {
                     <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                       {a.belegnummer}
                     </p>
-                    <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{formatDate(a.datum)}</p>
                   </div>
-                  <p className="text-xs leading-snug pt-0.5" style={{ color: '#b0b0b0' }}>{a.betreff}</p>
-                  <p className="text-sm font-semibold pt-0.5" style={{ color: '#e8e8e8' }}>
+                  <p className="text-xs leading-snug pt-0.5" style={{ color: '#4B5563' }}>{a.betreff}</p>
+                  <p className="text-sm font-semibold pt-0.5" style={{ color: '#1F2937' }}>
                     {formatEur(a.betragBrutto)}
                   </p>
                   <div className="pt-0.5">
@@ -374,7 +374,7 @@ export default function AngebotePage() {
                       <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                         {a.belegnummer}
                       </p>
-                      <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
+                      <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{formatDate(a.datum)}</p>
                     </div>
                     <span
                       className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0"
@@ -385,11 +385,11 @@ export default function AngebotePage() {
                   </div>
 
                   {/* Betreff */}
-                  <p className="text-xs" style={{ color: '#9a9a9a' }}>{a.betreff}</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>{a.betreff}</p>
 
                   {/* Betrag + PDF-Button */}
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-bold" style={{ color: '#e8e8e8' }}>
+                    <p className="text-sm font-bold" style={{ color: '#1F2937' }}>
                       {formatEur(a.betragBrutto)}
                     </p>
                     <BelegButton type="angebot" belegnummer={a.belegnummer} />
@@ -397,7 +397,7 @@ export default function AngebotePage() {
 
                   {/* Aktionen (nur bei offenen Angeboten) – eigene Zeile */}
                   {a.status === 'offen' && (
-                    <div className="pt-2" style={{ borderTop: '1px solid #252525' }}>
+                    <div className="pt-2" style={{ borderTop: '1px solid #F3F4F6' }}>
                       <AngebotAktionen
                         angebot={a}
                         onAnnehmen={setSignAngebot}
@@ -413,7 +413,7 @@ export default function AngebotePage() {
       )}
 
       {!loading && (
-        <p className="text-xs text-center" style={{ color: '#2a2a2a' }}>
+        <p className="text-xs text-center" style={{ color: '#E5E7EB' }}>
           Live-Daten · Alle Beträge inkl. MwSt.
         </p>
       )}

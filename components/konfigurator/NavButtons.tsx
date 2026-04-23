@@ -1,4 +1,4 @@
-interface NavButtonsProps {
+﻿interface NavButtonsProps {
   onBack?: () => void
   onNext?: () => void
   nextLabel?: string
@@ -19,7 +19,7 @@ export default function NavButtons({
     <div
       className="sticky bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-4 mt-8"
       style={{
-        background: 'linear-gradient(to top, #161616 70%, transparent)',
+        background: 'linear-gradient(to top, #F3F4F6 70%, transparent)',
         zIndex: 10,
       }}
     >
@@ -30,8 +30,8 @@ export default function NavButtons({
           className="flex-1 py-4 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-80 active:scale-[0.98]"
           style={{
             background: 'transparent',
-            border: '1px solid #3d3d3d',
-            color: '#7a7a7a',
+            border: '1px solid #D1D5DB',
+            color: '#6B7280',
           }}
         >
           ← Zurück

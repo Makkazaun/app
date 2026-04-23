@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Logo from '@/components/Logo'
 
 export const metadata = {
@@ -7,13 +7,13 @@ export const metadata = {
 
 export default function DatenschutzPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#1a1a1a' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#F9FAFB' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
           <Link href="/"
             className="inline-flex items-center gap-2 text-xs mb-8 hover:opacity-80 transition-opacity"
-            style={{ color: '#5a5a5a' }}
+            style={{ color: '#9CA3AF' }}
           >
             ← Zurück zur Startseite
           </Link>
@@ -23,11 +23,11 @@ export default function DatenschutzPage() {
           <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
-          <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>Datenschutzerklärung</h1>
+          <h1 className="text-3xl font-bold" style={{ color: '#1F2937' }}>Datenschutzerklärung</h1>
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#242424', border: '1px solid #333333' }}
+          style={{ background: '#FFFFFF', border: '1px solid #333333' }}
         >
           <Section title="Personenbezogene Daten">
             <Prose>
@@ -171,11 +171,11 @@ export default function DatenschutzPage() {
               Berichtigungs- oder Löschanfragen an:
             </Prose>
             <div className="mt-3 pl-4 py-3 rounded-lg text-sm space-y-1"
-              style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
               <p style={{ color: '#c8c8c8' }}>TR Edelzaun &amp; Tor GmbH</p>
-              <p style={{ color: '#7a7a7a' }}>Kastanienplatz 2, 06369 Großwülknitz</p>
-              <p style={{ color: '#7a7a7a' }}>Tel: 03496-7005181</p>
+              <p style={{ color: '#6B7280' }}>Kastanienplatz 2, 06369 Großwülknitz</p>
+              <p style={{ color: '#6B7280' }}>Tel: 03496-7005181</p>
               <p style={{ color: '#800020' }}>info@edelzaun-tor.de</p>
             </div>
           </Section>
@@ -200,10 +200,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed" style={{ color: '#8a8a8a' }}>{children}</p>
+    <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>{children}</p>
   )
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#2d2d2d' }} />
+  return <div className="w-full h-px" style={{ background: '#E5E7EB' }} />
 }

@@ -1,4 +1,4 @@
-interface PlaceholderTableProps {
+﻿interface PlaceholderTableProps {
   columns: string[]
   rows: React.ReactNode[][]
   emptyMessage?: string
@@ -7,17 +7,17 @@ interface PlaceholderTableProps {
 export default function PlaceholderTable({ columns, rows, emptyMessage }: PlaceholderTableProps) {
   return (
     <div className="rounded-xl overflow-hidden"
-      style={{ border: '1px solid #3d3d3d' }}
+      style={{ border: '1px solid #D1D5DB' }}
     >
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: '#252525', borderBottom: '1px solid #3d3d3d' }}>
+            <tr style={{ background: '#F3F4F6', borderBottom: '1px solid #D1D5DB' }}>
               {columns.map((col) => (
                 <th
                   key={col}
                   className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
-                  style={{ color: '#6a6a6a', letterSpacing: '0.1em' }}
+                  style={{ color: '#6B7280', letterSpacing: '0.1em' }}
                 >
                   {col}
                 </th>
@@ -28,7 +28,7 @@ export default function PlaceholderTable({ columns, rows, emptyMessage }: Placeh
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-10 text-center text-sm"
-                  style={{ color: '#4a4a4a' }}
+                  style={{ color: '#9CA3AF' }}
                 >
                   {emptyMessage ?? 'Keine Einträge'}
                 </td>
@@ -37,8 +37,8 @@ export default function PlaceholderTable({ columns, rows, emptyMessage }: Placeh
               rows.map((row, i) => (
                 <tr key={i}
                   style={{
-                    background: i % 2 === 0 ? '#1e1e1e' : '#1a1a1a',
-                    borderBottom: i < rows.length - 1 ? '1px solid #2d2d2d' : 'none',
+                    background: i % 2 === 0 ? '#FFFFFF' : '#F9FAFB',
+                    borderBottom: i < rows.length - 1 ? '1px solid #E5E7EB' : 'none',
                   }}
                 >
                   {row.map((cell, j) => (

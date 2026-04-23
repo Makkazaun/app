@@ -1,4 +1,4 @@
-import type { FormData } from './types'
+﻿import type { FormData } from './types'
 import { PFEILER_OPTIONEN, berechneStueckliste, getFarbLabel } from './betonzaun-modelle'
 
 interface Props {
@@ -22,8 +22,8 @@ export default function Step6Summary({ data, goToStep }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 6 · Fast fertig!
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Zusammenfassung</h2>
-        <p className="text-sm mt-1" style={{ color: '#5a5a5a' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Zusammenfassung</h2>
+        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
           Bitte prüfen Sie Ihre Angaben – nach dem Absenden melden wir uns bei Ihnen.
         </p>
       </div>
@@ -127,8 +127,8 @@ export default function Step6Summary({ data, goToStep }: Props) {
       </SummaryBlock>
 
       {/* Hinweis */}
-      <div className="rounded-xl p-4" style={{ background: '#1a1e1a', border: '1px solid #2a3a2a' }}>
-        <p className="text-xs leading-relaxed" style={{ color: '#5a8a5a' }}>
+      <div className="rounded-xl p-4" style={{ background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+        <p className="text-xs leading-relaxed" style={{ color: '#15803D' }}>
           ✓ Nach dem Absenden prüfen wir Ihre Anfrage und melden uns innerhalb von 1–2 Werktagen
           mit einem individuellen Angebot bei Ihnen. Vor-Ort-Besichtigung auf Wunsch möglich
           (150 € Aufwandsentschädigung, bei Auftragserteilung angerechnet).
@@ -142,11 +142,11 @@ function SummaryBlock({ title, children, onEdit }: {
   title: string; children: React.ReactNode; onEdit: () => void
 }) {
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
       <div className="flex items-center justify-between px-4 py-3"
-        style={{ background: '#202020', borderBottom: '1px solid #2d2d2d' }}
+        style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
       >
-        <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: '#7a7a7a', letterSpacing: '0.12em' }}>
+        <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: '#6B7280', letterSpacing: '0.12em' }}>
           {title}
         </h3>
         <button type="button" onClick={onEdit}
@@ -156,7 +156,7 @@ function SummaryBlock({ title, children, onEdit }: {
           ✎ Bearbeiten
         </button>
       </div>
-      <div className="px-4 py-3 space-y-2" style={{ background: '#1a1a1a' }}>
+      <div className="px-4 py-3 space-y-2" style={{ background: '#F9FAFB' }}>
         {children}
       </div>
     </div>
@@ -170,11 +170,11 @@ function Row({ label, value, highlight, multiline }: {
   return (
     <div className={`flex ${multiline ? 'flex-col gap-1' : 'items-baseline justify-between gap-4'}`}>
       {label && (
-        <span className="text-xs flex-shrink-0" style={{ color: '#4a4a4a', minWidth: '100px' }}>{label}</span>
+        <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF', minWidth: '100px' }}>{label}</span>
       )}
       <span
         className={`text-sm ${multiline ? '' : 'text-right'} leading-relaxed`}
-        style={{ color: highlight ? '#800020' : value === '–' ? '#3a3a3a' : '#c8c8c8', fontWeight: highlight ? 600 : 400 }}
+        style={{ color: highlight ? '#800020' : value === '–' ? '#9CA3AF' : '#c8c8c8', fontWeight: highlight ? 600 : 400 }}
       >
         {value}
       </span>

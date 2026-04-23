@@ -1,4 +1,4 @@
-import SelectCard from './SelectCard'
+﻿import SelectCard from './SelectCard'
 import FieldLabel, { inputStyle } from './FieldLabel'
 import type { FormData } from './types'
 
@@ -27,15 +27,15 @@ export default function Step3Tore({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 3
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Tore &amp; Türen</h2>
-        <p className="text-sm mt-1" style={{ color: '#5a5a5a' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Tore &amp; Türen</h2>
+        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
           Benötigen Sie zusätzlich ein Tor oder eine Gartentür?
         </p>
       </div>
 
       {/* ── TOR ── */}
       <div className="space-y-5">
-        <h3 className="text-base font-bold flex items-center gap-2" style={{ color: '#d4d4d4' }}>
+        <h3 className="text-base font-bold flex items-center gap-2" style={{ color: '#374151' }}>
           🚗 Einfahrtstor / Hoftor
         </h3>
 
@@ -74,7 +74,7 @@ export default function Step3Tore({ data, update }: Props) {
                     style={{ ...inputStyle(), paddingRight: '44px' }}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-                    style={{ color: '#5a5a5a' }}>cm</span>
+                    style={{ color: '#9CA3AF' }}>cm</span>
                 </div>
               </div>
               <div>
@@ -86,7 +86,7 @@ export default function Step3Tore({ data, update }: Props) {
                     style={{ ...inputStyle(), paddingRight: '44px' }}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-                    style={{ color: '#5a5a5a' }}>cm</span>
+                    style={{ color: '#9CA3AF' }}>cm</span>
                 </div>
               </div>
             </div>
@@ -106,11 +106,11 @@ export default function Step3Tore({ data, update }: Props) {
         )}
       </div>
 
-      <div className="w-full h-px" style={{ background: '#2a2a2a' }} />
+      <div className="w-full h-px" style={{ background: '#E5E7EB' }} />
 
       {/* ── GARTENTÜR ── */}
       <div className="space-y-5">
-        <h3 className="text-base font-bold flex items-center gap-2" style={{ color: '#d4d4d4' }}>
+        <h3 className="text-base font-bold flex items-center gap-2" style={{ color: '#374151' }}>
           🚶 Gartentür / Pforte
         </h3>
 
@@ -137,7 +137,7 @@ export default function Step3Tore({ data, update }: Props) {
                   style={{ ...inputStyle(), paddingRight: '44px' }}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-                  style={{ color: '#5a5a5a' }}>cm</span>
+                  style={{ color: '#9CA3AF' }}>cm</span>
               </div>
             </div>
             <div>
@@ -149,7 +149,7 @@ export default function Step3Tore({ data, update }: Props) {
                   style={{ ...inputStyle(), paddingRight: '44px' }}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-                  style={{ color: '#5a5a5a' }}>cm</span>
+                  style={{ color: '#9CA3AF' }}>cm</span>
               </div>
             </div>
           </div>

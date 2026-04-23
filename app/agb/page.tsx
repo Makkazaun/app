@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Logo from '@/components/Logo'
 
 export const metadata = {
@@ -7,13 +7,13 @@ export const metadata = {
 
 export default function AgbPage() {
   return (
-    <div className="min-h-screen py-16 px-4" style={{ background: '#1a1a1a' }}>
+    <div className="min-h-screen py-16 px-4" style={{ background: '#F9FAFB' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <Logo variant="header" className="mb-6" />
           <Link href="/"
             className="inline-flex items-center gap-2 text-xs mb-8 hover:opacity-80 transition-opacity"
-            style={{ color: '#5a5a5a' }}
+            style={{ color: '#9CA3AF' }}
           >
             ← Zurück zur Startseite
           </Link>
@@ -23,14 +23,14 @@ export default function AgbPage() {
           <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#800020', letterSpacing: '0.2em' }}>
             Rechtliches
           </p>
-          <h1 className="text-3xl font-bold" style={{ color: '#e8e8e8' }}>
+          <h1 className="text-3xl font-bold" style={{ color: '#1F2937' }}>
             Allgemeine Geschäftsbedingungen
           </h1>
-          <p className="text-xs mt-2" style={{ color: '#4a4a4a' }}>Stand: 30.03.2026</p>
+          <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>Stand: 30.03.2026</p>
         </div>
 
         <div className="rounded-xl p-8 space-y-8"
-          style={{ background: '#242424', border: '1px solid #333333' }}
+          style={{ background: '#FFFFFF', border: '1px solid #333333' }}
         >
           <Para num="§ 1" title="Geltungsbereich">
             Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge, Lieferungen und Leistungen
@@ -147,13 +147,13 @@ function Para({ num, title, children }: { num: string; title: string; children: 
     <div>
       <div className="flex items-baseline gap-3 mb-3">
         <span className="text-xs font-bold flex-shrink-0" style={{ color: '#800020' }}>{num}</span>
-        <h2 className="text-sm font-semibold" style={{ color: '#d4d4d4' }}>{title}</h2>
+        <h2 className="text-sm font-semibold" style={{ color: '#374151' }}>{title}</h2>
       </div>
-      <p className="text-sm leading-relaxed pl-8" style={{ color: '#8a8a8a' }}>{children}</p>
+      <p className="text-sm leading-relaxed pl-8" style={{ color: '#6B7280' }}>{children}</p>
     </div>
   )
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: '#2d2d2d' }} />
+  return <div className="w-full h-px" style={{ background: '#E5E7EB' }} />
 }

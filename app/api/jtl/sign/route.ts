@@ -1,4 +1,4 @@
-/**
+﻿/**
  * POST /api/jtl/sign
  *
  * Body: {
@@ -146,25 +146,25 @@ export async function POST(req: NextRequest) {
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="padding:32px 36px 28px;">
-            <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#e8e8e8;letter-spacing:-0.01em;">
+            <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#1F2937;letter-spacing:-0.01em;">
               Angebot digital angenommen
             </h1>
             <p style="margin:0 0 24px;font-size:13px;color:#8a7a4a;">${esc(kundenName)}</p>
 
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
               <tr>
-                <td style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:16px 20px;">
+                <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:16px 20px;">
                   <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
-                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Angebotsnummer</span>
+                    <span style="color:#9CA3AF;display:inline-block;width:150px;">Angebotsnummer</span>
                     <strong style="color:#800020;font-family:monospace;">${esc(belegnummer)}</strong>
                   </p>
                   <p style="margin:0 0 8px;font-size:13px;line-height:1.5;">
-                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Kundenname</span>
-                    <strong style="color:#e8e8e8;">${esc(kundenName)}</strong>
+                    <span style="color:#9CA3AF;display:inline-block;width:150px;">Kundenname</span>
+                    <strong style="color:#1F2937;">${esc(kundenName)}</strong>
                   </p>
                   <p style="margin:0;font-size:13px;line-height:1.5;">
-                    <span style="color:#5a5a5a;display:inline-block;width:150px;">Zeitpunkt</span>
-                    <span style="color:#b0b0b0;">${esc(when)}</span>
+                    <span style="color:#9CA3AF;display:inline-block;width:150px;">Zeitpunkt</span>
+                    <span style="color:#4B5563;">${esc(when)}</span>
                   </p>
                 </td>
               </tr>

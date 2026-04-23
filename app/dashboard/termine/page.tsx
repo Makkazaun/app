@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useJtlAuftraege } from '@/lib/useJtlData'
 
@@ -39,8 +39,8 @@ export default function TerminePage() {
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Termine
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Montagetermine</h1>
-          <p className="mt-1 text-sm" style={{ color: '#6a6a6a' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Montagetermine</h1>
+          <p className="mt-1 text-sm" style={{ color: '#6B7280' }}>
             {loading
               ? 'Termine werden geladen …'
               : 'Voraussichtliche Montagetermine aus Ihren Aufträgen'}
@@ -48,7 +48,7 @@ export default function TerminePage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#1e1e1e', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#FFFFFF', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -68,7 +68,7 @@ export default function TerminePage() {
         <div className="space-y-3">
           {[1, 2].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#1e1e1e', border: '1px solid #2a2a2a', height: '110px' }} />
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', height: '110px' }} />
           ))}
         </div>
       )}
@@ -76,19 +76,19 @@ export default function TerminePage() {
       {/* Nächster Termin Banner */}
       {!loading && naechster && (
         <div className="rounded-2xl p-5 flex items-center gap-4"
-          style={{ background: 'linear-gradient(135deg, #1a1f2a, #151b26)', border: '1px solid #2a3040' }}>
+          style={{ background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)', border: '1px solid #BFDBFE' }}>
           <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
-            style={{ background: '#202535' }}>
+            style={{ background: '#F9FAFB' }}>
             📅
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#7a9ab8' }}>
+            <p className="text-xs font-semibold mb-0.5" style={{ color: '#3B82F6' }}>
               Nächster Montagetermin
             </p>
-            <p className="text-base font-bold" style={{ color: '#d4e0ec' }}>
+            <p className="text-base font-bold" style={{ color: '#1E3A5F' }}>
               {formatDate(naechster.montagetermin!)}
             </p>
-            <p className="text-xs mt-0.5 truncate" style={{ color: '#4a5a6a' }}>
+            <p className="text-xs mt-0.5 truncate" style={{ color: '#6B7280' }}>
               Auftrag {naechster.belegnummer} · {naechster.betreff}
             </p>
           </div>
@@ -98,12 +98,12 @@ export default function TerminePage() {
       {/* Leer-Zustand */}
       {!loading && auftraege.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
+          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}>
           <div className="text-4xl mb-4">🔧</div>
-          <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+          <p className="text-base font-semibold mb-2" style={{ color: '#9CA3AF' }}>
             Keine Dokumente vorhanden
           </p>
-          <p className="text-sm" style={{ color: '#3a3a3a' }}>
+          <p className="text-sm" style={{ color: '#9CA3AF' }}>
             Sobald ein Auftrag mit Montagetermin angelegt wird,
             erscheint er hier.
           </p>
@@ -133,8 +133,8 @@ export default function TerminePage() {
                 style={{
                   background: istNaechster
                     ? 'linear-gradient(145deg, #1e1c0a, #181608)'
-                    : 'linear-gradient(145deg, #1e1e1e, #1a1a1a)',
-                  border: istNaechster ? '1px solid #3d3210' : '1px solid #2d2d2d',
+                    : 'linear-gradient(145deg, #FFFFFF, #F9FAFB)',
+                  border: istNaechster ? '1px solid #3d3210' : '1px solid #E5E7EB',
                   opacity: istVergangen ? 0.6 : 1,
                 }}
               >
@@ -143,17 +143,17 @@ export default function TerminePage() {
                   <div
                     className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
                     style={{
-                      background: istVergangen ? '#1a1e1a' : istNaechster ? '#201e0a' : '#1a1a1a',
-                      border: `1px solid ${istNaechster ? '#3d3210' : '#2d2d2d'}`,
+                      background: istVergangen ? '#F3F4F6' : istNaechster ? '#FFFBEB' : '#F9FAFB',
+                      border: `1px solid ${istNaechster ? '#FDE68A' : '#E5E7EB'}`,
                     }}
                   >
                     <span className="text-xs font-medium" style={{ color: statusColor }}>
                       {d.monat}
                     </span>
-                    <span className="text-xl font-bold leading-tight" style={{ color: '#e8e8e8' }}>
+                    <span className="text-xl font-bold leading-tight" style={{ color: '#1F2937' }}>
                       {d.tag}
                     </span>
-                    <span className="text-[10px]" style={{ color: '#3a3a3a' }}>{d.jahr}</span>
+                    <span className="text-[10px]" style={{ color: '#9CA3AF' }}>{d.jahr}</span>
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -172,10 +172,10 @@ export default function TerminePage() {
                         {statusLabel}
                       </span>
                     </div>
-                    <p className="font-semibold text-sm mb-1 leading-snug" style={{ color: '#d4d4d4' }}>
+                    <p className="font-semibold text-sm mb-1 leading-snug" style={{ color: '#374151' }}>
                       {auftrag.betreff}
                     </p>
-                    <p className="text-xs" style={{ color: '#5a5a5a' }}>
+                    <p className="text-xs" style={{ color: '#9CA3AF' }}>
                       📍 {adrStr}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ export default function TerminePage() {
       {/* Hinweis */}
       {!loading && (
         <div className="rounded-xl px-4 py-3 text-xs"
-          style={{ background: '#141414', border: '1px solid #222', color: '#3a3a3a' }}>
+          style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', color: '#9CA3AF' }}>
           ℹ Terminänderungen werden von unserem Team kommuniziert. Alle Zeiten sind voraussichtliche Werte.
         </div>
       )}

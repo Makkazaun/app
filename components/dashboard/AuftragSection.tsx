@@ -1,4 +1,4 @@
-import SectionHeader from './SectionHeader'
+﻿import SectionHeader from './SectionHeader'
 
 type Phase = {
   key: string
@@ -60,10 +60,10 @@ const statusStyles: Record<Phase['status'], { dot: string; line: string; label: 
     labelColor: '#800020',
   },
   pending: {
-    dot: '#2a2a2a',
-    line: '#252525',
+    dot: '#E5E7EB',
+    line: '#F3F4F6',
     label: 'Ausstehend',
-    labelColor: '#4a4a4a',
+    labelColor: '#9CA3AF',
   },
 }
 
@@ -81,15 +81,15 @@ export default function AuftragSection() {
 
       {/* Fortschrittsbalken */}
       <div className="mb-8 rounded-xl p-5"
-        style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}
+        style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
       >
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-medium" style={{ color: '#7a7a7a' }}>
+          <span className="text-xs font-medium" style={{ color: '#6B7280' }}>
             Gesamtfortschritt · Auftrag ANG-2025-0028
           </span>
           <span className="text-sm font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
-        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#2d2d2d' }}>
+        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#E5E7EB' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
@@ -99,15 +99,15 @@ export default function AuftragSection() {
           />
         </div>
         <div className="flex justify-between mt-2">
-          <span className="text-xs" style={{ color: '#3a3a3a' }}>Start</span>
-          <span className="text-xs" style={{ color: '#3a3a3a' }}>Abnahme</span>
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>Start</span>
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>Abnahme</span>
         </div>
       </div>
 
       {/* Timeline */}
       <div className="relative pl-8">
         {/* Vertikale Linie */}
-        <div className="absolute left-3 top-2 bottom-2 w-px" style={{ background: '#2a2a2a' }} />
+        <div className="absolute left-3 top-2 bottom-2 w-px" style={{ background: '#E5E7EB' }} />
 
         <div className="space-y-2">
           {phasen.map((phase, i) => {
@@ -121,7 +121,7 @@ export default function AuftragSection() {
                   className="absolute -left-8 top-4 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{
                     background: s.dot,
-                    border: phase.status === 'pending' ? '1px solid #3a3a3a' : 'none',
+                    border: phase.status === 'pending' ? '1px solid #9CA3AF' : 'none',
                     boxShadow: phase.status === 'active' ? '0 0 10px rgba(201,168,76,0.4)' : 'none',
                   }}
                 >
@@ -143,14 +143,14 @@ export default function AuftragSection() {
                       ? 'linear-gradient(135deg, #1e1a0a, #28200e)'
                       : phase.status === 'done'
                         ? '#1a1e1a'
-                        : '#1a1a1a',
-                    border: `1px solid ${phase.status === 'active' ? '#3d3210' : phase.status === 'done' ? '#2a3a2a' : '#272727'}`,
+                        : '#F9FAFB',
+                    border: `1px solid ${phase.status === 'active' ? '#3d3210' : phase.status === 'done' ? '#2a3a2a' : '#E5E7EB'}`,
                   }}
                 >
                   <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <h3 className="text-sm font-semibold" style={{ color: phase.status === 'pending' ? '#4a4a4a' : '#d4d4d4' }}>
+                        <h3 className="text-sm font-semibold" style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#374151' }}>
                           {phase.label}
                         </h3>
                         <span className="px-2 py-0.5 rounded-full text-xs"
@@ -163,12 +163,12 @@ export default function AuftragSection() {
                           {s.label}
                         </span>
                       </div>
-                      <p className="text-xs leading-relaxed" style={{ color: phase.status === 'pending' ? '#3a3a3a' : '#6a6a6a' }}>
+                      <p className="text-xs leading-relaxed" style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#6B7280' }}>
                         {phase.beschreibung}
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-xs font-medium" style={{ color: phase.status === 'pending' ? '#3a3a3a' : '#8a8a8a' }}>
+                      <p className="text-xs font-medium" style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#6B7280' }}>
                         {phase.datum}
                       </p>
                     </div>
@@ -182,10 +182,10 @@ export default function AuftragSection() {
 
       {/* Nächster Termin Banner */}
       <div className="mt-4 rounded-xl p-4 flex items-center gap-4"
-        style={{ background: '#1a1f2a', border: '1px solid #2a3040' }}
+        style={{ background: '#FFFFFF', border: '1px solid #2a3040' }}
       >
         <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-lg"
-          style={{ background: '#202535' }}
+          style={{ background: '#F9FAFB' }}
         >
           🗓️
         </div>

@@ -1,4 +1,4 @@
-const STEPS = [
+﻿const STEPS = [
   { n: 1, label: 'Produkt' },
   { n: 2, label: 'Konfiguration' },
   { n: 3, label: 'Tore & Türen' },
@@ -11,7 +11,7 @@ export default function StepIndicator({ current }: { current: number }) {
   return (
     <div className="w-full">
       {/* Fortschrittsbalken */}
-      <div className="w-full h-0.5 mb-4" style={{ background: '#2a2a2a' }}>
+      <div className="w-full h-0.5 mb-4" style={{ background: '#E5E7EB' }}>
         <div
           className="h-full transition-all duration-500"
           style={{
@@ -35,7 +35,7 @@ export default function StepIndicator({ current }: { current: number }) {
                     ? 'linear-gradient(135deg, #5a0016, #800020)'
                     : active
                       ? 'rgba(128,0,32,0.15)'
-                      : '#1e1e1e',
+                      : '#FFFFFF',
                   border: active ? '2px solid #800020' : done ? 'none' : '1px solid #333',
                   color: done ? '#ffffff' : active ? '#800020' : '#444',
                 }}
@@ -44,7 +44,7 @@ export default function StepIndicator({ current }: { current: number }) {
               </div>
               <span
                 className="text-xs whitespace-nowrap"
-                style={{ color: active ? '#800020' : done ? '#6a6a6a' : '#3a3a3a' }}
+                style={{ color: active ? '#800020' : done ? '#6B7280' : '#9CA3AF' }}
               >
                 {s.label}
               </span>
@@ -55,7 +55,7 @@ export default function StepIndicator({ current }: { current: number }) {
 
       {/* Mobile: nur aktueller Schritt */}
       <div className="sm:hidden flex items-center justify-between px-1">
-        <span className="text-xs" style={{ color: '#5a5a5a' }}>
+        <span className="text-xs" style={{ color: '#9CA3AF' }}>
           Schritt {current} von {STEPS.length}
         </span>
         <span className="text-xs font-semibold" style={{ color: '#800020' }}>

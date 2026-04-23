@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -20,16 +20,16 @@ export default function HomePage() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#1a1a1a' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#F9FAFB' }}>
         <div className="w-6 h-6 rounded-full border-2 animate-spin"
-          style={{ borderColor: '#3d3d3d', borderTopColor: '#800020' }}
+          style={{ borderColor: '#D1D5DB', borderTopColor: '#800020' }}
         />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#1a1a1a' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#F9FAFB' }}>
       {/* Goldener Schimmer oben */}
       <div className="fixed inset-0 pointer-events-none"
         style={{
@@ -39,12 +39,12 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="relative flex items-center justify-between px-8 py-5"
-        style={{ borderBottom: '1px solid #2a2a2a' }}
+        style={{ borderBottom: '1px solid #E5E7EB' }}
       >
         <Logo variant="header" />
         <Link href="/login"
           className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-80"
-          style={{ background: '#2d2d2d', color: '#9a9a9a', border: '1px solid #3d3d3d' }}
+          style={{ background: '#E5E7EB', color: '#6B7280', border: '1px solid #D1D5DB' }}
         >
           Edelzaun App
         </Link>
@@ -60,10 +60,10 @@ export default function HomePage() {
         <p className="text-xs font-medium tracking-[0.4em] uppercase mb-4" style={{ color: '#800020' }}>
           Zäune &amp; Tore nach Maß
         </p>
-        <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#e8e8e8' }}>
+        <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#1F2937' }}>
           Ihre persönliche <span className="gold-gradient">Edelzaun App</span>
         </h1>
-        <p className="max-w-xl text-base leading-relaxed mb-12" style={{ color: '#6a6a6a' }}>
+        <p className="max-w-xl text-base leading-relaxed mb-12" style={{ color: '#6B7280' }}>
           Premium-Einzäunungen und Toranlagen für anspruchsvolle Kunden.
           Verwalten Sie Angebote, Termine und Rechnungen an einem Ort.
         </p>
@@ -87,11 +87,11 @@ export default function HomePage() {
           </Link>
 
           <Link href="/login"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm uppercase transition-all duration-200 hover:opacity-90 hover:border-[#5a5a5a]"
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm uppercase transition-all duration-200 hover:opacity-90 hover:border-[#9CA3AF]"
             style={{
               background: 'transparent',
-              color: '#9a9a9a',
-              border: '1px solid #3d3d3d',
+              color: '#6B7280',
+              border: '1px solid #D1D5DB',
               letterSpacing: '0.12em',
             }}
           >
@@ -111,11 +111,11 @@ export default function HomePage() {
             { icon: '🛡️', title: 'Langlebige Qualität', text: 'Hochwertige Materialien mit langer Lebensdauer.' },
           ].map((f) => (
             <div key={f.title} className="rounded-xl p-6 text-left"
-              style={{ background: '#212121', border: '1px solid #2d2d2d' }}
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
               <span className="text-2xl mb-3 block">{f.icon}</span>
-              <h3 className="text-sm font-semibold mb-1" style={{ color: '#d4d4d4' }}>{f.title}</h3>
-              <p className="text-xs leading-relaxed" style={{ color: '#5a5a5a' }}>{f.text}</p>
+              <h3 className="text-sm font-semibold mb-1" style={{ color: '#374151' }}>{f.title}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: '#9CA3AF' }}>{f.text}</p>
             </div>
           ))}
         </div>

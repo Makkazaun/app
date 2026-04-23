@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useJtlRechnungen, type JtlRechnung } from '@/lib/useJtlData'
 import BelegButton from '@/components/dashboard/BelegButton'
@@ -16,7 +16,7 @@ function formatDate(iso: string) {
 function StatusBadge({ bezahlt, storniert }: { bezahlt: boolean; storniert: boolean }) {
   if (storniert) return (
     <span className="px-2.5 py-1 rounded-full text-xs font-medium"
-      style={{ background: 'rgba(90,90,90,0.15)', color: '#5a5a5a', border: '1px solid #3a3a3a' }}>
+      style={{ background: 'rgba(90,90,90,0.15)', color: '#9CA3AF', border: '1px solid #9CA3AF' }}>
       Storniert
     </span>
   )
@@ -51,8 +51,8 @@ export default function RechnungenPage() {
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Rechnungen
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Rechnungen</h1>
-          <p className="mt-1 text-sm" style={{ color: '#6a6a6a' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Meine Rechnungen</h1>
+          <p className="mt-1 text-sm" style={{ color: '#6B7280' }}>
             {loading
               ? 'Daten werden geladen …'
               : 'Aktuelle Daten aus dem System · Nur lesend – Rechnungen sind unveränderlich'}
@@ -60,7 +60,7 @@ export default function RechnungenPage() {
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#1e1e1e', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#FFFFFF', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -87,16 +87,16 @@ export default function RechnungenPage() {
               {formatEur(offenSum)}
             </p>
           </div>
-          <div className="rounded-xl p-5" style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}>
-            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#6a6a6a', letterSpacing: '0.12em' }}>
+          <div className="rounded-xl p-5" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#6B7280', letterSpacing: '0.12em' }}>
               Offene Rechnungen
             </p>
             <p className="text-2xl font-bold" style={{ color: offen.length > 0 ? '#e07b5b' : '#5bc97a' }}>
               {offen.length}
             </p>
           </div>
-          <div className="rounded-xl p-5" style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}>
-            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#6a6a6a', letterSpacing: '0.12em' }}>
+          <div className="rounded-xl p-5" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: '#6B7280', letterSpacing: '0.12em' }}>
               Bezahlt (gesamt)
             </p>
             <p className="text-2xl font-bold" style={{ color: '#5bc97a' }}>{bezahlt.length}</p>
@@ -109,7 +109,7 @@ export default function RechnungenPage() {
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#1e1e1e', border: '1px solid #2a2a2a', height: '56px' }} />
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', height: '56px' }} />
           ))}
         </div>
       )}
@@ -117,12 +117,12 @@ export default function RechnungenPage() {
       {/* Leer-Zustand */}
       {!loading && rechnungen.length === 0 && (
         <div className="rounded-2xl p-12 text-center"
-          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
+          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}>
           <div className="text-4xl mb-4">🧾</div>
-          <p className="text-base font-semibold mb-2" style={{ color: '#5a5a5a' }}>
+          <p className="text-base font-semibold mb-2" style={{ color: '#9CA3AF' }}>
             Keine Dokumente vorhanden
           </p>
-          <p className="text-sm" style={{ color: '#3a3a3a' }}>
+          <p className="text-sm" style={{ color: '#9CA3AF' }}>
             Sobald Rechnungen für Ihr Konto erstellt wurden,
             erscheinen sie hier.
           </p>
@@ -131,15 +131,15 @@ export default function RechnungenPage() {
 
       {/* Tabelle */}
       {!loading && rechnungen.length > 0 && (
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
 
           {/* Tabellenkopf */}
           <div
             className="hidden md:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
             style={{
-              background: '#1e1e1e',
-              borderBottom: '1px solid #2d2d2d',
-              color: '#4a4a4a',
+              background: '#FFFFFF',
+              borderBottom: '1px solid #E5E7EB',
+              color: '#9CA3AF',
               gridTemplateColumns: '140px 90px 1fr 130px 110px 100px',
               gap: '12px',
             }}
@@ -156,9 +156,9 @@ export default function RechnungenPage() {
               key={r.kRechnung}
               style={{
                 background: r.storniert
-                  ? '#161616'
-                  : i % 2 === 0 ? '#191919' : '#161616',
-                borderBottom: i < rechnungen.length - 1 ? '1px solid #222' : 'none',
+                  ? '#F3F4F6'
+                  : i % 2 === 0 ? '#FFFFFF' : '#F3F4F6',
+                borderBottom: i < rechnungen.length - 1 ? '1px solid #E5E7EB' : 'none',
                 opacity: r.storniert ? 0.5 : 1,
               }}
             >
@@ -170,12 +170,12 @@ export default function RechnungenPage() {
                 <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                   {r.belegnummer}
                 </p>
-                <p className="text-xs" style={{ color: '#5a5a5a' }}>{formatDate(r.datum)}</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>{formatDate(r.datum)}</p>
                 <div>
-                  <p className="text-sm font-bold" style={{ color: '#e8e8e8' }}>
+                  <p className="text-sm font-bold" style={{ color: '#1F2937' }}>
                     {formatEur(r.betragBrutto)}
                   </p>
-                  <p className="text-xs" style={{ color: '#4a4a4a' }}>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>
                     netto {formatEur(r.betragNetto)}
                   </p>
                 </div>
@@ -194,16 +194,16 @@ export default function RechnungenPage() {
                     <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                       {r.belegnummer}
                     </p>
-                    <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(r.datum)}</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{formatDate(r.datum)}</p>
                   </div>
                   <StatusBadge bezahlt={r.bezahlt} storniert={r.storniert} />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-base font-bold" style={{ color: '#e8e8e8' }}>
+                    <p className="text-base font-bold" style={{ color: '#1F2937' }}>
                       {formatEur(r.betragBrutto)}
                     </p>
-                    <p className="text-xs" style={{ color: '#4a4a4a' }}>netto {formatEur(r.betragNetto)}</p>
+                    <p className="text-xs" style={{ color: '#9CA3AF' }}>netto {formatEur(r.betragNetto)}</p>
                   </div>
                   {!r.storniert && (
                     <BelegButton type="rechnung" belegnummer={r.belegnummer} />
@@ -218,8 +218,8 @@ export default function RechnungenPage() {
       {/* Hinweis */}
       {!loading && (
         <div className="rounded-xl px-4 py-3 text-xs flex items-start gap-2.5"
-          style={{ background: '#141414', border: '1px solid #222', color: '#3a3a3a' }}>
-          <span style={{ color: '#4a4a4a' }}>🔒</span>
+          style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', color: '#9CA3AF' }}>
+          <span style={{ color: '#9CA3AF' }}>🔒</span>
           <span>
             Rechnungen sind unveränderlich. Für Fragen wenden Sie sich bitte an uns.
           </span>

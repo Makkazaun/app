@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import SectionHeader from './SectionHeader'
@@ -74,7 +74,7 @@ function mapJtlAngebot(a: JtlAngebot): Angebot {
 const STATUS_STYLES: Record<AngebotStatus, { label: string; color: string }> = {
   offen:              { label: 'Offen – Unterschrift ausstehend', color: '#800020' },
   angenommen:         { label: 'Angenommen',                      color: '#5bc97a' },
-  abgelaufen:         { label: 'Abgelaufen',                      color: '#5a5a5a' },
+  abgelaufen:         { label: 'Abgelaufen',                      color: '#9CA3AF' },
   auftrag_bestaetigt: { label: 'Auftrag bestätigt ✓',             color: '#5bc97a' },
 }
 
@@ -204,14 +204,14 @@ export default function AngeboteSection() {
         {[
           { label: 'Offen', count: offen,     color: '#800020', sub: 'Warten auf Unterschrift' },
           { label: 'Angenommen', count: angenomm, color: '#5bc97a', sub: 'Aufträge aktiv' },
-          { label: 'Abgelaufen', count: abgelauf, color: '#5a5a5a', sub: 'Nicht mehr gültig' },
+          { label: 'Abgelaufen', count: abgelauf, color: '#9CA3AF', sub: 'Nicht mehr gültig' },
         ].map((item) => (
           <div key={item.label} className="rounded-xl p-4 text-center"
-            style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}
+            style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
           >
             <p className="text-2xl font-bold" style={{ color: item.color }}>{item.count}</p>
-            <p className="text-xs font-medium mt-0.5" style={{ color: '#8a8a8a' }}>{item.label}</p>
-            <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#3a3a3a' }}>{item.sub}</p>
+            <p className="text-xs font-medium mt-0.5" style={{ color: '#6B7280' }}>{item.label}</p>
+            <p className="text-[10px] mt-0.5 hidden sm:block" style={{ color: '#9CA3AF' }}>{item.sub}</p>
           </div>
         ))}
       </div>
@@ -219,13 +219,13 @@ export default function AngeboteSection() {
       {/* Leer-Zustand */}
       {!jtlLoading && jtlLoaded && angebote.length === 0 && (
         <div className="rounded-xl p-10 text-center"
-          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}
+          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}
         >
           <p className="text-2xl mb-3">📋</p>
-          <p className="text-sm font-medium mb-1" style={{ color: '#5a5a5a' }}>
+          <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>
             Aktuell liegen keine Angebote vor
           </p>
-          <p className="text-xs" style={{ color: '#3a3a3a' }}>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>
             Sobald ein Angebot für Ihr Konto erstellt wird, erscheint es hier.
           </p>
         </div>
@@ -233,15 +233,15 @@ export default function AngeboteSection() {
 
       {/* Angebots-Tabelle */}
       {angebote.length > 0 && (
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
 
         {/* Header */}
         <div
           className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
           style={{
-            background: '#1e1e1e',
-            borderBottom: '1px solid #2d2d2d',
-            color: '#4a4a4a',
+            background: '#FFFFFF',
+            borderBottom: '1px solid #E5E7EB',
+            color: '#9CA3AF',
             letterSpacing: '0.1em',
             gridTemplateColumns: '140px 1fr 110px 180px 80px',
             gap: '16px',
@@ -264,8 +264,8 @@ export default function AngeboteSection() {
               style={{
                 background: isJustSigned
                   ? 'rgba(91,201,122,0.06)'
-                  : i % 2 === 0 ? '#191919' : '#161616',
-                borderBottom: i < angebote.length - 1 ? '1px solid #222' : 'none',
+                  : i % 2 === 0 ? '#FFFFFF' : '#F3F4F6',
+                borderBottom: i < angebote.length - 1 ? '1px solid #E5E7EB' : 'none',
                 transition: 'background 0.5s',
               }}
             >
@@ -276,10 +276,10 @@ export default function AngeboteSection() {
               >
                 <div>
                   <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{a.id}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{a.datum}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{a.datum}</p>
                 </div>
-                <p className="text-xs leading-snug" style={{ color: '#b0b0b0' }}>{a.leistung}</p>
-                <p className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>{a.betrag}</p>
+                <p className="text-xs leading-snug" style={{ color: '#4B5563' }}>{a.leistung}</p>
+                <p className="text-sm font-semibold" style={{ color: '#1F2937' }}>{a.betrag}</p>
 
                 <div className="flex items-center gap-2">
                   <span
@@ -309,7 +309,7 @@ export default function AngeboteSection() {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>{a.id}</p>
-                    <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>Gültig bis {a.gueltigBis}</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Gültig bis {a.gueltigBis}</p>
                   </div>
                   <span
                     className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0"
@@ -322,9 +322,9 @@ export default function AngeboteSection() {
                     {st.label}
                   </span>
                 </div>
-                <p className="text-xs leading-snug" style={{ color: '#9a9a9a' }}>{a.leistung}</p>
+                <p className="text-xs leading-snug" style={{ color: '#6B7280' }}>{a.leistung}</p>
                 <div className="flex items-center justify-between">
-                  <p className="text-base font-bold" style={{ color: '#e8e8e8' }}>{a.betrag}</p>
+                  <p className="text-base font-bold" style={{ color: '#1F2937' }}>{a.betrag}</p>
                   {a.status === 'offen' && (
                     <SignButton onClick={() => setSignTarget(a)} small />
                   )}
@@ -337,7 +337,7 @@ export default function AngeboteSection() {
       )}
 
       {angebote.length > 0 && (
-      <p className="mt-3 text-xs" style={{ color: '#3a3a3a' }}>
+      <p className="mt-3 text-xs" style={{ color: '#9CA3AF' }}>
         Datenquelle: System (Live) · Automatisch synchronisiert
       </p>
       )}
@@ -363,9 +363,9 @@ export default function AngeboteSection() {
           <div
             className="w-full max-w-sm rounded-2xl p-8 text-center"
             style={{
-              background: 'linear-gradient(160deg, #1e1010, #140810)',
-              border: '1px solid #3d1020',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(128,0,32,0.08)',
+              background: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -379,18 +379,18 @@ export default function AngeboteSection() {
               </svg>
             </div>
 
-            <h2 className="text-lg font-bold mb-2" style={{ color: '#e8e8e8' }}>
+            <h2 className="text-lg font-bold mb-2" style={{ color: '#1F2937' }}>
               Vielen Dank!
             </h2>
-            <p className="text-sm leading-relaxed mb-1" style={{ color: '#9a9a9a' }}>
+            <p className="text-sm leading-relaxed mb-1" style={{ color: '#6B7280' }}>
               Ihr Auftrag wird nun bearbeitet.
             </p>
-            <p className="text-xs mb-6" style={{ color: '#5a5a5a' }}>
+            <p className="text-xs mb-6" style={{ color: '#9CA3AF' }}>
               Wir melden uns schnellstmöglich bei Ihnen.
             </p>
 
             <div className="text-xs px-3 py-2 rounded-lg mb-6"
-              style={{ background: '#1a0a10', border: '1px solid #2a0a18', color: '#6a4050' }}>
+              style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', color: '#6B7280' }}>
               Auftrags-Nr.: <span style={{ color: '#800020' }}>{dankModal}</span>
             </div>
 

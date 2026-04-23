@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useRef, useState } from 'react'
 import type { FormData } from './types'
@@ -43,8 +43,8 @@ export default function Step4Upload({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 4
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Fotos &amp; Unterlagen</h2>
-        <p className="text-sm mt-1" style={{ color: '#5a5a5a' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Fotos &amp; Unterlagen</h2>
+        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
           Optional – helfen uns bei der genauen Angebotserstellung.
         </p>
       </div>
@@ -57,21 +57,21 @@ export default function Step4Upload({ data, update }: Props) {
         onClick={() => inputRef.current?.click()}
         className="cursor-pointer rounded-2xl flex flex-col items-center justify-center gap-3 py-12 px-6 text-center transition-all duration-200"
         style={{
-          border: `2px dashed ${dragging ? '#800020' : '#3a3a3a'}`,
-          background: dragging ? 'rgba(128,0,32,0.05)' : '#1e1e1e',
+          border: `2px dashed ${dragging ? '#800020' : '#9CA3AF'}`,
+          background: dragging ? 'rgba(128,0,32,0.05)' : '#FFFFFF',
         }}
       >
         <div className="text-5xl">{dragging ? '📂' : '📎'}</div>
         <div>
-          <p className="text-sm font-semibold" style={{ color: '#d4d4d4' }}>
+          <p className="text-sm font-semibold" style={{ color: '#374151' }}>
             Dateien hier ablegen oder tippen zum Auswählen
           </p>
-          <p className="text-xs mt-1" style={{ color: '#5a5a5a' }}>
+          <p className="text-xs mt-1" style={{ color: '#9CA3AF' }}>
             JPG, PNG, HEIC, PDF · max. {MAX_MB} MB je Datei · max. {MAX_FILES} Dateien
           </p>
         </div>
         <div className="px-5 py-2.5 rounded-xl text-sm font-medium"
-          style={{ background: '#2d2d2d', color: '#9a9a9a', border: '1px solid #3d3d3d' }}
+          style={{ background: '#E5E7EB', color: '#6B7280', border: '1px solid #D1D5DB' }}
         >
           Datei auswählen
         </div>
@@ -96,26 +96,26 @@ export default function Step4Upload({ data, update }: Props) {
       {/* Dateiliste */}
       {data.dateien.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#5a5a5a' }}>
+          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
             {data.dateien.length} / {MAX_FILES} Dateien
           </p>
           {data.dateien.map((f, i) => (
             <div key={i}
               className="flex items-center gap-3 rounded-xl px-4 py-3"
-              style={{ background: '#212121', border: '1px solid #2d2d2d' }}
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
               <span className="text-xl flex-shrink-0">
                 {f.type === 'application/pdf' ? '📄' : '🖼️'}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm truncate" style={{ color: '#d4d4d4' }}>{f.name}</p>
-                <p className="text-xs" style={{ color: '#4a4a4a' }}>
+                <p className="text-sm truncate" style={{ color: '#374151' }}>{f.name}</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>
                   {(f.size / 1024 / 1024).toFixed(1)} MB
                 </p>
               </div>
               <button type="button" onClick={() => removeFile(i)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-opacity hover:opacity-80"
-                style={{ background: '#2d2d2d', color: '#7a7a7a' }}
+                style={{ background: '#E5E7EB', color: '#6B7280' }}
               >
                 ✕
               </button>
@@ -125,7 +125,7 @@ export default function Step4Upload({ data, update }: Props) {
       )}
 
       {data.dateien.length === 0 && (
-        <p className="text-xs text-center" style={{ color: '#3a3a3a' }}>
+        <p className="text-xs text-center" style={{ color: '#9CA3AF' }}>
           Dieser Schritt ist optional – Sie können auch ohne Fotos fortfahren.
         </p>
       )}

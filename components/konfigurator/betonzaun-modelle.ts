@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Kuratierte Betonzaun-Modelle aus dem Sortiment von TR Edelzaun & Tor GmbH.
  *
  * imageUrl-Platzhalter:
@@ -207,17 +207,17 @@ export const PFEILER_TYPEN: PfeilerTyp[] = [
     capColor: '#686868',
     capBg: 'linear-gradient(180deg, #686868 0%, #4e4e4e 100%)',
     bodyBg: 'linear-gradient(90deg, #484848 0%, #5c5c5c 35%, #404040 65%, #4c4c4c 100%)',
-    borderColor: '#3a3a3a',
+    borderColor: '#9CA3AF',
   },
   {
     value: 'struktur',
     label: 'Struktur-Pfeiler',
     beschreibung: 'Gleiche Oberfläche wie die gewählten Platten – harmonisches Gesamtbild',
     capVariant: 'flat',
-    capColor: '#5a5a5a',
-    capBg: 'linear-gradient(180deg, #5a5a5a 0%, #3e3e3e 100%)',
+    capColor: '#9CA3AF',
+    capBg: 'linear-gradient(180deg, #9CA3AF 0%, #3e3e3e 100%)',
     bodyBg: '',   // wird dynamisch aus der Plattenstruktur abgeleitet
-    borderColor: '#2a2a2a',
+    borderColor: '#E5E7EB',
   },
   {
     value: 'schmuckhaube',
@@ -227,7 +227,7 @@ export const PFEILER_TYPEN: PfeilerTyp[] = [
     capColor: '#8c8c8c',
     capBg: 'linear-gradient(180deg, #8c8c8c 0%, #5c5c5c 100%)',
     bodyBg: 'linear-gradient(90deg, #484848 0%, #5c5c5c 35%, #404040 65%, #4c4c4c 100%)',
-    borderColor: '#3a3a3a',
+    borderColor: '#9CA3AF',
   },
   {
     value: 'naturstein',
@@ -316,7 +316,7 @@ export const KAT_TEXTUREN: Record<string, KatTextur> = {
     accentColor: '#7a6850',
   },
   'Schieferoptik': {
-    bg: 'linear-gradient(158deg, #272828 0%, #1e1e1e 50%, #252626 100%)',
+    bg: 'linear-gradient(158deg, #272828 0%, #FFFFFF 50%, #252626 100%)',
     mortar: 'rgba(0,0,0,0.45)',
     textColor: '#6a6a72',
     accentColor: '#5a5a62',
@@ -348,7 +348,7 @@ export const KAT_TEXTUREN: Record<string, KatTextur> = {
 }
 
 export const LEER_TEXTUR: KatTextur = {
-  bg: 'linear-gradient(180deg, #232323 0%, #1c1c1c 100%)',
+  bg: 'linear-gradient(180deg, #232323 0%, #FFFFFF 100%)',
   mortar: 'rgba(0,0,0,0.2)',
   textColor: '#383838',
   accentColor: '#303030',

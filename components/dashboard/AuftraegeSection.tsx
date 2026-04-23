@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import SectionHeader from './SectionHeader'
@@ -87,7 +87,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
   const phaseColors = {
     done:    { dot: 'linear-gradient(135deg, #3a7a4a, #5bc97a)', text: '#5bc97a', bg: '#1a1e1a', border: '#2a3a2a' },
     active:  { dot: 'linear-gradient(135deg, #5a0016, #800020)', text: '#800020', bg: '#1e1a0a', border: '#3d3210' },
-    pending: { dot: '#2a2a2a',                                   text: '#4a4a4a', bg: '#1a1a1a', border: '#272727' },
+    pending: { dot: '#E5E7EB',                                   text: '#9CA3AF', bg: '#F9FAFB', border: '#E5E7EB' },
   }
   const labels = { done: 'Erledigt', active: 'Aktuell', pending: 'Ausstehend' }
 
@@ -99,10 +99,10 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
       {/* Fortschrittsbalken */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs" style={{ color: '#5a5a5a' }}>Gesamtfortschritt</span>
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>Gesamtfortschritt</span>
           <span className="text-xs font-bold" style={{ color: '#800020' }}>{progress}%</span>
         </div>
-        <div className="w-full h-1 rounded-full" style={{ background: '#2d2d2d' }}>
+        <div className="w-full h-1 rounded-full" style={{ background: '#E5E7EB' }}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #5a0016, #800020)' }}
@@ -112,7 +112,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
 
       {/* Schritte */}
       <div className="relative pl-7 space-y-2">
-        <div className="absolute left-2.5 top-2 bottom-2 w-px" style={{ background: '#2a2a2a' }} />
+        <div className="absolute left-2.5 top-2 bottom-2 w-px" style={{ background: '#E5E7EB' }} />
         {phasen.map((phase) => {
           const s = phaseColors[phase.status]
           return (
@@ -122,7 +122,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
                 className="absolute -left-7 top-4 w-5 h-5 rounded-full flex items-center justify-center"
                 style={{
                   background: s.dot,
-                  border: phase.status === 'pending' ? '1px solid #3a3a3a' : 'none',
+                  border: phase.status === 'pending' ? '1px solid #9CA3AF' : 'none',
                   boxShadow: phase.status === 'active' ? '0 0 8px rgba(128,0,32,0.4)' : 'none',
                 }}
               >
@@ -143,7 +143,7 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <p className="text-xs font-semibold"
-                        style={{ color: phase.status === 'pending' ? '#4a4a4a' : '#d0d0d0' }}>
+                        style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#374151' }}>
                         {phase.label}
                       </p>
                       <span className="px-1.5 py-0.5 rounded-full text-[10px]"
@@ -151,12 +151,12 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
                         {labels[phase.status]}
                       </span>
                     </div>
-                    <p className="text-xs" style={{ color: phase.status === 'pending' ? '#3a3a3a' : '#6a6a6a' }}>
+                    <p className="text-xs" style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#6B7280' }}>
                       {phase.beschreibung}
                     </p>
                   </div>
                   <p className="text-xs flex-shrink-0"
-                    style={{ color: phase.status === 'pending' ? '#3a3a3a' : '#7a7a7a' }}>
+                    style={{ color: phase.status === 'pending' ? '#9CA3AF' : '#6B7280' }}>
                     {phase.datum}
                   </p>
                 </div>
@@ -173,22 +173,22 @@ function PhasenTimeline({ phasen }: { phasen: AuftragPhase[] }) {
 
 function AdressBlock({ adresse, label }: { adresse: Adresse | null; label: string }) {
   if (!adresse) return (
-    <div className="rounded-xl p-4" style={{ background: '#1e1e1e', border: '1px solid #2a2a2a' }}>
-      <p className="text-xs font-semibold mb-1" style={{ color: '#5a5a5a' }}>{label}</p>
-      <p className="text-xs" style={{ color: '#3a3a3a' }}>Wird noch hinterlegt</p>
+    <div className="rounded-xl p-4" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+      <p className="text-xs font-semibold mb-1" style={{ color: '#9CA3AF' }}>{label}</p>
+      <p className="text-xs" style={{ color: '#9CA3AF' }}>Wird noch hinterlegt</p>
     </div>
   )
   return (
-    <div className="rounded-xl p-4 space-y-1" style={{ background: '#1e1e1e', border: '1px solid #2a2a2a' }}>
+    <div className="rounded-xl p-4 space-y-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
       <p className="text-xs font-bold uppercase tracking-wider mb-2"
-        style={{ color: '#5a5a5a', letterSpacing: '0.1em' }}>
+        style={{ color: '#9CA3AF', letterSpacing: '0.1em' }}>
         {label}
       </p>
       {adresse.firma && <p className="text-xs font-medium" style={{ color: '#c0c0c0' }}>{adresse.firma}</p>}
-      <p className="text-xs" style={{ color: '#9a9a9a' }}>{adresse.vorname} {adresse.nachname}</p>
-      <p className="text-xs" style={{ color: '#9a9a9a' }}>{adresse.strasse} {adresse.hausnummer}</p>
-      <p className="text-xs" style={{ color: '#9a9a9a' }}>{adresse.plz} {adresse.ort}</p>
-      <p className="text-xs" style={{ color: '#6a6a6a' }}>{adresse.land}</p>
+      <p className="text-xs" style={{ color: '#6B7280' }}>{adresse.vorname} {adresse.nachname}</p>
+      <p className="text-xs" style={{ color: '#6B7280' }}>{adresse.strasse} {adresse.hausnummer}</p>
+      <p className="text-xs" style={{ color: '#6B7280' }}>{adresse.plz} {adresse.ort}</p>
+      <p className="text-xs" style={{ color: '#6B7280' }}>{adresse.land}</p>
     </div>
   )
 }
@@ -207,11 +207,11 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
   return (
     <div className="rounded-2xl overflow-hidden"
-      style={{ background: '#1a1a1a', border: '1px solid #2d2d2d' }}
+      style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}
     >
       {/* Kopfzeile */}
       <div className="px-5 py-4 flex items-start justify-between gap-4 flex-wrap"
-        style={{ background: 'linear-gradient(145deg, #202020, #1c1c1c)', borderBottom: '1px solid #252525' }}
+        style={{ background: 'linear-gradient(145deg, #FFFFFF, #FFFFFF)', borderBottom: '1px solid #F3F4F6' }}
       >
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -223,14 +223,14 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
               {statusLabel}
             </span>
           </div>
-          <p className="text-xs" style={{ color: '#5a5a5a' }}>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>
             Unterschrieben am {formatDate(auftrag.signierAt)}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <div className="text-right">
-            <p className="text-xl font-bold" style={{ color: '#e8e8e8' }}>{auftrag.betrag}</p>
-            <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>Auftragsvolumen</p>
+            <p className="text-xl font-bold" style={{ color: '#1F2937' }}>{auftrag.betrag}</p>
+            <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Auftragsvolumen</p>
           </div>
           <BelegButton type="auftrag" belegnummer={auftrag.id} label="Auftragsbestätigung" />
         </div>
@@ -243,55 +243,55 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
           {/* Technische Daten */}
           <div className="rounded-xl p-4 space-y-2.5"
-            style={{ background: '#1e1e1e', border: '1px solid #2a2a2a' }}
+            style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider"
-              style={{ color: '#5a5a5a', letterSpacing: '0.1em' }}>
+              style={{ color: '#9CA3AF', letterSpacing: '0.1em' }}>
               Projekt-Details
             </p>
 
             {/* Wenn JTL-Daten: Hauptposition als Leistung, dann Nebenleistungen */}
             {auftrag.modell && (
               <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs flex-shrink-0" style={{ color: '#5a5a5a' }}>Leistung</span>
-                <span className="text-xs font-medium text-right" style={{ color: '#b0b0b0' }}>{auftrag.modell}</span>
+                <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF' }}>Leistung</span>
+                <span className="text-xs font-medium text-right" style={{ color: '#4B5563' }}>{auftrag.modell}</span>
               </div>
             )}
 
             {/* Höhe / Länge nur anzeigen wenn befüllt */}
             {auftrag.hoehe && (
               <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs flex-shrink-0" style={{ color: '#5a5a5a' }}>Höhe</span>
-                <span className="text-xs font-medium text-right" style={{ color: '#b0b0b0' }}>{auftrag.hoehe}</span>
+                <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF' }}>Höhe</span>
+                <span className="text-xs font-medium text-right" style={{ color: '#4B5563' }}>{auftrag.hoehe}</span>
               </div>
             )}
             {auftrag.laenge && (
               <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs flex-shrink-0" style={{ color: '#5a5a5a' }}>Länge</span>
-                <span className="text-xs font-medium text-right" style={{ color: '#b0b0b0' }}>{auftrag.laenge}</span>
+                <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF' }}>Länge</span>
+                <span className="text-xs font-medium text-right" style={{ color: '#4B5563' }}>{auftrag.laenge}</span>
               </div>
             )}
 
             {/* Farb-Zeilen nur anzeigen wenn befüllt */}
             {platteHex && (
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs flex-shrink-0" style={{ color: '#5a5a5a' }}>Farbe Platten</span>
-                <p className="text-xs text-right" style={{ color: '#b0b0b0' }}>{platteHex}</p>
+                <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF' }}>Farbe Platten</span>
+                <p className="text-xs text-right" style={{ color: '#4B5563' }}>{platteHex}</p>
               </div>
             )}
             {pfeilerHex && (
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs flex-shrink-0" style={{ color: '#5a5a5a' }}>Farbe Pfeiler</span>
-                <p className="text-xs text-right" style={{ color: '#b0b0b0' }}>{pfeilerHex}</p>
+                <span className="text-xs flex-shrink-0" style={{ color: '#9CA3AF' }}>Farbe Pfeiler</span>
+                <p className="text-xs text-right" style={{ color: '#4B5563' }}>{pfeilerHex}</p>
               </div>
             )}
 
             {/* Nebenleistungen / Besonderheiten */}
             {auftrag.besonderheiten && (
               <div>
-                <p className="text-xs mb-1" style={{ color: '#5a5a5a' }}>Weitere Leistungen</p>
+                <p className="text-xs mb-1" style={{ color: '#9CA3AF' }}>Weitere Leistungen</p>
                 {auftrag.besonderheiten.split('\n').map((zeile, i) => (
-                  <p key={i} className="text-xs leading-relaxed" style={{ color: '#8a8a8a' }}>
+                  <p key={i} className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
                     • {zeile}
                   </p>
                 ))}
@@ -300,13 +300,13 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
 
             {/* Fallback wenn gar nichts befüllt */}
             {!auftrag.modell && !auftrag.hoehe && !auftrag.laenge && !auftrag.besonderheiten && (
-              <p className="text-xs" style={{ color: '#3a3a3a' }}>Keine Detailangaben verfügbar</p>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>Keine Detailangaben verfügbar</p>
             )}
           </div>
 
           {/* Termin-Card */}
           <div className="rounded-xl p-4 space-y-3"
-            style={{ background: '#1a1f2a', border: '1px solid #2a3040' }}
+            style={{ background: '#FFFFFF', border: '1px solid #2a3040' }}
           >
             <p className="text-xs font-bold uppercase tracking-wider"
               style={{ color: '#4a5a6a', letterSpacing: '0.1em' }}>
@@ -314,7 +314,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
             </p>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                style={{ background: '#202535' }}>
+                style={{ background: '#F9FAFB' }}>
                 🗓️
               </div>
               <div>
@@ -340,7 +340,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
         {/* ── Adressen ─────────────────────────────────────── */}
         <div>
           <p className="text-xs font-bold uppercase tracking-wider mb-3"
-            style={{ color: '#3a3a3a', letterSpacing: '0.12em' }}>
+            style={{ color: '#9CA3AF', letterSpacing: '0.12em' }}>
             Adressen
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -352,7 +352,7 @@ function ProjektDetail({ auftrag }: { auftrag: AuftragRecord }) {
         {/* ── Projekt-Timeline ─────────────────────────────── */}
         <div>
           <p className="text-xs font-bold uppercase tracking-wider mb-4"
-            style={{ color: '#3a3a3a', letterSpacing: '0.12em' }}>
+            style={{ color: '#9CA3AF', letterSpacing: '0.12em' }}>
             Auftragsverlauf
           </p>
           <PhasenTimeline phasen={auftrag.phasen} />
@@ -447,12 +447,12 @@ export default function AuftraegeSection() {
           { label: 'Gesamtvolumen', value: gesamtVol,       color: '#5b9bd5' },
         ].map((kachel) => (
           <div key={kachel.label} className="rounded-xl p-4 text-center"
-            style={{ background: '#1e1e1e', border: '1px solid #2d2d2d' }}
+            style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
           >
             <p className="text-base sm:text-2xl font-bold truncate" style={{ color: kachel.color }}>
               {kachel.value}
             </p>
-            <p className="text-xs mt-0.5" style={{ color: '#6a6a6a' }}>{kachel.label}</p>
+            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{kachel.label}</p>
           </div>
         ))}
       </div>
@@ -460,13 +460,13 @@ export default function AuftraegeSection() {
       {/* Auftragsliste */}
       {auftraege.length === 0 ? (
         <div className="rounded-xl p-8 text-center"
-          style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}
+          style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}
         >
           <p className="text-2xl mb-3">📋</p>
-          <p className="text-sm font-medium mb-1" style={{ color: '#5a5a5a' }}>
+          <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>
             Noch keine Aufträge
           </p>
-          <p className="text-xs" style={{ color: '#3a3a3a' }}>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>
             Sobald Sie ein Angebot digital unterschreiben, erscheint es hier als Auftrag.
           </p>
         </div>
@@ -486,8 +486,8 @@ export default function AuftraegeSection() {
                   style={{
                     background: isOpen
                       ? 'linear-gradient(145deg, #222218, #1e1e18)'
-                      : '#1e1e1e',
-                    border: isOpen ? '1px solid #3d3210' : '1px solid #2d2d2d',
+                      : '#FFFFFF',
+                    border: isOpen ? '1px solid #3d3210' : '1px solid #E5E7EB',
                   }}
                   onClick={() => setExpanded(isOpen ? null : auftrag.id)}
                 >
@@ -507,19 +507,19 @@ export default function AuftraegeSection() {
                           {stLabel}
                         </span>
                       </div>
-                      <p className="text-xs mt-0.5 truncate" style={{ color: '#6a6a6a' }}>
+                      <p className="text-xs mt-0.5 truncate" style={{ color: '#6B7280' }}>
                         {auftrag.leistung}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-3 flex-shrink-0">
-                      <span className="text-sm font-bold" style={{ color: '#e0e0e0' }}>
+                      <span className="text-sm font-bold" style={{ color: '#1F2937' }}>
                         {auftrag.betrag}
                       </span>
                       <span
                         className="text-xs transition-transform duration-200"
                         style={{
-                          color: '#5a5a5a',
+                          color: '#9CA3AF',
                           transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                           display: 'inline-block',
                         }}

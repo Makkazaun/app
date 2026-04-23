@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useJtlAuftraege, type JtlAuftrag } from '@/lib/useJtlData'
@@ -27,7 +27,7 @@ function ZahlungsBadge({ a }: { a: JtlAuftrag }) {
   if (a.status === 'storniert') {
     return (
       <span className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium"
-        style={{ background: 'rgba(90,90,90,0.15)', color: '#5a5a5a', border: '1px solid #3a3a3a' }}>
+        style={{ background: 'rgba(90,90,90,0.15)', color: '#9CA3AF', border: '1px solid #9CA3AF' }}>
         Storniert
       </span>
     )
@@ -47,7 +47,7 @@ function ZahlungsBadge({ a }: { a: JtlAuftrag }) {
           style={{ background: 'rgba(128,0,32,0.12)', color: '#800020', border: '1px solid rgba(128,0,32,0.25)' }}>
           Anzahlung erhalten
         </span>
-        <p className="text-[10px] pl-0.5" style={{ color: '#5a5a5a' }}>
+        <p className="text-[10px] pl-0.5" style={{ color: '#9CA3AF' }}>
           Wartet auf Schlussrechnung
         </p>
       </div>
@@ -67,12 +67,12 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
   if (rows.length === 0) {
     return (
       <div className="rounded-2xl p-12 text-center"
-        style={{ background: '#1e1e1e', border: '1px dashed #2d2d2d' }}>
+        style={{ background: '#FFFFFF', border: '1px dashed #E5E7EB' }}>
         <div className="text-3xl mb-3">🔨</div>
-        <p className="text-sm font-medium mb-1" style={{ color: '#5a5a5a' }}>
+        <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>
           Keine Aufträge in dieser Kategorie
         </p>
-        <p className="text-xs" style={{ color: '#3a3a3a' }}>
+        <p className="text-xs" style={{ color: '#9CA3AF' }}>
           Sobald Aufträge vorliegen, erscheinen sie hier.
         </p>
       </div>
@@ -80,14 +80,14 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
   }
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2d2d2d' }}>
+    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
       {/* Tabellenkopf */}
       <div
         className="hidden sm:grid px-5 py-3 text-xs font-medium uppercase tracking-wider"
         style={{
-          background: '#1e1e1e',
-          borderBottom: '1px solid #2d2d2d',
-          color: '#4a4a4a',
+          background: '#FFFFFF',
+          borderBottom: '1px solid #E5E7EB',
+          color: '#9CA3AF',
           gridTemplateColumns: '130px 90px 1fr 150px 190px 90px',
           gap: '12px',
         }}
@@ -106,8 +106,8 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
           <div
             key={a.kAuftrag}
             style={{
-              background:   i % 2 === 0 ? '#191919' : '#161616',
-              borderBottom: i < rows.length - 1 ? '1px solid #222' : 'none',
+              background:   i % 2 === 0 ? '#FFFFFF' : '#F3F4F6',
+              borderBottom: i < rows.length - 1 ? '1px solid #E5E7EB' : 'none',
               opacity:      dimmed ? 0.5 : 1,
             }}
           >
@@ -126,14 +126,14 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
                   </p>
                 )}
               </div>
-              <p className="text-xs" style={{ color: '#5a5a5a' }}>{formatDate(a.datum)}</p>
-              <p className="text-xs leading-snug" style={{ color: '#b0b0b0' }}>{a.betreff}</p>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>{formatDate(a.datum)}</p>
+              <p className="text-xs leading-snug" style={{ color: '#4B5563' }}>{a.betreff}</p>
               <div>
-                <p className="text-sm font-semibold" style={{ color: '#e8e8e8' }}>
+                <p className="text-sm font-semibold" style={{ color: '#1F2937' }}>
                   {formatEur(a.betragBrutto)}
                 </p>
                 {a.rechnungssumme > 0 && a.rechnungssumme < a.betragBrutto && (
-                  <p className="text-xs" style={{ color: '#5a5a5a' }}>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>
                     Anzahlung {formatEur(a.rechnungssumme)}
                   </p>
                 )}
@@ -151,18 +151,18 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
                   <p className="font-mono text-xs font-semibold" style={{ color: '#800020' }}>
                     {a.belegnummer}
                   </p>
-                  <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>{formatDate(a.datum)}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{formatDate(a.datum)}</p>
                 </div>
                 <ZahlungsBadge a={a} />
               </div>
-              <p className="text-xs" style={{ color: '#9a9a9a' }}>{a.betreff}</p>
+              <p className="text-xs" style={{ color: '#6B7280' }}>{a.betreff}</p>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold" style={{ color: '#e8e8e8' }}>
+                  <p className="text-sm font-bold" style={{ color: '#1F2937' }}>
                     {formatEur(a.betragBrutto)}
                   </p>
                   {a.rechnungssumme > 0 && a.rechnungssumme < a.betragBrutto && (
-                    <p className="text-xs" style={{ color: '#5a5a5a' }}>
+                    <p className="text-xs" style={{ color: '#9CA3AF' }}>
                       Anzahlung {formatEur(a.rechnungssumme)}
                     </p>
                   )}
@@ -204,14 +204,14 @@ export default function AuftraegePage() {
           <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
             Aufträge
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Meine Aufträge</h1>
-          <p className="mt-1 text-sm" style={{ color: '#6a6a6a' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Meine Aufträge</h1>
+          <p className="mt-1 text-sm" style={{ color: '#6B7280' }}>
             {loading ? 'Daten werden geladen …' : 'Fakturierungsstatus in Echtzeit'}
           </p>
         </div>
         {!loading && !error && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-            style={{ background: '#1e1e1e', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
+            style={{ background: '#FFFFFF', color: '#5bc97a', border: '1px solid #2d3d2d' }}>
             <span className="w-2 h-2 rounded-full" style={{ background: '#5bc97a' }} />
             System · Live
           </div>
@@ -231,7 +231,7 @@ export default function AuftraegePage() {
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-xl animate-pulse"
-              style={{ background: '#1e1e1e', border: '1px solid #2a2a2a', height: '56px' }} />
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', height: '56px' }} />
           ))}
         </div>
       )}
@@ -240,7 +240,7 @@ export default function AuftraegePage() {
       {!loading && (
         <>
           {/* Tab-Leiste */}
-          <div style={{ borderBottom: '1px solid #2d2d2d' }} className="flex">
+          <div style={{ borderBottom: '1px solid #E5E7EB' }} className="flex">
             {tabs.map(({ key, label, count }) => {
               const active = activeTab === key
               return (
@@ -249,7 +249,7 @@ export default function AuftraegePage() {
                   onClick={() => setActiveTab(key)}
                   className="relative flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors"
                   style={{
-                    color:      active ? '#800020' : '#5a5a5a',
+                    color:      active ? '#800020' : '#9CA3AF',
                     background: 'transparent',
                     border:     'none',
                     cursor:     'pointer',
@@ -261,7 +261,7 @@ export default function AuftraegePage() {
                       className="inline-flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 py-0.5 min-w-[18px]"
                       style={{
                         background: active ? 'rgba(128,0,32,0.18)' : 'rgba(90,90,90,0.18)',
-                        color:      active ? '#800020' : '#5a5a5a',
+                        color:      active ? '#800020' : '#9CA3AF',
                       }}
                     >
                       {count}
@@ -281,7 +281,7 @@ export default function AuftraegePage() {
           <AuftraegeTabelle rows={tabRows} />
 
           {alle.length > 0 && (
-            <p className="text-xs text-center" style={{ color: '#2a2a2a' }}>
+            <p className="text-xs text-center" style={{ color: '#E5E7EB' }}>
               Live-Daten · Alle Beträge inkl. MwSt.
             </p>
           )}

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { getSession } from '@/lib/auth'
@@ -56,15 +56,15 @@ export default function DashboardHeader() {
   ]
 
   return (
-    <div className="pb-8" style={{ borderBottom: '1px solid #2a2a2a' }}>
+    <div className="pb-8" style={{ borderBottom: '1px solid #E5E7EB' }}>
       {/* Begrüßung */}
       <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: '#800020' }}>
         Willkommen zurück
       </p>
-      <h1 className="text-3xl font-bold mb-2" style={{ color: '#e8e8e8' }}>
+      <h1 className="text-3xl font-bold mb-2" style={{ color: '#1F2937' }}>
         {vorname ? `Hallo ${vorname},` : 'Mein Kundenbereich'}
       </h1>
-      <p className="text-sm mb-8" style={{ color: '#5a5a5a' }}>
+      <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>
         {vorname
           ? 'hier sind Ihre aktuellen Vorgänge bei Edelzaun & Tor.'
           : 'Anfragen · Angebote · Aufträge · Termine – alles auf einen Blick.'}
@@ -74,15 +74,15 @@ export default function DashboardHeader() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map((s) => (
           <div key={s.label} className="rounded-xl p-4"
-            style={{ background: '#191919', border: '1px solid #252525' }}
+            style={{ background: '#FFFFFF', border: '1px solid #F3F4F6' }}
           >
-            <p className="text-xs mb-2" style={{ color: '#4a4a4a', letterSpacing: '0.08em' }}>
+            <p className="text-xs mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.08em' }}>
               {s.label}
             </p>
             <p className="text-xl font-bold leading-none mb-1" style={{ color: s.color }}>
               {s.value}
             </p>
-            <p className="text-xs" style={{ color: '#3a3a3a' }}>{s.sub}</p>
+            <p className="text-xs" style={{ color: '#9CA3AF' }}>{s.sub}</p>
           </div>
         ))}
       </div>

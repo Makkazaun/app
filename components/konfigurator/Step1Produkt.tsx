@@ -1,4 +1,4 @@
-import SelectCard from './SelectCard'
+﻿import SelectCard from './SelectCard'
 import type { FormData, Produkt } from './types'
 
 interface Props {
@@ -35,10 +35,10 @@ export default function Step1Produkt({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 1
         </p>
-        <h2 className="text-2xl font-bold mb-1" style={{ color: '#e8e8e8' }}>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: '#1F2937' }}>
           Welches Produkt interessiert Sie?
         </h2>
-        <p className="text-sm" style={{ color: '#5a5a5a' }}>
+        <p className="text-sm" style={{ color: '#9CA3AF' }}>
           Wählen Sie Ihr Hauptprodukt – die Details konfigurieren wir im nächsten Schritt.
         </p>
       </div>

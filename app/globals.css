@@ -1,31 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --anthrazit-dark: #1a1a1a;
-  --anthrazit: #2d2d2d;
-  --anthrazit-light: #3d3d3d;
-  --silber-dark: #8a8a8a;
-  --silber: #b8b8b8;
-  --silber-light: #d4d4d4;
-  --silber-bright: #e8e8e8;
-  --gold-accent: #800020;
-  --gold-light: #a0002a;
-  --background: var(--anthrazit-dark);
-  --foreground: var(--silber-bright);
+  --brand:        #800020;
+  --brand-dark:   #5a0016;
+  --brand-light:  #a0002a;
+  --gray-50:      #F9FAFB;
+  --gray-100:     #F3F4F6;
+  --gray-200:     #E5E7EB;
+  --gray-300:     #D1D5DB;
+  --gray-400:     #9CA3AF;
+  --gray-500:     #6B7280;
+  --gray-600:     #4B5563;
+  --gray-700:     #374151;
+  --gray-900:     #1F2937;
+  --background:   var(--gray-50);
+  --foreground:   var(--gray-900);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-anthrazit-dark: var(--anthrazit-dark);
-  --color-anthrazit: var(--anthrazit);
-  --color-anthrazit-light: var(--anthrazit-light);
-  --color-silber-dark: var(--silber-dark);
-  --color-silber: var(--silber);
-  --color-silber-light: var(--silber-light);
-  --color-silber-bright: var(--silber-bright);
-  --color-gold: var(--gold-accent);
-  --color-gold-light: var(--gold-light);
 }
 
 * {
@@ -37,25 +31,14 @@ html {
 }
 
 body {
-  background-color: var(--anthrazit-dark);
-  color: var(--silber-bright);
+  background-color: var(--gray-50);
+  color: var(--gray-900);
   font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Metallic gradient utility */
-.metallic-gradient {
-  background: linear-gradient(135deg, #8a8a8a 0%, #d4d4d4 30%, #f0f0f0 50%, #d4d4d4 70%, #8a8a8a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.metallic-bg {
-  background: linear-gradient(135deg, #3a3a3a 0%, #4d4d4d 50%, #3a3a3a 100%);
-}
-
+/* Bordeaux gradient text utility */
 .gold-gradient {
   background: linear-gradient(135deg, #5a0016 0%, #800020 30%, #a0002a 50%, #800020 70%, #5a0016 100%);
   -webkit-background-clip: text;
@@ -68,50 +51,44 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--anthrazit);
+  background: var(--gray-100);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--silber-dark);
+  background: var(--gray-300);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--silber);
+  background: var(--gray-400);
 }
 
-/* Card hover effect */
+/* Card hover */
 .card-hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* Focus ring */
 input:focus,
 button:focus {
-  outline: 2px solid var(--gold-accent);
+  outline: 2px solid #800020;
   outline-offset: 2px;
 }
 
-/* Toast slide-in animation */
+/* Toast slide-in */
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  from { opacity: 0; transform: translateX(-50%) translateY(-14px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* Tab underline indicator */
 .tab-underline-active {
-  border-bottom: 2px solid var(--gold-accent);
-  color: var(--gold-accent);
+  border-bottom: 2px solid #800020;
+  color: #800020;
 }
 .tab-underline-inactive {
   border-bottom: 2px solid transparent;
-  color: #5a5a5a;
+  color: #6B7280;
 }

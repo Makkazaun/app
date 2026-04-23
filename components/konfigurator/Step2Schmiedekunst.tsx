@@ -1,4 +1,4 @@
-import SelectCard from './SelectCard'
+﻿import SelectCard from './SelectCard'
 import FieldLabel, { inputStyle } from './FieldLabel'
 import type { FormData } from './types'
 
@@ -16,8 +16,8 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
         <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#800020', letterSpacing: '0.2em' }}>
           Schritt 2 · Schmiedekunst & Metallzaun
         </p>
-        <h2 className="text-2xl font-bold" style={{ color: '#e8e8e8' }}>Konfiguration</h2>
-        <p className="text-sm mt-1" style={{ color: '#5a5a5a' }}>
+        <h2 className="text-2xl font-bold" style={{ color: '#1F2937' }}>Konfiguration</h2>
+        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>
           Individuelle Schmiedearbeiten werden auf Basis Ihrer Angaben persönlich kalkuliert.
         </p>
       </div>
@@ -32,7 +32,7 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '44px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#5a5a5a' }}>cm</span>
+              style={{ color: '#9CA3AF' }}>cm</span>
           </div>
         </div>
         <div>
@@ -44,7 +44,7 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
               style={{ ...inputStyle(), paddingRight: '36px' }}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-              style={{ color: '#5a5a5a' }}>m</span>
+              style={{ color: '#9CA3AF' }}>m</span>
           </div>
         </div>
       </div>
@@ -78,8 +78,8 @@ export default function Step2Schmiedekunst({ data, update }: Props) {
         </div>
       </div>
 
-      <div className="rounded-xl p-4" style={{ background: '#1e1a0a', border: '1px solid #3d3210' }}>
-        <p className="text-xs" style={{ color: '#9a8a4a' }}>
+      <div className="rounded-xl p-4" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
+        <p className="text-xs" style={{ color: '#92400E' }}>
           💡 Im nächsten Schritt können Sie Referenzfotos, Skizzen oder Pläne hochladen –
           das hilft uns, Ihren Wunsch optimal umzusetzen und ein genaues Angebot zu erstellen.
         </p>
