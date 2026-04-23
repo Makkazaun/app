@@ -883,7 +883,11 @@ export async function upsertKundeLieferadresse(
   }
 }
 
-// ── Schreib-Operationen ───────────────────────────────────────────────────────
+// ── Angebots-Statusschreiber ──────────────────────────────────────────────────
+//
+// Schreibt NUR in [Verkauf].[tAuftragText].cVorgangsstatus.
+// Kein nFarbe. Kein cAnmerkung. Keine anderen Tabellen.
+//
 
 export interface FarbeResult {
   rowsAffected: number
@@ -891,236 +895,53 @@ export interface FarbeResult {
   error?:       string
 }
 
-/**
- * Liest den Datensatz aus tAngebot / tAuftrag und gibt ihn in pm2 aus.
- *
- * Schritt 1: SELECT TOP 1 * ohne WHERE – zeigt immer alle Spaltennamen.
- * Schritt 2: TRIM-Exact-Suche, dann LIKE-Fallback.
- * Schritt 3: Scannt alle Stringfelder der gefundenen Zeile nach Statuswerten
- *            und gibt `[STATUS-SPALTE ERKANNT]` aus.
- */
-async function preflightLog(pool: sql.ConnectionPool, cAngebotNr: string): Promise<void> {
-  const trimNr = cAngebotNr.trim()
-  const like   = `%${trimNr}%`
-
-  // ── Schritt 1: Spaltenstruktur (beliebige Zeile, kein WHERE) ─────────────────
-  try {
-    const sample = await pool.request()
-      .query<Record<string, unknown>>(`SELECT TOP 1 * FROM [Verkauf].[tAngebot]`)
-    const sampleRow = sample.recordset[0]
-    if (sampleRow)
-      console.log('[preflight] Spalten in Verkauf.tAngebot:', Object.keys(sampleRow).join(', '))
-  } catch (err) {
-    const msg = (err as Error).message.split('\n')[0]
-    if (/Invalid object name/i.test(msg))
-      console.log('[preflight] Verkauf.tAngebot existiert nicht in dieser JTL-Version')
-    else
-      console.warn('[preflight] Schema-Abfrage tAngebot:', msg)
-  }
-
-  // ── Schritt 2: Datensatz suchen (TRIM-Exact → LIKE → tAuftrag) ───────────────
-  const searchQueries = [
-    {
-      label: `tAngebot TRIM='${trimNr}'`,
-      exec:  () => pool.request()
-        .input('nr', sql.NVarChar(50), trimNr)
-        .query<Record<string, unknown>>(
-          `SELECT TOP 1 * FROM [Verkauf].[tAngebot] WHERE LTRIM(RTRIM(cAngebotNr)) = @nr`),
-    },
-    {
-      label: `tAngebot LIKE '${like}'`,
-      exec:  () => pool.request()
-        .input('like', sql.NVarChar(102), like)
-        .query<Record<string, unknown>>(
-          `SELECT TOP 1 * FROM [Verkauf].[tAngebot] WHERE cAngebotNr LIKE @like`),
-    },
-    {
-      label: `tAuftrag LIKE '${like}' (nType=0)`,
-      exec:  () => pool.request()
-        .input('like', sql.NVarChar(102), like)
-        .query<Record<string, unknown>>(
-          `SELECT TOP 1 * FROM [Verkauf].[tAuftrag] WHERE cAuftragsNr LIKE @like AND nType = 0`),
-    },
-  ]
-
-  for (const q of searchQueries) {
-    try {
-      const res = await q.exec()
-      const row = res.recordset[0]
-      if (!row) { console.log(`[preflight] ${q.label} → kein Treffer`); continue }
-
-      console.log(`[preflight] Datensatz gefunden – ${q.label}`)
-      for (const [key, val] of Object.entries(row)) {
-        if (val !== null && val !== undefined && val !== '')
-          console.log(`  ${String(key).padEnd(32)} = ${JSON.stringify(val)}`)
-      }
-
-      // ── Schritt 3: Status-Spalten-Scan ──────────────────────────────────────
-      const statusKw = ['abgelehnt', 'angenommen', 'offen', 'rejected', 'accepted']
-      for (const [key, val] of Object.entries(row)) {
-        if (typeof val === 'string' && statusKw.some((kw) => val.toLowerCase().includes(kw)))
-          console.log(`[STATUS-SPALTE ERKANNT] ${key} = "${val}"`)
-      }
-
-      return
-    } catch (err) {
-      const msg = (err as Error).message.split('\n')[0]
-      if (!/Invalid object name/i.test(msg)) console.warn(`[preflight] ${q.label}: ${msg}`)
-    }
-  }
-
-  console.log(`[preflight] "${cAngebotNr}" nirgends gefunden`)
-}
-
-// ── Gemeinsamer Update-Kernel ─────────────────────────────────────────────────
-
-async function runUpdateChain(
-  pool:       sql.ConnectionPool,
+async function setVorgangsstatus(
   cAngebotNr: string,
-  attempts:   { tabelle: string; felder: string; run: () => Promise<sql.IResult<unknown>> }[],
+  status: 'angenommen' | 'abgelehnt',
 ): Promise<FarbeResult> {
-  for (const attempt of attempts) {
-    try {
-      console.log(`SQL-Update ausgeführt auf Tabelle ${attempt.tabelle} für Feld ${attempt.felder} (${cAngebotNr})`)
-      const result = await attempt.run()
-      const rows   = result.rowsAffected?.[0] ?? 0
-
-      if (rows > 0) {
-        console.log(`Update erfolgreich für ${cAngebotNr}`)
-        return { rowsAffected: rows, path: `${attempt.tabelle}/${attempt.felder}` }
-      }
-      console.log(`  → rowsAffected=0, weiter mit nächstem Versuch`)
-    } catch (err) {
-      const msg = (err as Error).message
-      if (/Invalid column name|Invalid object name/i.test(msg)) {
-        console.log(`  → Spalte/Tabelle nicht vorhanden, überspringe`)
-        continue
-      }
-      const short = msg.split('\n')[0]
-      console.warn(`[update] Fehler: ${short}`)
-      return { rowsAffected: 0, error: short }
-    }
-  }
-
-  console.warn(`Fehler: Angebot ${cAngebotNr} in Wawi nicht gefunden`)
-  return { rowsAffected: 0, error: `Angebot ${cAngebotNr} in Wawi nicht gefunden` }
-}
-
-/**
- * Markiert ein Angebot als "angenommen" in der JTL-Wawi.
- *
- * Schreibt cVorgangsstatus = 'angenommen' in [Verkauf].[tAuftragText].
- * Verknüpfung: tAuftragText.kAuftrag = tAngebot.kAngebot (via Subquery).
- * WHERE: TRIM-Exact zuerst, LIKE als Fallback.
- * Wirft nie.
- */
-export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
-  let pool: sql.ConnectionPool
-  try { pool = await getPool() }
-  catch (err) {
-    console.warn('[annehmen] DB-Verbindung fehlgeschlagen:', (err as Error).message.split('\n')[0])
-    return
-  }
-
-  await preflightLog(pool, cAngebotNr)
-
-  const trimNr = cAngebotNr.trim()
-  const like   = `%${trimNr}%`
-
-  const result = await runUpdateChain(pool, cAngebotNr, [
-    {
-      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=angenommen (TRIM)',
-      run: () => pool.request()
-        .input('nr',     sql.NVarChar(50), trimNr)
-        .input('status', sql.NVarChar(50), 'angenommen')
-        .query(`
-          UPDATE [Verkauf].[tAuftragText]
-          SET cVorgangsstatus = @status
-          WHERE kAuftrag = (
-            SELECT kAngebot FROM [Verkauf].[tAngebot]
-            WHERE LTRIM(RTRIM(cAngebotNr)) = @nr
-          )
-        `),
-    },
-    {
-      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=angenommen (LIKE)',
-      run: () => pool.request()
-        .input('like',   sql.NVarChar(102), like)
-        .input('status', sql.NVarChar(50),  'angenommen')
-        .query(`
-          UPDATE [Verkauf].[tAuftragText]
-          SET cVorgangsstatus = @status
-          WHERE kAuftrag = (
-            SELECT TOP 1 kAngebot FROM [Verkauf].[tAngebot]
-            WHERE cAngebotNr LIKE @like
-          )
-        `),
-    },
-  ])
-
-  if (result.rowsAffected > 0)
-    console.log(`Erfolgreich cVorgangsstatus in [Verkauf].[tAuftragText] für ${cAngebotNr} gesetzt.`)
-}
-
-/**
- * Markiert ein Angebot als "abgelehnt" in der JTL-Wawi.
- *
- * Schreibt cVorgangsstatus = 'abgelehnt' in [Verkauf].[tAuftragText].
- * Verknüpfung: tAuftragText.kAuftrag = tAngebot.kAngebot (via Subquery).
- * WHERE: TRIM-Exact zuerst, LIKE als Fallback.
- * Wirft nie.
- */
-export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
-  console.log(`[ablehnen] Starte für AngebotNr: ${cAngebotNr}`)
-
   let pool: sql.ConnectionPool
   try { pool = await getPool() }
   catch (err) {
     const msg = (err as Error).message.split('\n')[0]
-    console.warn('[ablehnen] DB-Verbindung fehlgeschlagen:', msg)
+    console.warn(`[tAuftragText] DB-Verbindung fehlgeschlagen: ${msg}`)
     return { rowsAffected: 0, error: msg }
   }
 
-  await preflightLog(pool, cAngebotNr)
-
   const trimNr = cAngebotNr.trim()
-  const like   = `%${trimNr}%`
+  try {
+    const result = await pool.request()
+      .input('status',    sql.NVarChar(50), status)
+      .input('angebotNr', sql.NVarChar(50), trimNr)
+      .query(`
+        UPDATE [Verkauf].[tAuftragText]
+        SET cVorgangsstatus = @status
+        WHERE kAuftrag = (
+          SELECT kAngebot FROM [Verkauf].[tAngebot]
+          WHERE LTRIM(RTRIM(cAngebotNr)) = @angebotNr
+        )
+      `)
+    const rows = result.rowsAffected?.[0] ?? 0
+    if (rows > 0) {
+      console.log(`Erfolgreich cVorgangsstatus in [Verkauf].[tAuftragText] für ${cAngebotNr} gesetzt.`)
+    } else {
+      console.warn(`[tAuftragText] rowsAffected=0 für ${cAngebotNr} – Angebot nicht gefunden`)
+    }
+    return { rowsAffected: rows }
+  } catch (err) {
+    const msg = (err as Error).message.split('\n')[0]
+    console.error(`[tAuftragText] Fehler für ${cAngebotNr}: ${msg}`)
+    return { rowsAffected: 0, error: msg }
+  }
+}
 
-  const result = await runUpdateChain(pool, cAngebotNr, [
-    {
-      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=abgelehnt (TRIM)',
-      run: () => pool.request()
-        .input('nr',     sql.NVarChar(50), trimNr)
-        .input('status', sql.NVarChar(50), 'abgelehnt')
-        .query(`
-          UPDATE [Verkauf].[tAuftragText]
-          SET cVorgangsstatus = @status
-          WHERE kAuftrag = (
-            SELECT kAngebot FROM [Verkauf].[tAngebot]
-            WHERE LTRIM(RTRIM(cAngebotNr)) = @nr
-          )
-        `),
-    },
-    {
-      tabelle: 'Verkauf.tAuftragText', felder: 'cVorgangsstatus=abgelehnt (LIKE)',
-      run: () => pool.request()
-        .input('like',   sql.NVarChar(102), like)
-        .input('status', sql.NVarChar(50),  'abgelehnt')
-        .query(`
-          UPDATE [Verkauf].[tAuftragText]
-          SET cVorgangsstatus = @status
-          WHERE kAuftrag = (
-            SELECT TOP 1 kAngebot FROM [Verkauf].[tAngebot]
-            WHERE cAngebotNr LIKE @like
-          )
-        `),
-    },
-  ])
+/** Markiert ein Angebot als "angenommen" in der JTL-Wawi. Wirft nie. */
+export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
+  await setVorgangsstatus(cAngebotNr, 'angenommen')
+}
 
-  if (result.rowsAffected > 0)
-    console.log(`Erfolgreich cVorgangsstatus in [Verkauf].[tAuftragText] für ${cAngebotNr} gesetzt.`)
-
-  return result
+/** Markiert ein Angebot als "abgelehnt" in der JTL-Wawi. Wirft nie. */
+export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeResult> {
+  return setVorgangsstatus(cAngebotNr, 'abgelehnt')
 }
 
 // ── Kunden-Neuanlage ──────────────────────────────────────────────────────────
