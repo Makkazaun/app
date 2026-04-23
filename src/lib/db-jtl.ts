@@ -1059,7 +1059,7 @@ export async function markAngebotAngenommen(cAngebotNr: string): Promise<void> {
   ])
 
   if (result.rowsAffected > 0)
-    console.log(`Status in [Verkauf].[tAuftragText] auf angenommen gesetzt für ${cAngebotNr}`)
+    console.log(`Erfolgreich cVorgangsstatus in [Verkauf].[tAuftragText] für ${cAngebotNr} gesetzt.`)
 }
 
 /**
@@ -1118,7 +1118,7 @@ export async function markAngebotAbgelehnt(cAngebotNr: string): Promise<FarbeRes
   ])
 
   if (result.rowsAffected > 0)
-    console.log(`Status in [Verkauf].[tAuftragText] auf abgelehnt gesetzt für ${cAngebotNr}`)
+    console.log(`Erfolgreich cVorgangsstatus in [Verkauf].[tAuftragText] für ${cAngebotNr} gesetzt.`)
 
   return result
 }
