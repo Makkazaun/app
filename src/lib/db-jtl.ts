@@ -911,24 +911,49 @@ async function setVorgangsstatus(
 
   const trimNr = cAngebotNr.trim()
   try {
-    // Schritt 1: kAuftrag aus tAuftrag per cAuftragsNr holen (LTRIM/RTRIM gegen JTL-Leerzeichen)
-    // Schritt 2: cVorgangsstatus in tAuftragText per kAuftrag-Subquery setzen
-    const res = await pool.request()
+    // Schritt 1: kAuftrag aus tAuftrag ermitteln
+    const lookupRes = await pool.request()
       .input('angebotNr', sql.NVarChar(50), trimNr)
-      .input('status',    sql.NVarChar(50), status)
+      .query<{ kAuftrag: number }>(`
+        SELECT TOP 1 kAuftrag
+        FROM [Verkauf].[tAuftrag]
+        WHERE LTRIM(RTRIM(cAuftragsNr)) = @angebotNr
+      `)
+
+    const kAuftrag = lookupRes.recordset[0]?.kAuftrag
+    if (!kAuftrag) {
+      console.warn(`[tAuftragText] kAuftrag für "${trimNr}" nicht gefunden`)
+      return { rowsAffected: 0, error: `kAuftrag für "${trimNr}" nicht gefunden` }
+    }
+
+    // Schritt 2: UPDATE – Zeile bereits vorhanden?
+    const updRes = await pool.request()
+      .input('kAuftrag', sql.Int,          kAuftrag)
+      .input('status',   sql.NVarChar(50), status)
       .query(`
         UPDATE [Verkauf].[tAuftragText]
         SET cVorgangsstatus = @status
-        WHERE kAuftrag = (
-          SELECT TOP 1 kAuftrag
-          FROM [Verkauf].[tAuftrag]
-          WHERE LTRIM(RTRIM(cAuftragsNr)) = @angebotNr
-        )
+        WHERE kAuftrag = @kAuftrag
       `)
+    const updRows = updRes.rowsAffected?.[0] ?? 0
 
-    const rowsAffected = res.rowsAffected?.[0] ?? 0
-    console.log(`[tAuftragText] UPDATE "${trimNr}" → "${status}" rowsAffected=${rowsAffected}`)
-    return { rowsAffected }
+    if (updRows > 0) {
+      console.log(`[tAuftragText] UPDATE kAuftrag=${kAuftrag} (${trimNr}) → "${status}"`)
+      return { rowsAffected: updRows, path: 'update' }
+    }
+
+    // Schritt 3: Zeile fehlt (neues Angebot) → INSERT
+    console.warn(`[tAuftragText] Keine Zeile für kAuftrag=${kAuftrag} – INSERT`)
+    const insRes = await pool.request()
+      .input('kAuftrag', sql.Int,          kAuftrag)
+      .input('status',   sql.NVarChar(50), status)
+      .query(`
+        INSERT INTO [Verkauf].[tAuftragText] (kAuftrag, cVorgangsstatus)
+        VALUES (@kAuftrag, @status)
+      `)
+    const insRows = insRes.rowsAffected?.[0] ?? 0
+    console.log(`[tAuftragText] INSERT kAuftrag=${kAuftrag} (${trimNr}) → "${status}" rowsAffected=${insRows}`)
+    return { rowsAffected: insRows, path: 'insert' }
 
   } catch (err) {
     const msg = (err as Error).message.split('\n')[0]
