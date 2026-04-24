@@ -801,32 +801,86 @@ export async function upsertKundeLieferadresse(
   kAdresse?: number
 ): Promise<void> {
   const pool = await getPool()
-  let existingKAdresse: number | null = kAdresse ?? null
 
-  if (existingKAdresse === null) {
+  // ── Schritt 1: Schema-Erkennung via INFORMATION_SCHEMA ──────────────────────
+  // Prüfe welche Verknüpfungsstruktur diese JTL-Version nutzt, bevor wir irgendetwas schreiben.
+  const [colCheck, tblCheck] = await Promise.all([
+    pool.request().query<{ cnt: number }>(`
+      SELECT COUNT(*) AS cnt
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'tKunde'
+        AND COLUMN_NAME  = 'kLieferadresse'
+    `),
+    pool.request().query<{ cnt: number }>(`
+      SELECT COUNT(*) AS cnt
+      FROM INFORMATION_SCHEMA.TABLES
+      WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'tLieferadresse'
+    `),
+  ])
+  const hasKLieferadresse = (colCheck.recordset[0]?.cnt ?? 0) > 0
+  const hasTLieferadresse = (tblCheck.recordset[0]?.cnt ?? 0) > 0
+  console.log('[db-jtl] Schema-Check: tKunde.kLieferadresse=%s | tLieferadresse=%s',
+    hasKLieferadresse, hasTLieferadresse)
+
+  // ── Schritt 2: Bestehende Lieferadresse (nTyp=2) ermitteln ──────────────────
+  // Wenn kAdresse übergeben wurde, verifizieren wir dass sie wirklich nTyp=2 ist.
+  let targetKAdresse: number | null = null
+
+  if (kAdresse) {
+    const verifyRes = await pool.request()
+      .input('kAdresse', sql.Int, kAdresse)
+      .input('kKunde',   sql.Int, kKunde)
+      .query<{ kAdresse: number; nTyp: number }>(`
+        SELECT kAdresse, nTyp FROM dbo.tAdresse
+        WHERE kAdresse = @kAdresse AND kKunde = @kKunde
+      `)
+    const row = verifyRes.recordset[0]
+    if (row?.nTyp === 2) {
+      targetKAdresse = row.kAdresse
+      console.log('[db-jtl] Übergabe kAdresse=%d verifiziert (nTyp=2)', targetKAdresse)
+    } else if (row) {
+      console.warn('[db-jtl] kAdresse=%d hat nTyp=%d – suche nTyp=2 für kKunde=%d',
+        kAdresse, row.nTyp, kKunde)
+    }
+  }
+
+  if (targetKAdresse === null) {
     const existRes = await pool.request()
       .input('kKunde', sql.Int, kKunde)
       .query<{ kAdresse: number }>(`
-        SELECT TOP 1 kAdresse
-        FROM dbo.tAdresse
+        SELECT TOP 1 kAdresse FROM dbo.tAdresse
         WHERE kKunde = @kKunde AND nTyp = 2
         ORDER BY kAdresse
       `)
-    existingKAdresse = existRes.recordset[0]?.kAdresse ?? null
+    targetKAdresse = existRes.recordset[0]?.kAdresse ?? null
+    console.log('[db-jtl] Lookup nTyp=2 für kKunde=%d → kAdresse=%s',
+      kKunde, targetKAdresse ?? 'nicht gefunden → INSERT')
   }
 
-  // JTL-Trigger temporär deaktivieren (wie bei Rechnungsadresse)
+  // ── Schritt 3: Trigger deaktivieren ─────────────────────────────────────────
   try {
     await pool.request().query(`ALTER TABLE dbo.tAdresse DISABLE TRIGGER ALL`)
   } catch (trigErr) {
-    console.warn('[db-jtl] DISABLE TRIGGER (Lieferadresse) fehlgeschlagen:', (trigErr as Error).message)
+    console.warn('[db-jtl] DISABLE TRIGGER (Lieferadresse):', (trigErr as Error).message)
   }
 
   let upsertErr: unknown = null
   try {
-    if (existingKAdresse !== null) {
-      // ── UPDATE per PK ───────────────────────────────────────────────────────
-      const lieferSql = `SET ARITHABORT ON;
+    if (targetKAdresse !== null) {
+      // ── UPDATE bestehende Lieferadresse ────────────────────────────────────
+      const upd = await pool.request()
+        .input('kAdresse', sql.Int,          targetKAdresse)
+        .input('kKunde',   sql.Int,          kKunde)
+        .input('firma',    sql.NVarChar(255), data.firma    ?? null)
+        .input('vorname',  sql.NVarChar(255), data.vorname)
+        .input('nachname', sql.NVarChar(255), data.nachname)
+        .input('strasse',  sql.NVarChar(255), data.strasse)
+        .input('plz',      sql.NVarChar(10),  data.plz)
+        .input('ort',      sql.NVarChar(255), data.ort)
+        .input('land',     sql.NVarChar(255), data.land || 'Deutschland')
+        .input('tel',      sql.NVarChar(50),  data.tel   ?? null)
+        .input('mobil',    sql.NVarChar(50),  data.mobil ?? null)
+        .query(`SET ARITHABORT ON;
           UPDATE dbo.tAdresse
           SET nTyp     = 2,
               cFirma   = @firma,
@@ -838,34 +892,12 @@ export async function upsertKundeLieferadresse(
               cLand    = @land,
               cTel     = @tel,
               cMobil   = @mobil
-          WHERE kAdresse = @kAdresse AND kKunde = @kKunde`
-      await pool.request()
-        .input('kAdresse', sql.Int,          existingKAdresse)
-        .input('kKunde',   sql.Int,          kKunde)
-        .input('firma',    sql.NVarChar(255), data.firma    ?? null)
-        .input('vorname',  sql.NVarChar(255), data.vorname)
-        .input('nachname', sql.NVarChar(255), data.nachname)
-        .input('strasse',  sql.NVarChar(255), data.strasse)
-        .input('plz',      sql.NVarChar(10),  data.plz)
-        .input('ort',      sql.NVarChar(255), data.ort)
-        .input('land',     sql.NVarChar(255), data.land || 'Deutschland')
-        .input('tel',      sql.NVarChar(50),  data.tel   ?? null)
-        .input('mobil',    sql.NVarChar(50),  data.mobil ?? null)
-        .query(lieferSql)
-
-      // Sicherstellen dass tKunde.kLieferadresse auf diesen Eintrag zeigt.
-      try {
-        await pool.request()
-          .input('kKunde',   sql.Int, kKunde)
-          .input('kAdresse', sql.Int, existingKAdresse)
-          .query(`UPDATE dbo.tKunde SET kLieferadresse = @kAdresse WHERE kKunde = @kKunde`)
-        console.log('[db-jtl] tKunde.kLieferadresse bestätigt → %d', existingKAdresse)
-      } catch (linkErr) {
-        console.warn('[db-jtl] tKunde.kLieferadresse (UPDATE-Pfad) nicht setzbar:', (linkErr as Error).message)
-      }
+          WHERE kAdresse = @kAdresse AND kKunde = @kKunde`)
+      console.log('[db-jtl] Lieferadresse UPDATE: kAdresse=%d rows=%d',
+        targetKAdresse, upd.rowsAffected?.[0] ?? -1)
     } else {
-      // ── INSERT neue Lieferadresse ────────────────────────────────────────────
-      const insRes = await pool.request()
+      // ── INSERT neue Lieferadresse ───────────────────────────────────────────
+      const ins = await pool.request()
         .input('kKunde',   sql.Int,          kKunde)
         .input('firma',    sql.NVarChar(255), data.firma    ?? null)
         .input('vorname',  sql.NVarChar(255), data.vorname)
@@ -886,38 +918,70 @@ export async function upsertKundeLieferadresse(
             (@kKunde, 2, 0, @firma, @vorname, @nachname,
              @strasse, @plz, @ort, @land, @tel, @mobil, @email)
         `)
-
-      // Versuche tKunde.kLieferadresse zu verknüpfen (JTL-Wawi zeigt sonst "Sonstige").
-      // Spalte existiert nicht in allen JTL-Versionen – Fehler werden ignoriert.
-      const newKAdresse = insRes.recordset[0]?.kAdresse
-      if (newKAdresse) {
-        existingKAdresse = newKAdresse
-        try {
-          await pool.request()
-            .input('kKunde',    sql.Int, kKunde)
-            .input('kAdresse',  sql.Int, newKAdresse)
-            .query(`UPDATE dbo.tKunde SET kLieferadresse = @kAdresse WHERE kKunde = @kKunde`)
-          console.log('[db-jtl] tKunde.kLieferadresse → %d gesetzt', newKAdresse)
-        } catch (linkErr) {
-          console.warn('[db-jtl] tKunde.kLieferadresse nicht gesetzt (Spalte ggf. nicht vorhanden):', (linkErr as Error).message)
-        }
-      }
+      targetKAdresse = ins.recordset[0]?.kAdresse ?? null
+      console.log('[db-jtl] Lieferadresse INSERT: neue kAdresse=%d nTyp=2', targetKAdresse)
     }
   } catch (err) {
     upsertErr = err
-    console.error('SQL EXECUTION ERROR:', err)
     console.error('[db-jtl] UPSERT Lieferadresse FEHLER:\n%s', serializeSqlError(err))
   } finally {
     try {
       await pool.request().query(`ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL`)
     } catch (trigErr) {
-      console.warn('[db-jtl] ENABLE TRIGGER (Lieferadresse) fehlgeschlagen:', (trigErr as Error).message)
+      console.warn('[db-jtl] ENABLE TRIGGER (Lieferadresse):', (trigErr as Error).message)
     }
   }
 
-  if (upsertErr) {
-    await resetPool()
-    throw upsertErr
+  if (upsertErr) { await resetPool(); throw upsertErr }
+  if (!targetKAdresse) return
+
+  // ── Schritt 4: Kundenstamm verknüpfen ───────────────────────────────────────
+  // Pfad A: tKunde.kLieferadresse (Standard in JTL 1.x)
+  if (hasKLieferadresse) {
+    try {
+      const lr = await pool.request()
+        .input('kKunde',   sql.Int, kKunde)
+        .input('kAdresse', sql.Int, targetKAdresse)
+        .query(`UPDATE dbo.tKunde SET kLieferadresse = @kAdresse WHERE kKunde = @kKunde`)
+      console.log('[db-jtl] tKunde.kLieferadresse → %d (rows=%d)',
+        targetKAdresse, lr.rowsAffected?.[0] ?? -1)
+    } catch (err) {
+      console.error('[db-jtl] tKunde.kLieferadresse UPDATE Fehler:', (err as Error).message)
+    }
+  } else {
+    console.log('[db-jtl] tKunde.kLieferadresse nicht vorhanden – Spalte fehlt in dieser JTL-Version')
+  }
+
+  // Pfad B: dbo.tLieferadresse (alternative Verknüpfungstabelle)
+  if (hasTLieferadresse) {
+    try {
+      const lColRes = await pool.request().query<{ COLUMN_NAME: string }>(`
+        SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'tLieferadresse'
+      `)
+      const lCols = lColRes.recordset.map(r => r.COLUMN_NAME.toLowerCase())
+      console.log('[db-jtl] tLieferadresse Spalten:', lCols.join(', '))
+
+      if (lCols.includes('kkunde') && lCols.includes('kadresse')) {
+        await pool.request()
+          .input('kKunde',   sql.Int, kKunde)
+          .input('kAdresse', sql.Int, targetKAdresse)
+          .query(`
+            MERGE dbo.tLieferadresse AS t
+            USING (SELECT @kKunde AS kKunde, @kAdresse AS kAdresse) AS s
+              ON t.kKunde = s.kKunde
+            WHEN MATCHED     THEN UPDATE SET kAdresse = s.kAdresse
+            WHEN NOT MATCHED THEN INSERT (kKunde, kAdresse) VALUES (s.kKunde, s.kAdresse);
+          `)
+        console.log('[db-jtl] tLieferadresse MERGE: kKunde=%d → kAdresse=%d', kKunde, targetKAdresse)
+      } else {
+        console.warn('[db-jtl] tLieferadresse: unbekannte Spaltenstruktur %s', lCols.join(', '))
+      }
+    } catch (err) {
+      console.error('[db-jtl] tLieferadresse MERGE Fehler:', (err as Error).message)
+    }
+  } else {
+    console.log('[db-jtl] tLieferadresse nicht vorhanden – JTL nutzt tAdresse.nTyp=2 direkt')
   }
 }
 
