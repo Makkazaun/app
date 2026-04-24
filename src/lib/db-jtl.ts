@@ -839,7 +839,7 @@ export async function upsertKundeLieferadresse(
               cTel     = @tel,
               cMobil   = @mobil
           WHERE kAdresse = @kAdresse AND kKunde = @kKunde`
-      const res = await pool.request()
+      await pool.request()
         .input('kAdresse', sql.Int,          existingKAdresse)
         .input('kKunde',   sql.Int,          kKunde)
         .input('firma',    sql.NVarChar(255), data.firma    ?? null)
@@ -852,9 +852,20 @@ export async function upsertKundeLieferadresse(
         .input('tel',      sql.NVarChar(50),  data.tel   ?? null)
         .input('mobil',    sql.NVarChar(50),  data.mobil ?? null)
         .query(lieferSql)
+
+      // Sicherstellen dass tKunde.kLieferadresse auf diesen Eintrag zeigt.
+      try {
+        await pool.request()
+          .input('kKunde',   sql.Int, kKunde)
+          .input('kAdresse', sql.Int, existingKAdresse)
+          .query(`UPDATE dbo.tKunde SET kLieferadresse = @kAdresse WHERE kKunde = @kKunde`)
+        console.log('[db-jtl] tKunde.kLieferadresse bestätigt → %d', existingKAdresse)
+      } catch (linkErr) {
+        console.warn('[db-jtl] tKunde.kLieferadresse (UPDATE-Pfad) nicht setzbar:', (linkErr as Error).message)
+      }
     } else {
       // ── INSERT neue Lieferadresse ────────────────────────────────────────────
-      await pool.request()
+      const insRes = await pool.request()
         .input('kKunde',   sql.Int,          kKunde)
         .input('firma',    sql.NVarChar(255), data.firma    ?? null)
         .input('vorname',  sql.NVarChar(255), data.vorname)
@@ -866,14 +877,31 @@ export async function upsertKundeLieferadresse(
         .input('tel',      sql.NVarChar(50),  data.tel   ?? null)
         .input('mobil',    sql.NVarChar(50),  data.mobil ?? null)
         .input('email',    sql.NVarChar(255), email)
-        .query(`
+        .query<{ kAdresse: number }>(`
           INSERT INTO dbo.tAdresse
             (kKunde, nTyp, nStandard, cFirma, cVorname, cName,
              cStrasse, cPLZ, cOrt, cLand, cTel, cMobil, cMail)
+          OUTPUT INSERTED.kAdresse
           VALUES
             (@kKunde, 2, 0, @firma, @vorname, @nachname,
              @strasse, @plz, @ort, @land, @tel, @mobil, @email)
         `)
+
+      // Versuche tKunde.kLieferadresse zu verknüpfen (JTL-Wawi zeigt sonst "Sonstige").
+      // Spalte existiert nicht in allen JTL-Versionen – Fehler werden ignoriert.
+      const newKAdresse = insRes.recordset[0]?.kAdresse
+      if (newKAdresse) {
+        existingKAdresse = newKAdresse
+        try {
+          await pool.request()
+            .input('kKunde',    sql.Int, kKunde)
+            .input('kAdresse',  sql.Int, newKAdresse)
+            .query(`UPDATE dbo.tKunde SET kLieferadresse = @kAdresse WHERE kKunde = @kKunde`)
+          console.log('[db-jtl] tKunde.kLieferadresse → %d gesetzt', newKAdresse)
+        } catch (linkErr) {
+          console.warn('[db-jtl] tKunde.kLieferadresse nicht gesetzt (Spalte ggf. nicht vorhanden):', (linkErr as Error).message)
+        }
+      }
     }
   } catch (err) {
     upsertErr = err
