@@ -62,7 +62,7 @@ async function embedSignature(pdfPath: string, signaturePng: Buffer, dateStr: st
   const sigH   = sigW * (sigImg.height / sigImg.width)
   const sigY   = 95  // bottom of image from page bottom (sits just above the "Unterschrift" line)
 
-  const sigX = width / 2 - sigW / 2 - 250
+  const sigX = width / 2 - sigW / 2 - 140
 
   last.drawImage(sigImg, {
     x:      sigX,
