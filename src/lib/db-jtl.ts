@@ -828,7 +828,8 @@ export async function upsertKundeLieferadresse(
       // ── UPDATE per PK ───────────────────────────────────────────────────────
       const lieferSql = `SET ARITHABORT ON;
           UPDATE dbo.tAdresse
-          SET cFirma   = @firma,
+          SET nTyp     = 2,
+              cFirma   = @firma,
               cVorname = @vorname,
               cName    = @nachname,
               cStrasse = @strasse,
@@ -837,9 +838,10 @@ export async function upsertKundeLieferadresse(
               cLand    = @land,
               cTel     = @tel,
               cMobil   = @mobil
-          WHERE kAdresse = @kAdresse`
+          WHERE kAdresse = @kAdresse AND kKunde = @kKunde`
       const res = await pool.request()
         .input('kAdresse', sql.Int,          existingKAdresse)
+        .input('kKunde',   sql.Int,          kKunde)
         .input('firma',    sql.NVarChar(255), data.firma    ?? null)
         .input('vorname',  sql.NVarChar(255), data.vorname)
         .input('nachname', sql.NVarChar(255), data.nachname)
