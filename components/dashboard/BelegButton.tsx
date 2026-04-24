@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { Eye } from 'lucide-react'
 
 interface Props {
   belegnummer: string
@@ -60,30 +61,21 @@ export default function BelegButton({ belegnummer, type, label }: Props) {
   return (
     <>
       <div className="flex items-center gap-1">
-        {/* Hauptbutton */}
+        {/* Auge-Button: Beleg in Modal öffnen */}
         <button
           onClick={handleOpen}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center justify-center rounded-lg transition-all hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
-            background: '#1e2a3a',
-            color: '#7a9ab8',
-            border: '1px solid #2a3a4a',
-            padding: '10px 12px',
+            background: '#1a1a1a',
+            color: '#4a4a4a',
+            border: '1px solid #2a2a2a',
+            minWidth: '40px',
             minHeight: '40px',
           }}
           title="Beleg öffnen"
         >
-          {loading ? (
-            <Spinner />
-          ) : (
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M6 2C3.5 2 1.5 4 1.5 6C1.5 8 3.5 10 6 10C8.5 10 10.5 8 10.5 6C10.5 4 8.5 2 6 2Z"
-                stroke="currentColor" strokeWidth="1.1"/>
-              <circle cx="6" cy="6" r="1.5" fill="currentColor"/>
-            </svg>
-          )}
-          {loading ? 'Lädt …' : (label ?? 'Beleg öffnen')}
+          {loading ? <Spinner /> : <Eye size={14} strokeWidth={1.5} />}
         </button>
 
         {/* Download-Button */}
