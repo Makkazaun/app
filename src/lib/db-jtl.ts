@@ -1164,14 +1164,13 @@ export async function createKundeInJtl(
     await req().query('SET IDENTITY_INSERT dbo.tKunde ON')
     await req()
       .input('kKunde',       sql.Int,          kKunde)
-      .input('kAdresse',     sql.Int,          kAdresse)
       .input('cKundenNr',    sql.NVarChar(50), kundennummer)
       .input('nDebitorennr', sql.Int,          nDebitorennr)
       .query(`
         INSERT INTO dbo.tKunde
-          (kKunde, kAdresse, cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
+          (kKunde, cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
         VALUES
-          (@kKunde, @kAdresse, @cKundenNr, GETDATE(), 5, 2, @nDebitorennr)
+          (@kKunde, @cKundenNr, GETDATE(), 5, 2, @nDebitorennr)
       `)
     await req().query('SET IDENTITY_INSERT dbo.tKunde OFF')
 
