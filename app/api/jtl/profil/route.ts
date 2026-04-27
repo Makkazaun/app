@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         WHERE kKunde = @kKunde AND nStandard = 1
       `)
 
-    // Lieferadresse (nTyp=2)
+    // Lieferadresse (nTyp=0)
     const lRes = await pool.request()
       .input('kKunde', sql.Int, kKunde)
       .query<{
@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
           ISNULL(cLand, 'Deutschland') AS cLand,
           cTel, cMobil, cMail
         FROM dbo.tAdresse
-        WHERE kKunde = @kKunde AND nTyp = 2
+        WHERE kKunde = @kKunde AND nTyp = 0
       `)
 
     const mapRow = (r: typeof rRes.recordset[0]) => ({

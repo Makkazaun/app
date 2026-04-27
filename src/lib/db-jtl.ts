@@ -12,7 +12,7 @@
  *   dbo.tKunde                  kKunde, cKundenNr
  *   dbo.tAdresse                kAdresse, kKunde, cMail, cFirma, cVorname, cName,
  *                               cStrasse, cPLZ, cOrt, cLand, cTel, cMobil,
- *                               nStandard (1=Hauptadresse), nTyp (1=Rechnung, 2=Lieferung)
+ *                               nStandard (1=Hauptadresse), nTyp (1=Rechnung, 0=Lieferung)
  *
  *   Verkauf.tAuftrag            kAuftrag, kKunde, cAuftragsNr,
  *                               nType (0=Angebot, 1=Auftrag),
@@ -222,7 +222,7 @@ function mapAdresse(row: {
  *
  * E-Mail steht in tAdresse (nicht tKunde!).
  * tAdresse.cName = Nachname, tAdresse.cVorname = Vorname (JTL-Konvention).
- * Lieferadresse = nTyp=2, Rechnungsadresse = nTyp=1 (oder nStandard=1).
+ * Lieferadresse = nTyp=0, Rechnungsadresse = nTyp=1 (oder nStandard=1).
  */
 export async function findKundeByEmail(email: string): Promise<JtlKunde | null> {
   const pool   = await getPool()
@@ -308,7 +308,7 @@ export async function findKundeByEmail(email: string): Promise<JtlKunde | null> 
 
   if (!kKundeRow) return null
 
-  // ── Lieferadresse (nTyp=2) laden ─────────────────────────────────────────────
+  // ── Lieferadresse (nTyp=0) laden ─────────────────────────────────────────────
   const lRes = await pool.request()
     .input('kKunde', sql.Int, kKundeRow.kKunde)
     .query<{
@@ -321,7 +321,7 @@ export async function findKundeByEmail(email: string): Promise<JtlKunde | null> 
         ISNULL(cLand, 'Deutschland') AS cLand,
         cTel, cMobil, cMail
       FROM dbo.tAdresse
-      WHERE kKunde = @kKunde AND nTyp = 2
+      WHERE kKunde = @kKunde AND nTyp = 0
       ORDER BY kAdresse
     `)
 
@@ -789,7 +789,7 @@ export async function updateKundeRechnungsadresse(
 }
 
 /**
- * Aktualisiert oder erstellt die Lieferadresse (nTyp=2) eines Kunden in dbo.tAdresse.
+ * Aktualisiert oder erstellt die Lieferadresse (nTyp=0) eines Kunden in dbo.tAdresse.
  * UPDATE erfolgt per kAdresse (PK), nicht per kKunde+nTyp.
  *
  * @param kAdresse – wenn übergeben, direktes UPDATE ohne Lookup.
@@ -822,8 +822,8 @@ export async function upsertKundeLieferadresse(
   console.log('[db-jtl] Schema-Check: tKunde.kLieferadresse=%s | tLieferadresse=%s',
     hasKLieferadresse, hasTLieferadresse)
 
-  // ── Schritt 2: Bestehende Lieferadresse (nTyp=2) ermitteln ──────────────────
-  // Wenn kAdresse übergeben wurde, verifizieren wir dass sie wirklich nTyp=2 ist.
+  // ── Schritt 2: Bestehende Lieferadresse (nTyp=0) ermitteln ──────────────────
+  // Wenn kAdresse übergeben wurde, verifizieren wir dass sie wirklich nTyp=0 ist.
   let targetKAdresse: number | null = null
 
   if (kAdresse) {
@@ -835,11 +835,11 @@ export async function upsertKundeLieferadresse(
         WHERE kAdresse = @kAdresse AND kKunde = @kKunde
       `)
     const row = verifyRes.recordset[0]
-    if (row?.nTyp === 2) {
+    if (row?.nTyp === 0) {
       targetKAdresse = row.kAdresse
-      console.log('[db-jtl] Übergabe kAdresse=%d verifiziert (nTyp=2)', targetKAdresse)
+      console.log('[db-jtl] Übergabe kAdresse=%d verifiziert (nTyp=0)', targetKAdresse)
     } else if (row) {
-      console.warn('[db-jtl] kAdresse=%d hat nTyp=%d – suche nTyp=2 für kKunde=%d',
+      console.warn('[db-jtl] kAdresse=%d hat nTyp=%d – suche nTyp=0 für kKunde=%d',
         kAdresse, row.nTyp, kKunde)
     }
   }
@@ -849,11 +849,11 @@ export async function upsertKundeLieferadresse(
       .input('kKunde', sql.Int, kKunde)
       .query<{ kAdresse: number }>(`
         SELECT TOP 1 kAdresse FROM dbo.tAdresse
-        WHERE kKunde = @kKunde AND nTyp = 2
+        WHERE kKunde = @kKunde AND nTyp = 0
         ORDER BY kAdresse
       `)
     targetKAdresse = existRes.recordset[0]?.kAdresse ?? null
-    console.log('[db-jtl] Lookup nTyp=2 für kKunde=%d → kAdresse=%s',
+    console.log('[db-jtl] Lookup nTyp=0 für kKunde=%d → kAdresse=%s',
       kKunde, targetKAdresse ?? 'nicht gefunden → INSERT')
   }
 
@@ -882,7 +882,7 @@ export async function upsertKundeLieferadresse(
         .input('mobil',    sql.NVarChar(50),  data.mobil ?? null)
         .query(`SET ARITHABORT ON;
           UPDATE dbo.tAdresse
-          SET nTyp     = 2,
+          SET nTyp     = 0,
               cFirma   = @firma,
               cVorname = @vorname,
               cName    = @nachname,
@@ -915,11 +915,11 @@ export async function upsertKundeLieferadresse(
              cStrasse, cPLZ, cOrt, cLand, cTel, cMobil, cMail)
           OUTPUT INSERTED.kAdresse
           VALUES
-            (@kKunde, 2, 0, @firma, @vorname, @nachname,
+            (@kKunde, 0, 0, @firma, @vorname, @nachname,
              @strasse, @plz, @ort, @land, @tel, @mobil, @email)
         `)
       targetKAdresse = ins.recordset[0]?.kAdresse ?? null
-      console.log('[db-jtl] Lieferadresse INSERT: neue kAdresse=%d nTyp=2', targetKAdresse)
+      console.log('[db-jtl] Lieferadresse INSERT: neue kAdresse=%d nTyp=0', targetKAdresse)
     }
   } catch (err) {
     upsertErr = err
@@ -981,7 +981,7 @@ export async function upsertKundeLieferadresse(
       console.error('[db-jtl] tLieferadresse MERGE Fehler:', (err as Error).message)
     }
   } else {
-    console.log('[db-jtl] tLieferadresse nicht vorhanden – JTL nutzt tAdresse.nTyp=2 direkt')
+    console.log('[db-jtl] tLieferadresse nicht vorhanden – JTL nutzt tAdresse.nTyp=0 direkt')
   }
 }
 

@@ -69,6 +69,7 @@ Key verified schemas and tables:
 - `Verkauf.tRechnung` — **does not exist** in this JTL version; always use `Rechnung.tRechnung`
 
 Payment status for an Auftrag is derived from `Rechnung.tRechnungEckdaten.nZahlungStatus` via `cAuftragsnummern = tAuftrag.cAuftragsNr`.
+- `dbo.tAdresse` — `nTyp` values: **1 = Rechnungsadresse**, **0 = Lieferadresse** (not 2!); `nStandard = 1` marks the primary billing address
 
 PDF uploads: `POST /api/jtl/internal/upload-pdf` (Bearer `JTL_API_KEY`), stored in `private/documents/`.
 
