@@ -1078,6 +1078,7 @@ export interface NewKundeData {
   vorname:  string
   nachname: string
   email:    string
+  firma?:   string | null
   strasse?: string | null
   plz?:     string | null
   ort?:     string | null
@@ -1094,7 +1095,8 @@ export interface NewKundeData {
  * 2. INSERT tKunde ohne kKunde → SQL Server IDENTITY vergibt den PK automatisch.
  *    Generierte ID per SCOPE_IDENTITY() lesen.
  * 3. INSERT tAdresse ohne kAdresse → kKunde = generierte ID aus Schritt 2, nTyp = 1.
- * Beide INSERTs laufen in einer Transaktion.
+ * 4. INSERT tKunde_suche: alle Suchbegriffe (Name, Mail, Adresse …) mit nID-Mapping.
+ * Alle Schritte laufen in einer Transaktion.
  */
 export async function createKundeInJtl(
   data: NewKundeData,
@@ -1191,6 +1193,34 @@ export async function createKundeInJtl(
           (@kKunde, 1, 1, @vorname, @nachname, @email,
            @strasse, @plz, @ort, @land, @tel)
       `)
+
+    // Schritt 4: tKunde_suche – Suchindex befüllen
+    const vn = data.vorname.trim()
+    const nn = data.nachname.trim()
+    const sucheEntries: Array<{ cValue: string; nID: number }> = [
+      { cValue: `${vn} ${nn}`, nID: 1 },
+      { cValue: `${nn} ${vn}`, nID: 1 },
+      { cValue: vn,            nID: 1 },
+      { cValue: nn,            nID: 1 },
+      { cValue: email,         nID: 4 },
+    ]
+    if (data.firma?.trim())   sucheEntries.push({ cValue: data.firma.trim(),   nID: 2  })
+    if (data.tel?.trim())     sucheEntries.push({ cValue: data.tel.trim(),     nID: 6  })
+    if (data.strasse?.trim()) sucheEntries.push({ cValue: data.strasse.trim(), nID: 8  })
+    if (data.ort?.trim())     sucheEntries.push({ cValue: data.ort.trim(),     nID: 9  })
+    if (data.plz?.trim())     sucheEntries.push({ cValue: data.plz.trim(),     nID: 10 })
+
+    for (const entry of sucheEntries) {
+      await req()
+        .input('kKunde', sql.Int,          kKunde)
+        .input('cValue', sql.NVarChar(255), entry.cValue)
+        .input('nID',    sql.Int,           entry.nID)
+        .query(`
+          INSERT INTO dbo.tKunde_suche (kKunde, cValue, nID)
+          VALUES (@kKunde, @cValue, @nID)
+        `)
+    }
+    console.log('[createKundeInJtl] tKunde_suche: %d Einträge angelegt', sucheEntries.length)
 
     await req().query('ALTER TABLE dbo.tKunde   ENABLE TRIGGER ALL')
     await req().query('ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL')
