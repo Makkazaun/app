@@ -1088,9 +1088,11 @@ export interface NewKundeData {
 /**
  * Legt einen neuen Kunden in JTL-Wawi an (dbo.tKunde + dbo.tAdresse).
  *
- * Kundennummer wird als nächste freie numerische Nr. ab 100001 generiert.
- * Trigger auf beiden Tabellen werden temporär deaktiviert (wie bei updateKundeRechnungsadresse).
- * Falls tAdresse-Insert fehlschlägt, wird der tKunde-Eintrag wieder gelöscht.
+ * Ablauf:
+ * 0. Duplikat-Check: E-Mail in tAdresse → wirft { code: 'EMAIL_EXISTS' } falls gefunden.
+ * 1. Nächste freie IDs ermitteln: kKunde = kAdresse = MAX(kKunde)+1, cKundenNr = MAX+1+'A',
+ *    nDebitorennr = MAX(nDebitorennr)+1.
+ * 2. Beide INSERTs atomar in einer SQL-Transaktion (SET IDENTITY_INSERT ON pro Tabelle).
  */
 export async function createKundeInJtl(
   data: NewKundeData,
@@ -1098,83 +1100,117 @@ export async function createKundeInJtl(
   const pool  = await getPool()
   const email = data.email.toLowerCase().trim()
 
-  // 1. Kundennummer: MAX(numerisch) + 1, Startwert 100001
-  const nrRes = await pool.request().query<{ nextNr: string }>(`
-    SELECT CAST(
-      ISNULL(MAX(TRY_CAST(cKundenNr AS BIGINT)), 100000) + 1
-    AS NVARCHAR(20)) AS nextNr
-    FROM dbo.tKunde
-    WHERE TRY_CAST(cKundenNr AS BIGINT) IS NOT NULL
-      AND LEN(cKundenNr) <= 10
-  `)
-  const kundennummer = nrRes.recordset[0]?.nextNr ?? '100001'
-
-  // 2. tKunde INSERT
-  let kKunde: number
-
-  try { await pool.request().query('ALTER TABLE dbo.tKunde DISABLE TRIGGER ALL') }
-  catch (e) { console.warn('[createKundeInJtl] DISABLE TRIGGER tKunde:', (e as Error).message) }
-
-  let kundeErr: unknown = null
-  try {
-    const ins = await pool.request()
-      .input('cKundenNr', sql.NVarChar(50), kundennummer)
-      .query<{ kKunde: number }>(`
-        INSERT INTO dbo.tKunde (cKundenNr)
-        OUTPUT INSERTED.kKunde
-        VALUES (@cKundenNr)
-      `)
-    kKunde = ins.recordset[0].kKunde
-  } catch (err) {
-    kundeErr = err
-    console.error('[createKundeInJtl] tKunde INSERT:\n%s', serializeSqlError(err))
-  } finally {
-    try { await pool.request().query('ALTER TABLE dbo.tKunde ENABLE TRIGGER ALL') }
-    catch (e) { console.warn('[createKundeInJtl] ENABLE TRIGGER tKunde:', (e as Error).message) }
+  // ── 0. Duplikat-Check ───────────────────────────────────────────────────────
+  const dupRes = await pool.request()
+    .input('email', sql.NVarChar(255), email)
+    .query<{ cnt: number }>(`
+      SELECT COUNT(*) AS cnt FROM dbo.tAdresse
+      WHERE LOWER(LTRIM(RTRIM(cMail))) = @email
+    `)
+  if ((dupRes.recordset[0]?.cnt ?? 0) > 0) {
+    throw Object.assign(
+      new Error('Diese E-Mail-Adresse ist bereits registriert.'),
+      { code: 'EMAIL_EXISTS' },
+    )
   }
-  if (kundeErr) { await resetPool(); throw kundeErr }
 
-  // 3. tAdresse INSERT
-  try { await pool.request().query('ALTER TABLE dbo.tAdresse DISABLE TRIGGER ALL') }
-  catch (e) { console.warn('[createKundeInJtl] DISABLE TRIGGER tAdresse:', (e as Error).message) }
+  // ── 1. Nächste freie IDs ermitteln ──────────────────────────────────────────
+  const [kKundeRes, nrRes, debiRes] = await Promise.all([
+    pool.request().query<{ next: number }>(
+      `SELECT ISNULL(MAX(kKunde), 0) + 1 AS next FROM dbo.tKunde`,
+    ),
+    // cKundenNr: numerischen Teil ermitteln (mit oder ohne 'A'-Suffix)
+    pool.request().query<{ nextNum: number }>(`
+      SELECT ISNULL(MAX(
+        TRY_CAST(
+          CASE WHEN RIGHT(cKundenNr, 1) = 'A'
+               THEN LEFT(cKundenNr, LEN(cKundenNr) - 1)
+               ELSE cKundenNr
+          END
+        AS BIGINT)
+      ), 10500) + 1 AS nextNum
+      FROM dbo.tKunde
+      WHERE TRY_CAST(
+        CASE WHEN RIGHT(cKundenNr, 1) = 'A'
+             THEN LEFT(cKundenNr, LEN(cKundenNr) - 1)
+             ELSE cKundenNr
+        END
+      AS BIGINT) IS NOT NULL
+    `),
+    pool.request().query<{ next: number }>(
+      `SELECT ISNULL(MAX(nDebitorennr), 0) + 1 AS next FROM dbo.tKunde`,
+    ),
+  ])
 
-  let adresseErr: unknown = null
+  const kKunde       = kKundeRes.recordset[0]?.next       ?? 1
+  const kAdresse     = kKunde   // explizit gleiche ID wie kKunde
+  const kundennummer = String(nrRes.recordset[0]?.nextNum ?? 10501) + 'A'
+  const nDebitorennr = debiRes.recordset[0]?.next          ?? 1
+
+  console.log('[createKundeInJtl] IDs: kKunde=%d kAdresse=%d cKundenNr=%s nDebitorennr=%d',
+    kKunde, kAdresse, kundennummer, nDebitorennr)
+
+  // ── 2. Transaktion: tKunde + tAdresse atomar anlegen ────────────────────────
+  const transaction = new sql.Transaction(pool)
+  await transaction.begin()
+
   try {
-    await pool.request()
-      .input('kKunde',   sql.Int,          kKunde!)
+    const req = () => new sql.Request(transaction)
+
+    await req().query('ALTER TABLE dbo.tKunde   DISABLE TRIGGER ALL')
+    await req().query('ALTER TABLE dbo.tAdresse DISABLE TRIGGER ALL')
+
+    // tKunde INSERT mit expliziter kKunde (IDENTITY_INSERT)
+    await req().query('SET IDENTITY_INSERT dbo.tKunde ON')
+    await req()
+      .input('kKunde',       sql.Int,          kKunde)
+      .input('kAdresse',     sql.Int,          kAdresse)
+      .input('cKundenNr',    sql.NVarChar(50), kundennummer)
+      .input('nDebitorennr', sql.Int,          nDebitorennr)
+      .query(`
+        INSERT INTO dbo.tKunde
+          (kKunde, kAdresse, cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
+        VALUES
+          (@kKunde, @kAdresse, @cKundenNr, GETDATE(), 5, 2, @nDebitorennr)
+      `)
+    await req().query('SET IDENTITY_INSERT dbo.tKunde OFF')
+
+    // tAdresse INSERT mit expliziter kAdresse (IDENTITY_INSERT)
+    await req().query('SET IDENTITY_INSERT dbo.tAdresse ON')
+    await req()
+      .input('kAdresse', sql.Int,          kAdresse)
+      .input('kKunde',   sql.Int,          kKunde)
       .input('vorname',  sql.NVarChar(255), data.vorname.trim())
       .input('nachname', sql.NVarChar(255), data.nachname.trim())
       .input('email',    sql.NVarChar(255), email)
       .input('strasse',  sql.NVarChar(255), data.strasse?.trim() ?? '')
       .input('plz',      sql.NVarChar(10),  data.plz?.trim()     ?? '')
-      .input('ort',      sql.NVarChar(255), data.ort?.trim()      ?? '')
-      .input('land',     sql.NVarChar(255), data.land?.trim()     ?? 'Deutschland')
-      .input('tel',      sql.NVarChar(50),  data.tel?.trim()      ?? null)
+      .input('ort',      sql.NVarChar(255), data.ort?.trim()     ?? '')
+      .input('land',     sql.NVarChar(255), data.land?.trim()    ?? 'Deutschland')
+      .input('tel',      sql.NVarChar(50),  data.tel?.trim()     ?? null)
       .query(`
         INSERT INTO dbo.tAdresse
-          (kKunde, nTyp, nStandard, cVorname, cName, cMail,
+          (kAdresse, kKunde, nTyp, nStandard, cVorname, cName, cMail,
            cStrasse, cPLZ, cOrt, cLand, cTel)
         VALUES
-          (@kKunde, 1, 1, @vorname, @nachname, @email,
+          (@kAdresse, @kKunde, 1, 1, @vorname, @nachname, @email,
            @strasse, @plz, @ort, @land, @tel)
       `)
-  } catch (err) {
-    adresseErr = err
-    console.error('[createKundeInJtl] tAdresse INSERT:\n%s', serializeSqlError(err))
-    // Rollback: tKunde-Zeile wieder löschen
-    try {
-      await pool.request().input('kKunde', sql.Int, kKunde!).query('DELETE FROM dbo.tKunde WHERE kKunde = @kKunde')
-    } catch (delErr) {
-      console.error('[createKundeInJtl] Rollback tKunde fehlgeschlagen:', (delErr as Error).message)
-    }
-  } finally {
-    try { await pool.request().query('ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL') }
-    catch (e) { console.warn('[createKundeInJtl] ENABLE TRIGGER tAdresse:', (e as Error).message) }
-  }
-  if (adresseErr) { await resetPool(); throw adresseErr }
+    await req().query('SET IDENTITY_INSERT dbo.tAdresse OFF')
 
-  console.log(`[createKundeInJtl] kKunde=${kKunde!} Nr=${kundennummer} angelegt`)
-  return { kKunde: kKunde!, kundennummer }
+    await req().query('ALTER TABLE dbo.tKunde   ENABLE TRIGGER ALL')
+    await req().query('ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL')
+
+    await transaction.commit()
+  } catch (err) {
+    console.error('[createKundeInJtl] FEHLER – Rollback:\n%s', serializeSqlError(err))
+    try { await transaction.rollback() } catch { /* ignore */ }
+    await resetPool()
+    throw err
+  }
+
+  console.log(`[createKundeInJtl] kKunde=${kKunde} Nr=${kundennummer} angelegt`)
+  return { kKunde, kundennummer }
 }
 
 /** Lädt den Namen des Kunden für ein Angebot (für E-Mail-Betreff). */

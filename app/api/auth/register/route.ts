@@ -75,8 +75,17 @@ export async function POST(req: NextRequest) {
         kundennummer = created.kundennummer
       }
     } catch (jtlErr) {
-      console.warn('[register] JTL nicht erreichbar – Registrierung ohne Wawi-Verlinkung:',
-        (jtlErr as Error).message?.split('\n')[0])
+      if ((jtlErr as { code?: string }).code === 'EMAIL_EXISTS') {
+        // Race condition: zwischen findKundeByEmail und createKundeInJtl wurde ein anderer
+        // Datensatz angelegt – nochmal suchen und verknüpfen statt still fehlschlagen.
+        try {
+          const existing = await findKundeByEmail(email)
+          if (existing) { kKunde = existing.kKunde; kundennummer = existing.kundennummer }
+        } catch { /* JTL immer noch nicht erreichbar – weiter ohne Link */ }
+      } else {
+        console.warn('[register] JTL nicht erreichbar – Registrierung ohne Wawi-Verlinkung:',
+          (jtlErr as Error).message?.split('\n')[0])
+      }
     }
 
     // 4. Passwort hashen (12 Runden)
