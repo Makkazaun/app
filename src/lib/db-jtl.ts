@@ -1090,9 +1090,11 @@ export interface NewKundeData {
  *
  * Ablauf:
  * 0. Duplikat-Check: E-Mail in tAdresse → wirft { code: 'EMAIL_EXISTS' } falls gefunden.
- * 1. Nächste freie IDs ermitteln: kKunde = kAdresse = MAX(kKunde)+1, cKundenNr = MAX+1+'A',
- *    nDebitorennr = MAX(nDebitorennr)+1.
- * 2. Beide INSERTs atomar in einer SQL-Transaktion (SET IDENTITY_INSERT ON pro Tabelle).
+ * 1. Nächste cKundenNr (MAX numerisch + 1 + 'A') und nDebitorennr (MAX + 1) ermitteln.
+ * 2. INSERT tKunde ohne kKunde → SQL Server IDENTITY vergibt den PK automatisch.
+ *    Generierte ID per SCOPE_IDENTITY() lesen.
+ * 3. INSERT tAdresse ohne kAdresse → kKunde = generierte ID aus Schritt 2, nTyp = 1.
+ * Beide INSERTs laufen in einer Transaktion.
  */
 export async function createKundeInJtl(
   data: NewKundeData,
@@ -1114,12 +1116,8 @@ export async function createKundeInJtl(
     )
   }
 
-  // ── 1. Nächste freie IDs ermitteln ──────────────────────────────────────────
-  const [kKundeRes, nrRes, debiRes] = await Promise.all([
-    pool.request().query<{ next: number }>(
-      `SELECT ISNULL(MAX(kKunde), 0) + 1 AS next FROM dbo.tKunde`,
-    ),
-    // cKundenNr: numerischen Teil ermitteln (mit oder ohne 'A'-Suffix)
+  // ── 1. Werte für cKundenNr und nDebitorennr ermitteln ───────────────────────
+  const [nrRes, debiRes] = await Promise.all([
     pool.request().query<{ nextNum: number }>(`
       SELECT ISNULL(MAX(
         TRY_CAST(
@@ -1142,17 +1140,16 @@ export async function createKundeInJtl(
     ),
   ])
 
-  const kKunde       = kKundeRes.recordset[0]?.next       ?? 1
-  const kAdresse     = kKunde   // explizit gleiche ID wie kKunde
   const kundennummer = String(nrRes.recordset[0]?.nextNum ?? 10501) + 'A'
-  const nDebitorennr = debiRes.recordset[0]?.next          ?? 1
+  const nDebitorennr = debiRes.recordset[0]?.next ?? 1
 
-  console.log('[createKundeInJtl] IDs: kKunde=%d kAdresse=%d cKundenNr=%s nDebitorennr=%d',
-    kKunde, kAdresse, kundennummer, nDebitorennr)
+  console.log('[createKundeInJtl] cKundenNr=%s nDebitorennr=%d', kundennummer, nDebitorennr)
 
-  // ── 2. Transaktion: tKunde + tAdresse atomar anlegen ────────────────────────
+  // ── 2+3. Transaktion: tKunde → SCOPE_IDENTITY → tAdresse ────────────────────
   const transaction = new sql.Transaction(pool)
   await transaction.begin()
+
+  let kKunde: number
 
   try {
     const req = () => new sql.Request(transaction)
@@ -1160,25 +1157,24 @@ export async function createKundeInJtl(
     await req().query('ALTER TABLE dbo.tKunde   DISABLE TRIGGER ALL')
     await req().query('ALTER TABLE dbo.tAdresse DISABLE TRIGGER ALL')
 
-    // tKunde INSERT mit expliziter kKunde (IDENTITY_INSERT)
-    await req().query('SET IDENTITY_INSERT dbo.tKunde ON')
-    await req()
-      .input('kKunde',       sql.Int,          kKunde)
+    // Schritt 2: tKunde INSERT – kKunde wird vom IDENTITY vergeben
+    const insKunde = await req()
       .input('cKundenNr',    sql.NVarChar(50), kundennummer)
       .input('nDebitorennr', sql.Int,          nDebitorennr)
-      .query(`
+      .query<{ newKundeID: number }>(`
         INSERT INTO dbo.tKunde
-          (kKunde, cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
+          (cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
         VALUES
-          (@kKunde, @cKundenNr, GETDATE(), 5, 2, @nDebitorennr)
+          (@cKundenNr, GETDATE(), 5, 2, @nDebitorennr);
+        SELECT SCOPE_IDENTITY() AS newKundeID;
       `)
-    await req().query('SET IDENTITY_INSERT dbo.tKunde OFF')
+    kKunde = insKunde.recordset[0]?.newKundeID
+    if (!kKunde) throw new Error('SCOPE_IDENTITY() lieferte keinen Wert – tKunde INSERT fehlgeschlagen.')
+    console.log('[createKundeInJtl] tKunde angelegt: kKunde=%d', kKunde)
 
-    // tAdresse INSERT mit expliziter kAdresse (IDENTITY_INSERT)
-    await req().query('SET IDENTITY_INSERT dbo.tAdresse ON')
+    // Schritt 3: tAdresse INSERT – kAdresse wird vom IDENTITY vergeben, kKunde verknüpft
     await req()
-      .input('kAdresse', sql.Int,          kAdresse)
-      .input('kKunde',   sql.Int,          kKunde)
+      .input('kKunde',   sql.Int,           kKunde)
       .input('vorname',  sql.NVarChar(255), data.vorname.trim())
       .input('nachname', sql.NVarChar(255), data.nachname.trim())
       .input('email',    sql.NVarChar(255), email)
@@ -1189,13 +1185,12 @@ export async function createKundeInJtl(
       .input('tel',      sql.NVarChar(50),  data.tel?.trim()     ?? null)
       .query(`
         INSERT INTO dbo.tAdresse
-          (kAdresse, kKunde, nTyp, nStandard, cVorname, cName, cMail,
+          (kKunde, nTyp, nStandard, cVorname, cName, cMail,
            cStrasse, cPLZ, cOrt, cLand, cTel)
         VALUES
-          (@kAdresse, @kKunde, 1, 1, @vorname, @nachname, @email,
+          (@kKunde, 1, 1, @vorname, @nachname, @email,
            @strasse, @plz, @ort, @land, @tel)
       `)
-    await req().query('SET IDENTITY_INSERT dbo.tAdresse OFF')
 
     await req().query('ALTER TABLE dbo.tKunde   ENABLE TRIGGER ALL')
     await req().query('ALTER TABLE dbo.tAdresse ENABLE TRIGGER ALL')
@@ -1208,8 +1203,8 @@ export async function createKundeInJtl(
     throw err
   }
 
-  console.log(`[createKundeInJtl] kKunde=${kKunde} Nr=${kundennummer} angelegt`)
-  return { kKunde, kundennummer }
+  console.log(`[createKundeInJtl] kKunde=${kKunde!} Nr=${kundennummer} angelegt`)
+  return { kKunde: kKunde!, kundennummer }
 }
 
 /** Lädt den Namen des Kunden für ein Angebot (für E-Mail-Betreff). */
