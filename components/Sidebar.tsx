@@ -82,7 +82,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           <div className="flex flex-col items-start gap-1">
             <Logo variant="sidebar" />
             <p className="text-xs pl-0.5" style={{ color: '#4a4a4a', letterSpacing: '0.12em' }}>
-              Edelzaun App
+              TR Edelzaun & Tor App
             </p>
           </div>
           <button

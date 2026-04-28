@@ -66,7 +66,7 @@ export default function DashboardHeader() {
       </h1>
       <p className="text-sm mb-8" style={{ color: '#5a5a5a' }}>
         {vorname
-          ? 'hier sind Ihre aktuellen Vorgänge bei Edelzaun & Tor.'
+          ? 'hier sind Ihre aktuellen Vorgänge bei TR Edelzaun & Tor.'
           : 'Anfragen · Angebote · Aufträge · Termine – alles auf einen Blick.'}
       </p>
 

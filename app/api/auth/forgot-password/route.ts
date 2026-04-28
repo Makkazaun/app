@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     const { html, text } = buildPasswordResetEmail({ vorname, nachname, resetLink })
     await sendMail({
       to:          email,
-      subject:     'Passwort zurücksetzen – Edelzaun App',
+      subject:     'Passwort zurücksetzen – TR Edelzaun & Tor',
       html,
       text,
       attachments: [getLogoAttachment()],

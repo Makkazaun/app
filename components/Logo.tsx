@@ -21,7 +21,7 @@ export default function Logo({ variant = 'header', className = '' }: LogoProps) 
     <div className={`inline-flex items-center justify-center ${className}`}>
       <Image
         src="/logo.png"
-        alt="Edelzaun & Tor – Logo"
+        alt="TR Edelzaun & Tor GmbH – Logo"
         width={width}
         height={height}
         priority

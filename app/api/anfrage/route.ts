@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   try {
     // ── 1. Admin-E-Mail an anfrage@edelzaun-tor.de ────────────────────────
     await resend.emails.send({
-      from: 'Edelzaun Konfigurator <noreply@edelzaun-tor.de>',
+      from: 'TR Edelzaun & Tor Konfigurator <noreply@edelzaun-tor.de>',
       to: ['anfrage@edelzaun-tor.de'],
       subject,
       html: buildAdminHtml(payload),

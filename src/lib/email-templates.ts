@@ -204,7 +204,7 @@ export function buildPasswordResetEmail({
           <p style="margin:0 0 22px;font-size:15px;color:#b8b8b8;line-height:1.75;">
             ${anrede}<br><br>
             wir haben eine Anfrage zum Zurücksetzen Ihres Passworts für das
-            <strong style="color:#e8e8e8;">Edelzaun Kundenportal</strong> erhalten.
+            <strong style="color:#e8e8e8;">TR Edelzaun & Tor Kundenportal</strong> erhalten.
             Klicken Sie auf den Button, um ein neues Passwort zu vergeben.
           </p>
 
@@ -275,13 +275,13 @@ export function buildPasswordResetEmail({
     </table>`
 
   const html = generateEmailHtml({
-    title:    'Passwort zurücksetzen – Edelzaun Kundenportal',
+    title:    'Passwort zurücksetzen – TR Edelzaun & Tor Kundenportal',
     preheader: 'Klicken Sie auf den Link, um ein neues Passwort zu vergeben (30 Min. gültig).',
     content,
   })
 
   const text = [
-    'PASSWORT ZURÜCKSETZEN – Edelzaun Kundenportal',
+    'PASSWORT ZURÜCKSETZEN – TR Edelzaun & Tor Kundenportal',
     '═'.repeat(52),
     '',
     vorname ? `Hallo ${vorname},` : 'Hallo,',

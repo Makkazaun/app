@@ -4,8 +4,8 @@ import SuperchatWidget from '@/components/SuperchatWidget'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Edelzaun App',
-  description: 'Edelzaun App – Angebote, Montagetermine und Rechnungen im Überblick',
+  title: 'TR Edelzaun & Tor App',
+  description: 'TR Edelzaun & Tor App – Angebote, Montagetermine und Rechnungen im Überblick',
 }
 
 export default function RootLayout({

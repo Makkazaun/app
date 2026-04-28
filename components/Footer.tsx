@@ -9,7 +9,7 @@ export default function Footer() {
         color: '#4a4a4a',
       }}
     >
-      <span>© {new Date().getFullYear()} Edelzaun & Tor</span>
+      <span>© {new Date().getFullYear()} TR Edelzaun & Tor GmbH</span>
       <span style={{ color: '#2a2a2a' }}>·</span>
       <Link href="/impressum" className="transition-colors hover:text-[#8a8a8a]" style={{ color: '#4a4a4a' }}>
         Impressum

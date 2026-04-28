@@ -46,7 +46,7 @@ export default function HomePage() {
           className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-80"
           style={{ background: '#2d2d2d', color: '#9a9a9a', border: '1px solid #3d3d3d' }}
         >
-          Edelzaun App
+          TR Edelzaun & Tor App
         </Link>
       </header>
 
@@ -61,7 +61,7 @@ export default function HomePage() {
           Zäune &amp; Tore nach Maß
         </p>
         <h1 className="text-4xl sm:text-5xl font-bold mb-5 tracking-tight" style={{ color: '#e8e8e8' }}>
-          Ihre persönliche <span className="gold-gradient">Edelzaun App</span>
+          Ihre persönliche <span className="gold-gradient">TR Edelzaun & Tor App</span>
         </h1>
         <p className="max-w-xl text-base leading-relaxed mb-12" style={{ color: '#6a6a6a' }}>
           Premium-Einzäunungen und Toranlagen für anspruchsvolle Kunden.

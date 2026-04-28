@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
       console.log(`[test-smtp] Logo CID konfiguriert: cid:${logoAttachment.cid} (${logoAttachment.content.length} Bytes)`)
       await sendMail({
         to:          email,
-        subject:     '[TEST] SMTP-Verbindungstest – Edelzaun',
+        subject:     '[TEST] SMTP-Verbindungstest – TR Edelzaun & Tor',
         html,
         text,
         attachments: [logoAttachment],
