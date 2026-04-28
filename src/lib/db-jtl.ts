@@ -443,7 +443,7 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
     .query<{
       kAuftrag:        number
       cAuftragsNr:     string
-      cBezeichnung:    string | null
+      cLeistung:       string | null
       dErstellt:       Date
       dLieferdatum:    Date | null
       nAuftragStatus:  number
@@ -456,7 +456,8 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
       SELECT
         a.kAuftrag,
         ISNULL(a.cAuftragsNr, CAST(a.kAuftrag AS NVARCHAR)) AS cAuftragsNr,
-        NULLIF(LTRIM(RTRIM(ISNULL(a.cBezeichnung, ''))), '') AS cBezeichnung,
+        -- Erste Normalposition (nType=0) als Leistungsbezeichnung; Versandpositionen (nType≠0) werden übersprungen
+        NULLIF(LTRIM(RTRIM(ISNULL(pos1.cName, ''))), '')      AS cLeistung,
         a.dErstellt,
         a.dVoraussichtlichesLieferdatum                       AS dLieferdatum,
         ISNULL(a.nAuftragStatus, 0)                           AS nAuftragStatus,
@@ -488,6 +489,13 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
         END AS nZahlungStatus
       FROM [Verkauf].[tAuftrag] a
       JOIN [Verkauf].[tAuftragEckdaten] e ON e.kAuftrag = a.kAuftrag
+      OUTER APPLY (
+        SELECT TOP 1 p.cName
+        FROM [Verkauf].[tAuftragPosition] p
+        WHERE p.kAuftrag = a.kAuftrag
+          AND p.nType    = 0
+        ORDER BY ISNULL(p.nSort, 0)
+      ) pos1
       WHERE a.kKunde = @kKunde
         AND a.nType  = 1
       ORDER BY a.dErstellt DESC
@@ -557,7 +565,7 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
       kKunde,
       datum:           toIso(row.dErstellt),
       montagetermin:   row.dLieferdatum ? toIso(row.dLieferdatum) : null,
-      betreff:         row.cBezeichnung || positionen[0]?.bezeichnung || row.cAuftragsNr,
+      betreff:         row.cLeistung || positionen[0]?.bezeichnung || row.cAuftragsNr,
       betragNetto:     row.fWertNetto,
       betragBrutto:    row.fWertBrutto,
       rechnungssumme:  row.fRechnungsSumme,
