@@ -96,7 +96,7 @@ function AuftraegeTabelle({ rows }: { rows: JtlAuftrag[] }) {
         <span>Datum</span>
         <span>Leistung</span>
         <span>Betrag</span>
-        <span>Zahlungsstatus</span>
+        <span>Status</span>
         <span className="text-right">PDF</span>
       </div>
 

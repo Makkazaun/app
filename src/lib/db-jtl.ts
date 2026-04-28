@@ -443,6 +443,7 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
     .query<{
       kAuftrag:        number
       cAuftragsNr:     string
+      cBezeichnung:    string | null
       dErstellt:       Date
       dLieferdatum:    Date | null
       nAuftragStatus:  number
@@ -455,6 +456,7 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
       SELECT
         a.kAuftrag,
         ISNULL(a.cAuftragsNr, CAST(a.kAuftrag AS NVARCHAR)) AS cAuftragsNr,
+        NULLIF(LTRIM(RTRIM(ISNULL(a.cBezeichnung, ''))), '') AS cBezeichnung,
         a.dErstellt,
         a.dVoraussichtlichesLieferdatum                       AS dLieferdatum,
         ISNULL(a.nAuftragStatus, 0)                           AS nAuftragStatus,
@@ -555,7 +557,7 @@ export async function getAuftraegeByKunde(kKunde: number): Promise<JtlAuftrag[]>
       kKunde,
       datum:           toIso(row.dErstellt),
       montagetermin:   row.dLieferdatum ? toIso(row.dLieferdatum) : null,
-      betreff:         positionen[0]?.bezeichnung || row.cAuftragsNr,
+      betreff:         row.cBezeichnung || positionen[0]?.bezeichnung || row.cAuftragsNr,
       betragNetto:     row.fWertNetto,
       betragBrutto:    row.fWertBrutto,
       rechnungssumme:  row.fRechnungsSumme,
