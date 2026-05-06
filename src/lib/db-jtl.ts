@@ -1176,11 +1176,13 @@ export async function createKundeInJtl(
       .input('nDebitorennr', sql.Int,          nDebitorennr)
       .query<{ newKundeID: number }>(`
         INSERT INTO dbo.tKunde
-          (cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr,
-           kKundenGruppe, nAktiv)
+          (cKundenNr, dErstellt, dGeaendert, nZahlungsziel, kZahlungsart, nDebitorennr,
+           kKundenGruppe, kSprache, kInetKunde, kKundenKategorie,
+           cNewsletter, cKassenKunde, nKreditlimit, kKundenDrucktext)
         VALUES
-          (@cKundenNr, GETDATE(), 5, 2, @nDebitorennr,
-           1, 1);
+          (@cKundenNr, GETDATE(), GETDATE(), 5, 2, @nDebitorennr,
+           1, 1, 0, 0,
+           'N', 'N', 0, 0);
         SELECT SCOPE_IDENTITY() AS newKundeID;
       `)
     kKunde = insKunde.recordset[0]?.newKundeID
