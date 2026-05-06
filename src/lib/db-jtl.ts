@@ -1103,8 +1103,9 @@ export interface NewKundeData {
  * 0. Duplikat-Check: E-Mail in tAdresse → wirft { code: 'EMAIL_EXISTS' } falls gefunden.
  * 1. Nächste cKundenNr (MAX numerisch + 1 + 'A') und nDebitorennr (MAX + 1) ermitteln.
  * 2. INSERT tKunde ohne kKunde → SQL Server IDENTITY vergibt den PK automatisch.
+ *    Pflichtfelder: kKundenGruppe=1 (Standard-Endkunde), nAktiv=1.
  *    Generierte ID per SCOPE_IDENTITY() lesen.
- * 3. INSERT tAdresse ohne kAdresse → kKunde = generierte ID aus Schritt 2, nTyp = 1.
+ * 3. INSERT tAdresse (2×) → nTyp=1 (Rechnung) + nTyp=0 (Lieferung), beide mit cISO='DE'.
  * 4. INSERT tKunde_suche: alle Suchbegriffe (Name, Mail, Adresse …) mit nID-Mapping.
  * Alle Schritte laufen in einer Transaktion.
  */
@@ -1175,16 +1176,18 @@ export async function createKundeInJtl(
       .input('nDebitorennr', sql.Int,          nDebitorennr)
       .query<{ newKundeID: number }>(`
         INSERT INTO dbo.tKunde
-          (cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr)
+          (cKundenNr, dErstellt, nZahlungsziel, kZahlungsart, nDebitorennr,
+           kKundenGruppe, nAktiv)
         VALUES
-          (@cKundenNr, GETDATE(), 5, 2, @nDebitorennr);
+          (@cKundenNr, GETDATE(), 5, 2, @nDebitorennr,
+           1, 1);
         SELECT SCOPE_IDENTITY() AS newKundeID;
       `)
     kKunde = insKunde.recordset[0]?.newKundeID
     if (!kKunde) throw new Error('SCOPE_IDENTITY() lieferte keinen Wert – tKunde INSERT fehlgeschlagen.')
     console.log('[createKundeInJtl] tKunde angelegt: kKunde=%d', kKunde)
 
-    // Schritt 3: tAdresse INSERT – kAdresse wird vom IDENTITY vergeben, kKunde verknüpft
+    // Schritt 3: tAdresse – 2 Einträge (nTyp=1 Rechnung + nTyp=0 Lieferung), beide mit cISO='DE'
     await req()
       .input('kKunde',   sql.Int,           kKunde)
       .input('vorname',  sql.NVarChar(255), data.vorname.trim())
@@ -1198,10 +1201,12 @@ export async function createKundeInJtl(
       .query(`
         INSERT INTO dbo.tAdresse
           (kKunde, nTyp, nStandard, cVorname, cName, cMail,
-           cStrasse, cPLZ, cOrt, cLand, cTel)
+           cStrasse, cPLZ, cOrt, cLand, cISO, cTel)
         VALUES
           (@kKunde, 1, 1, @vorname, @nachname, @email,
-           @strasse, @plz, @ort, @land, @tel)
+           @strasse, @plz, @ort, @land, 'DE', @tel),
+          (@kKunde, 0, 0, @vorname, @nachname, @email,
+           @strasse, @plz, @ort, @land, 'DE', @tel)
       `)
 
     // Schritt 4: tKunde_suche – Suchindex befüllen
