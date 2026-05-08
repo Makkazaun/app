@@ -103,6 +103,8 @@ function LoginForm() {
     if (!nachname.trim())        { setError('Bitte Nachname eingeben.');                        return }
     if (!email.includes('@'))    { setError('Ungültige E-Mail-Adresse.');                       return }
     if (password.length < 6)    { setError('Passwort muss mindestens 6 Zeichen haben.');       return }
+    if (!plz.trim())             { setError('Bitte PLZ eingeben.');                             return }
+    if (!ort.trim())             { setError('Bitte Ort eingeben.');                             return }
     setLoading(true)
     try {
       const res  = await fetch('/api/auth/register', {
@@ -376,18 +378,18 @@ function LoginForm() {
                 <Field label="Passwort" id="reg-password" type="password" value={password}
                   onChange={setPassword} placeholder="Mindestens 6 Zeichen" required />
 
-                {/* Adressdaten (optional) */}
+                {/* Adressdaten */}
                 <div className="space-y-3 pt-3" style={{ borderTop: '1px solid #2d2d2d' }}>
                   <p className="text-[11px] uppercase tracking-wider" style={{ color: '#4a4a4a' }}>
-                    Adressdaten <span style={{ color: '#3a3a3a' }}>(optional)</span>
+                    Adressdaten
                   </p>
                   <Field label="Straße & Hausnummer" id="strasse" type="text" value={strasse}
                     onChange={setStrasse} placeholder="Musterstraße 1" />
                   <div className="grid grid-cols-2 gap-3">
                     <Field label="PLZ" id="plz" type="text" value={plz}
-                      onChange={setPlz} placeholder="06369" />
+                      onChange={setPlz} placeholder="06369" required />
                     <Field label="Ort" id="ort" type="text" value={ort}
-                      onChange={setOrt} placeholder="Großwülknitz" />
+                      onChange={setOrt} placeholder="Großwülknitz" required />
                   </div>
                   <Field label="Telefon" id="tel" type="tel" value={tel}
                     onChange={setTel} placeholder="+49 3496 …" />

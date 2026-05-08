@@ -7,8 +7,8 @@
  *   email:     string          – Pflicht
  *   password:  string          – Pflicht, min. 6 Zeichen
  *   strasse?:  string          – Optional (für JTL-Adresse)
- *   plz?:      string          – Optional
- *   ort?:      string          – Optional
+ *   plz:       string          – Pflicht
+ *   ort:       string          – Pflicht
  *   tel?:      string          – Optional
  * }
  *
@@ -46,14 +46,16 @@ export async function POST(req: NextRequest) {
   const email    = typeof body.email    === 'string' ? body.email.trim().toLowerCase() : ''
   const password = typeof body.password === 'string' ? body.password : ''
   const strasse  = typeof body.strasse  === 'string' ? body.strasse.trim()  || null : null
-  const plz      = typeof body.plz      === 'string' ? body.plz.trim()      || null : null
-  const ort      = typeof body.ort      === 'string' ? body.ort.trim()      || null : null
+  const plz      = typeof body.plz      === 'string' ? body.plz.trim()      : ''
+  const ort      = typeof body.ort      === 'string' ? body.ort.trim()      : ''
   const tel      = typeof body.tel      === 'string' ? body.tel.trim()      || null : null
 
   if (!vorname)                       return NextResponse.json({ error: 'Vorname erforderlich.'  }, { status: 400 })
   if (!nachname)                      return NextResponse.json({ error: 'Nachname erforderlich.' }, { status: 400 })
   if (!email || !email.includes('@')) return NextResponse.json({ error: 'Gültige E-Mail-Adresse erforderlich.' }, { status: 400 })
   if (password.length < 6)           return NextResponse.json({ error: 'Passwort muss mindestens 6 Zeichen haben.' }, { status: 400 })
+  if (!plz)                           return NextResponse.json({ error: 'PLZ erforderlich.'       }, { status: 400 })
+  if (!ort)                           return NextResponse.json({ error: 'Ort erforderlich.'        }, { status: 400 })
 
   // 1. Portal-Duplikat prüfen (synchron, schnell)
   if (findUserByEmail(email)) {
