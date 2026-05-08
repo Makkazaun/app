@@ -103,8 +103,9 @@ function LoginForm() {
     if (!nachname.trim())        { setError('Bitte Nachname eingeben.');                        return }
     if (!email.includes('@'))    { setError('Ungültige E-Mail-Adresse.');                       return }
     if (password.length < 6)    { setError('Passwort muss mindestens 6 Zeichen haben.');       return }
-    if (!plz.trim())             { setError('Bitte PLZ eingeben.');                             return }
-    if (!ort.trim())             { setError('Bitte Ort eingeben.');                             return }
+    if (!strasse.trim())         { setError('Bitte geben Sie Ihre Straße und Hausnummer an.'); return }
+    if (!plz.trim())             { setError('Bitte geben Sie Ihre PLZ an.');                   return }
+    if (!ort.trim())             { setError('Bitte geben Sie Ihren Ort an.');                  return }
     setLoading(true)
     try {
       const res  = await fetch('/api/auth/register', {
@@ -384,7 +385,7 @@ function LoginForm() {
                     Adressdaten
                   </p>
                   <Field label="Straße & Hausnummer" id="strasse" type="text" value={strasse}
-                    onChange={setStrasse} placeholder="Musterstraße 1" />
+                    onChange={setStrasse} placeholder="Musterstraße 1" required />
                   <div className="grid grid-cols-2 gap-3">
                     <Field label="PLZ" id="plz" type="text" value={plz}
                       onChange={setPlz} placeholder="06369" required />

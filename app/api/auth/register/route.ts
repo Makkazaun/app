@@ -6,7 +6,7 @@
  *   nachname:  string          – Pflicht
  *   email:     string          – Pflicht
  *   password:  string          – Pflicht, min. 6 Zeichen
- *   strasse?:  string          – Optional (für JTL-Adresse)
+ *   strasse:   string          – Pflicht
  *   plz:       string          – Pflicht
  *   ort:       string          – Pflicht
  *   tel?:      string          – Optional
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   const nachname = typeof body.nachname === 'string' ? body.nachname.trim() : ''
   const email    = typeof body.email    === 'string' ? body.email.trim().toLowerCase() : ''
   const password = typeof body.password === 'string' ? body.password : ''
-  const strasse  = typeof body.strasse  === 'string' ? body.strasse.trim()  || null : null
+  const strasse  = typeof body.strasse  === 'string' ? body.strasse.trim()  : ''
   const plz      = typeof body.plz      === 'string' ? body.plz.trim()      : ''
   const ort      = typeof body.ort      === 'string' ? body.ort.trim()      : ''
   const tel      = typeof body.tel      === 'string' ? body.tel.trim()      || null : null
@@ -54,8 +54,9 @@ export async function POST(req: NextRequest) {
   if (!nachname)                      return NextResponse.json({ error: 'Nachname erforderlich.' }, { status: 400 })
   if (!email || !email.includes('@')) return NextResponse.json({ error: 'Gültige E-Mail-Adresse erforderlich.' }, { status: 400 })
   if (password.length < 6)           return NextResponse.json({ error: 'Passwort muss mindestens 6 Zeichen haben.' }, { status: 400 })
-  if (!plz)                           return NextResponse.json({ error: 'PLZ erforderlich.'       }, { status: 400 })
-  if (!ort)                           return NextResponse.json({ error: 'Ort erforderlich.'        }, { status: 400 })
+  if (!strasse)                        return NextResponse.json({ error: 'Straße und Hausnummer erforderlich.' }, { status: 400 })
+  if (!plz)                           return NextResponse.json({ error: 'PLZ erforderlich.'                    }, { status: 400 })
+  if (!ort)                           return NextResponse.json({ error: 'Ort erforderlich.'                    }, { status: 400 })
 
   // 1. Portal-Duplikat prüfen (synchron, schnell)
   if (findUserByEmail(email)) {
