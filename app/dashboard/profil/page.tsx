@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth'
 
 // ── Typen ─────────────────────────────────────────────────────────────────────
 
-type Tab = 'persoenlich' | 'adressen' | 'sicherheit'
+type Tab = 'persoenlich' | 'adressen' | 'sicherheit' | 'benachrichtigungen'
 
 interface AdresseForm {
   firma:    string
@@ -588,12 +588,151 @@ function TabSicherheit({ email, onSuccess }: { email: string; onSuccess: (msg: s
   )
 }
 
+// ── Tab 4: Benachrichtigungen ─────────────────────────────────────────────────
+
+function TabBenachrichtigungen({ email }: { email: string }) {
+  const [enabled,  setEnabled]  = useState<boolean>(true)
+  const [loading,  setLoading]  = useState(true)
+  const [saveState, setSaveState] = useState<SaveState>('idle')
+
+  useEffect(() => {
+    if (!email) { setLoading(false); return }
+    fetch(`/api/notifications/settings?email=${encodeURIComponent(email)}`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d) setEnabled(d.notificationsEnabled) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [email])
+
+  async function handleToggle(next: boolean) {
+    setEnabled(next)
+    setSaveState('saving')
+    try {
+      const res = await fetch('/api/notifications/settings', {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, enabled: next }),
+      })
+      setSaveState(res.ok ? 'ok' : 'error')
+      setTimeout(() => setSaveState('idle'), 3000)
+    } catch {
+      setSaveState('error')
+      setTimeout(() => setSaveState('idle'), 3000)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-10">
+        <div className="w-6 h-6 rounded-full border-2 animate-spin"
+          style={{ borderColor: '#c9a84c', borderTopColor: 'transparent' }} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-lg space-y-6">
+
+      {/* Beschreibung */}
+      <div className="rounded-xl px-4 py-3 text-sm"
+        style={{ background: '#141414', border: '1px solid #222', color: '#6a6a6a', lineHeight: '1.7' }}>
+        Verwalten Sie hier, für welche Ereignisse Sie automatische E-Mail-Nachrichten erhalten möchten.
+        Änderungen werden sofort übernommen.
+      </div>
+
+      {/* Toggle-Karte */}
+      <div className="rounded-2xl overflow-hidden"
+        style={{ border: '1px solid #2d2d2d', background: '#141414' }}>
+
+        {/* Karten-Kopf */}
+        <div className="px-5 py-4 flex items-center gap-3"
+          style={{ background: 'linear-gradient(145deg, #1e1e1e, #1c1c1c)', borderBottom: '1px solid #252525' }}>
+          <span style={{ fontSize: '16px', lineHeight: 1 }}>📄</span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest"
+              style={{ color: '#c9a84c', letterSpacing: '0.14em' }}>Neue Dokumente</p>
+            <p className="text-xs mt-0.5" style={{ color: '#4a4a4a' }}>
+              Angebote, Aufträge und Rechnungen
+            </p>
+          </div>
+        </div>
+
+        {/* Toggle-Zeile */}
+        <div className="flex items-start justify-between gap-5 px-5 py-5">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold mb-1" style={{ color: '#d4d4d4' }}>
+              E-Mail-Benachrichtigung bei neuen Dokumenten
+            </p>
+            <p className="text-xs leading-relaxed" style={{ color: '#5a5a5a' }}>
+              Möchten Sie per E-Mail informiert werden, sobald ein neues Dokument (Angebot,
+              Auftrag oder Rechnung) für Sie bereitsteht?
+            </p>
+          </div>
+
+          {/* Toggle-Switch */}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={enabled}
+            disabled={saveState === 'saving'}
+            onClick={() => handleToggle(!enabled)}
+            className="flex-shrink-0 relative inline-flex items-center rounded-full
+                       transition-all duration-200 focus:outline-none focus:ring-2
+                       focus:ring-offset-2 disabled:opacity-60 mt-0.5"
+            style={{
+              width:      '50px',
+              height:     '28px',
+              background: enabled
+                ? 'linear-gradient(135deg, #8a6914, #c9a84c)'
+                : '#2a2a2a',
+              border:     `1px solid ${enabled ? '#c9a84c' : '#3d3d3d'}`,
+              boxShadow:  enabled ? '0 0 12px rgba(201,168,76,0.25)' : 'none',
+            }}
+          >
+            <span
+              className="inline-block rounded-full transition-transform duration-200"
+              style={{
+                width:      '20px',
+                height:     '20px',
+                background:  enabled ? '#1a1a1a' : '#5a5a5a',
+                transform:   enabled ? 'translateX(24px)' : 'translateX(3px)',
+                boxShadow:  '0 1px 4px rgba(0,0,0,0.5)',
+              }}
+            />
+          </button>
+        </div>
+
+        {/* Status-Label unter dem Toggle */}
+        <div className="px-5 pb-4">
+          {saveState === 'ok' && (
+            <p className="text-xs" style={{ color: '#5bc97a' }}>
+              ✓ Einstellung wurde gespeichert.
+            </p>
+          )}
+          {saveState === 'error' && (
+            <p className="text-xs" style={{ color: '#e08080' }}>
+              Speichern fehlgeschlagen. Bitte versuchen Sie es erneut.
+            </p>
+          )}
+          {saveState === 'idle' && (
+            <p className="text-xs" style={{ color: enabled ? '#8a7a4a' : '#3a3a3a' }}>
+              {enabled ? 'Sie erhalten E-Mails bei neuen Dokumenten.' : 'E-Mail-Benachrichtigungen sind deaktiviert.'}
+            </p>
+          )}
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 // ── Haupt-Seite ───────────────────────────────────────────────────────────────
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'persoenlich', label: 'Persönliche Daten', icon: '👤' },
-  { key: 'adressen',    label: 'Adressen',          icon: '📍' },
-  { key: 'sicherheit',  label: 'Sicherheit',        icon: '🔐' },
+  { key: 'persoenlich',       label: 'Persönliche Daten',  icon: '👤' },
+  { key: 'adressen',          label: 'Adressen',           icon: '📍' },
+  { key: 'sicherheit',        label: 'Sicherheit',         icon: '🔐' },
+  { key: 'benachrichtigungen', label: 'Benachrichtigungen', icon: '🔔' },
 ]
 
 export default function ProfilPage() {
@@ -764,7 +903,10 @@ export default function ProfilPage() {
                   <span className="hidden sm:inline">{tab.label}</span>
                   {/* Mobile: Kurzbezeichnung */}
                   <span className="sm:hidden text-xs">
-                    {tab.key === 'persoenlich' ? 'Daten' : tab.key === 'adressen' ? 'Adressen' : 'Sicherheit'}
+                    {tab.key === 'persoenlich'       ? 'Daten'
+                     : tab.key === 'adressen'        ? 'Adressen'
+                     : tab.key === 'sicherheit'      ? 'Sicherheit'
+                     : 'Benachr.'}
                   </span>
                 </button>
               )
@@ -818,8 +960,13 @@ export default function ProfilPage() {
             <TabSicherheit email={email} onSuccess={showToast} />
           )}
 
+          {/* Tab: Benachrichtigungen */}
+          {activeTab === 'benachrichtigungen' && (
+            <TabBenachrichtigungen email={email} />
+          )}
+
           {/* Nicht eingeloggt */}
-          {!kKunde && activeTab !== 'sicherheit' && (
+          {!kKunde && activeTab !== 'sicherheit' && activeTab !== 'benachrichtigungen' && (
             <p className="text-sm text-center py-8" style={{ color: '#5a5a5a' }}>
               Kunden-ID nicht gefunden. Bitte neu anmelden.
             </p>
