@@ -301,6 +301,127 @@ export function buildPasswordResetEmail({
   return { html, text }
 }
 
+// ── Registrierungs-Bestätigungs-Mail ─────────────────────────────────────────
+
+export function buildRegistrationEmail({
+  vorname,
+  nachname,
+  loginUrl,
+}: {
+  vorname:  string
+  nachname: string
+  loginUrl: string
+}): { html: string; text: string } {
+  const fullName = [vorname, nachname].filter(Boolean).join(' ')
+  const anrede   = fullName
+    ? `Guten Tag ${escHtml(fullName)},`
+    : 'Guten Tag,'
+
+  const content = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:32px 36px 12px;">
+
+          <!-- Titel -->
+          <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#e8e8e8;
+                     letter-spacing:-0.01em;">
+            Ihre Registrierung war erfolgreich
+          </h1>
+          ${fullName ? `<p style="margin:0 0 22px;font-size:13px;color:#8a7a4a;">${escHtml(fullName)}</p>` : '<div style="margin-bottom:22px;"></div>'}
+
+          <!-- Anrede + Text -->
+          <p style="margin:0 0 20px;font-size:15px;color:#b8b8b8;line-height:1.75;">
+            ${anrede}<br><br>
+            vielen Dank für Ihre Registrierung im
+            <strong style="color:#e8e8e8;">TR Edelzaun &amp; Tor Kundenportal</strong>.
+            Ihr Kundenkonto wurde erfolgreich erstellt und mit unserem System verknüpft.
+          </p>
+
+          <!-- Info-Box -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+            style="margin-bottom:28px;">
+            <tr>
+              <td style="background:#1c1810;border:1px solid #3a2e10;border-radius:10px;
+                         padding:16px 20px;">
+                <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.14em;
+                           text-transform:uppercase;color:#c9a84c;">
+                  Ihre Möglichkeiten im Portal
+                </p>
+                <p style="margin:0;font-size:13px;color:#9a8a5a;line-height:1.75;">
+                  ✓&nbsp; Angebote jederzeit online einsehen<br>
+                  ✓&nbsp; Angebote digital unterschreiben<br>
+                  ✓&nbsp; Projektstatus und Rechnungen abrufen
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <!-- CTA-Button -->
+          <table role="presentation" cellpadding="0" cellspacing="0"
+            style="margin:0 auto 28px;">
+            <tr>
+              <td style="border-radius:10px;
+                         background:linear-gradient(135deg,#6a4a0a,#c9a84c,#e0c068,#c9a84c,#6a4a0a);
+                         box-shadow:0 4px 20px rgba(201,168,76,0.3);">
+                <a href="${loginUrl}"
+                  style="display:inline-block;padding:14px 38px;font-size:14px;
+                         font-weight:700;color:#1a1a1a;text-decoration:none;
+                         letter-spacing:0.07em;border-radius:10px;white-space:nowrap;">
+                  Zum Kundenportal
+                </a>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Sicherheitshinweis -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="background:#141414;border:1px solid #242424;border-radius:10px;
+                         padding:14px 16px;">
+                <p style="margin:0;font-size:12px;color:#5a5a5a;line-height:1.6;">
+                  <strong style="color:#7a7a7a;">Nicht von Ihnen registriert?</strong><br>
+                  Bitte wenden Sie sich umgehend an uns:
+                  <a href="mailto:info@edelzaun-tor.de"
+                    style="color:#c9a84c;text-decoration:none;">info@edelzaun-tor.de</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+        </td>
+      </tr>
+    </table>`
+
+  const html = generateEmailHtml({
+    title:     'Registrierung erfolgreich – TR Edelzaun & Tor Kundenportal',
+    preheader: `Willkommen, ${fullName || 'neues Mitglied'}! Ihr Kundenkonto wurde erfolgreich erstellt.`,
+    content,
+  })
+
+  const text = [
+    'REGISTRIERUNG ERFOLGREICH – TR Edelzaun & Tor Kundenportal',
+    '═'.repeat(52),
+    '',
+    anrede.replace(/<[^>]+>/g, ''),
+    '',
+    'vielen Dank für Ihre Registrierung im TR Edelzaun & Tor Kundenportal.',
+    'Ihr Kundenkonto wurde erfolgreich erstellt und mit unserem System verknüpft.',
+    '',
+    'Ihre Möglichkeiten im Portal:',
+    '  • Angebote jederzeit online einsehen',
+    '  • Angebote digital unterschreiben',
+    '  • Projektstatus und Rechnungen abrufen',
+    '',
+    `Zum Kundenportal: ${loginUrl}`,
+    '',
+    '─'.repeat(52),
+    'TR Edelzaun & Tor GmbH · Kastanienplatz 2 · 06369 Großwülknitz',
+    'Tel: 03496-7005181 · info@edelzaun-tor.de · www.edelzaun-tor.de',
+  ].join('\n')
+
+  return { html, text }
+}
+
 // ── Test-Mail ─────────────────────────────────────────────────────────────────
 
 export function buildTestEmail({

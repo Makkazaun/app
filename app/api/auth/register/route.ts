@@ -35,6 +35,7 @@ import bcrypt from 'bcryptjs'
 import { findUserByEmail, upsertUserJtl, setPasswordHash, createPortalUser } from '@/src/lib/portal-db'
 import { findKundeByEmail, createKundeInJtl } from '@/src/lib/db-jtl'
 import { sendMail } from '@/src/lib/mailer'
+import { buildRegistrationEmail, getLogoAttachment } from '@/src/lib/email-templates'
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>
@@ -107,21 +108,22 @@ export async function POST(req: NextRequest) {
     console.log(`[register] ✓ ${email} registriert (kKunde=${kKunde ?? 'kein JTL-Link'})`)
 
     // 6. Bestätigungsmail – nicht fatal
-    sendMail({
-      to:      email,
-      subject: 'Willkommen bei TR Edelzaun & Tor – Ihre Registrierung war erfolgreich',
-      html: `
-        <h1>Herzlich Willkommen bei TR Edelzaun &amp; Tor!</h1>
-        <p>Sehr geehrte Damen und Herren / Guten Tag,</p>
-        <p>vielen Dank für Ihre Registrierung in unserer App. Ihr Kundenkonto wurde erfolgreich erstellt und mit unserem System verknüpft.</p>
-        <p>Sie können sich ab sofort mit Ihrer E-Mail-Adresse und Ihrem gewählten Passwort einloggen, um Ihre Angebote einzusehen und digital zu unterschreiben.</p>
-        <p>Wir freuen uns auf die erfolgreiche Zusammenarbeit!</p>
-        <p>Mit freundlichen Grüßen,</p>
-        <p>Ihr Team von TR Edelzaun &amp; Tor</p>
-      `,
-    }).catch((mailErr: unknown) => {
-      console.warn('[register] Bestätigungsmail fehlgeschlagen:', (mailErr as Error).message?.split('\n')[0])
-    })
+    try {
+      const appUrl   = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+      const loginUrl = `${appUrl}/login`
+      const { html, text } = buildRegistrationEmail({ vorname, nachname, loginUrl })
+      sendMail({
+        to:          email,
+        subject:     'Ihre Registrierung war erfolgreich – TR Edelzaun & Tor Kundenportal',
+        html,
+        text,
+        attachments: [getLogoAttachment()],
+      }).catch((mailErr: unknown) => {
+        console.warn('[register] Bestätigungsmail fehlgeschlagen:', (mailErr as Error).message?.split('\n')[0])
+      })
+    } catch (mailBuildErr) {
+      console.warn('[register] Bestätigungsmail konnte nicht erstellt werden:', (mailBuildErr as Error).message?.split('\n')[0])
+    }
 
     return NextResponse.json({ ok: true, email, kKunde, kundennummer })
 
