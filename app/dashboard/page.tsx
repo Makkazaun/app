@@ -1,7 +1,8 @@
-import DashboardHeader  from '@/components/dashboard/DashboardHeader'
-import AnfragenSection  from '@/components/dashboard/AnfragenSection'
-import AngeboteSection  from '@/components/dashboard/AngeboteSection'
-import AuftraegeSection from '@/components/dashboard/AuftraegeSection'
+import DashboardHeader      from '@/components/dashboard/DashboardHeader'
+import AnfragenSection      from '@/components/dashboard/AnfragenSection'
+import AngeboteSection      from '@/components/dashboard/AngeboteSection'
+import AuftraegeSection     from '@/components/dashboard/AuftraegeSection'
+import EinstellungenSection from '@/components/dashboard/EinstellungenSection'
 
 export default function DashboardPage() {
   return (
@@ -18,6 +19,9 @@ export default function DashboardPage() {
 
       {/* 03 · Meine Aufträge (bestätigte / unterschriebene Aufträge) */}
       <AuftraegeSection />
+
+      {/* 04 · Einstellungen (Benachrichtigungen) */}
+      <EinstellungenSection />
 
     </div>
   )

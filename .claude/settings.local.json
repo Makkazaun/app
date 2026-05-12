@@ -25,7 +25,8 @@
       "Bash(findstr *)",
       "Bash(git checkout *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(Get-ChildItem -Path C:\\\\Users\\\\Administrator\\\\edelzaun\\\\app\\\\api\\\\jtl -Name -Filter \"*.ts\")"
     ]
   }
 }

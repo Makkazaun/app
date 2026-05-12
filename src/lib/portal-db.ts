@@ -62,6 +62,11 @@ function getDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_reset_tokens_email ON reset_tokens(email);
   `)
 
+  // Migration: notifications_enabled (bestehende DBs ohne Spalte updaten)
+  try {
+    db.exec(`ALTER TABLE users ADD COLUMN notifications_enabled INTEGER NOT NULL DEFAULT 1`)
+  } catch { /* Spalte existiert bereits – ignorieren */ }
+
   _db = db
   console.log(`[portal-db] Datenbank geöffnet: ${DB_PATH}`)
   return _db
@@ -70,13 +75,14 @@ function getDb(): Database.Database {
 // ── Typen ─────────────────────────────────────────────────────────────────────
 
 export interface PortalUser {
-  id:            number
-  email:         string
-  k_kunde:       number | null
-  kundennummer:  string | null
-  password_hash: string | null
-  created_at:    number
-  updated_at:    number
+  id:                     number
+  email:                  string
+  k_kunde:                number | null
+  kundennummer:           string | null
+  password_hash:          string | null
+  notifications_enabled:  number   // 1 = an, 0 = aus
+  created_at:             number
+  updated_at:             number
 }
 
 // ── Users ─────────────────────────────────────────────────────────────────────
@@ -135,6 +141,23 @@ export function setPasswordHash(email: string, hash: string): void {
   if (rows.changes === 0) {
     throw new Error(`Nutzer "${email}" nicht in Portal-DB gefunden – zuerst upsertUserJtl() aufrufen.`)
   }
+}
+
+/** Sucht einen Portal-Nutzer anhand der JTL-Kunden-ID. */
+export function findUserByKKunde(kKunde: number): PortalUser | null {
+  return getDb().prepare(
+    'SELECT * FROM users WHERE k_kunde = ?'
+  ).get(kKunde) as PortalUser | null
+}
+
+/** Setzt den E-Mail-Benachrichtigungsstatus für einen Nutzer. */
+export function setNotificationsEnabled(email: string, enabled: boolean): void {
+  const db  = getDb()
+  const now = Date.now()
+  db.prepare(`
+    UPDATE users SET notifications_enabled = ?, updated_at = ?
+    WHERE email = ? COLLATE NOCASE
+  `).run(enabled ? 1 : 0, now, email.trim().toLowerCase())
 }
 
 // ── Angebot-Ablehnungen ───────────────────────────────────────────────────────

@@ -174,6 +174,119 @@ function escHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
+// ── Dokumenten-Benachrichtigungs-Mail ────────────────────────────────────────
+
+export function buildDocumentNotificationEmail({
+  vorname,
+  nachname,
+  dokumentNummer,
+  loginUrl,
+  settingsUrl,
+}: {
+  vorname:        string
+  nachname:       string
+  dokumentNummer: string
+  loginUrl:       string
+  settingsUrl:    string
+}): { html: string; text: string } {
+  const fullName = [vorname, nachname].filter(Boolean).join(' ')
+  const anrede   = fullName ? `Guten Tag ${escHtml(fullName)},` : 'Guten Tag,'
+
+  const content = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:32px 36px 12px;">
+
+          <!-- Titel -->
+          <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#e8e8e8;
+                     letter-spacing:-0.01em;">
+            Neues Dokument verfügbar
+          </h1>
+          ${fullName ? `<p style="margin:0 0 22px;font-size:13px;color:#8a7a4a;">${escHtml(fullName)}</p>` : '<div style="margin-bottom:22px;"></div>'}
+
+          <!-- Anrede + Text -->
+          <p style="margin:0 0 20px;font-size:15px;color:#b8b8b8;line-height:1.75;">
+            ${anrede}<br><br>
+            ein neues Angebot wurde soeben für Sie bereitgestellt und steht in Ihrem
+            <strong style="color:#e8e8e8;">TR Edelzaun &amp; Tor Kundenportal</strong>
+            zur Verfügung.
+          </p>
+
+          <!-- Dokument-Info-Box -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+            style="margin-bottom:28px;">
+            <tr>
+              <td style="background:#1c1810;border:1px solid #3a2e10;border-radius:10px;
+                         padding:16px 20px;">
+                <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.14em;
+                           text-transform:uppercase;color:#c9a84c;">Neues Dokument</p>
+                <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:#e8e8e8;">
+                  Angebot ${escHtml(dokumentNummer)}
+                </p>
+                <p style="margin:0;font-size:13px;color:#7a6a3a;line-height:1.6;">
+                  Sie können das Angebot jetzt einsehen und digital unterzeichnen.
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <!-- CTA-Button -->
+          <table role="presentation" cellpadding="0" cellspacing="0"
+            style="margin:0 auto 28px;">
+            <tr>
+              <td style="border-radius:10px;
+                         background:linear-gradient(135deg,#6a4a0a,#c9a84c,#e0c068,#c9a84c,#6a4a0a);
+                         box-shadow:0 4px 20px rgba(201,168,76,0.3);">
+                <a href="${loginUrl}"
+                  style="display:inline-block;padding:14px 38px;font-size:14px;
+                         font-weight:700;color:#1a1a1a;text-decoration:none;
+                         letter-spacing:0.07em;border-radius:10px;white-space:nowrap;">
+                  Angebot jetzt einsehen
+                </a>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Abbestell-Hinweis -->
+          <p style="margin:0;font-size:11px;color:#3a3a3a;text-align:center;line-height:1.7;">
+            Sie möchten keine E-Mail-Benachrichtigungen mehr erhalten?<br>
+            <a href="${settingsUrl}"
+              style="color:#5a5a5a;text-decoration:underline;">
+              Benachrichtigungen abbestellen
+            </a>
+          </p>
+
+        </td>
+      </tr>
+    </table>`
+
+  const html = generateEmailHtml({
+    title:     `Neues Dokument: Angebot ${dokumentNummer} – TR Edelzaun & Tor`,
+    preheader: `Angebot ${dokumentNummer} wurde für Sie bereitgestellt. Jetzt einsehen und unterzeichnen.`,
+    content,
+  })
+
+  const text = [
+    `NEUES DOKUMENT VERFÜGBAR – TR Edelzaun & Tor Kundenportal`,
+    '═'.repeat(52),
+    '',
+    anrede.replace(/<[^>]+>/g, ''),
+    '',
+    `ein neues Angebot (${dokumentNummer}) wurde soeben für Sie bereitgestellt.`,
+    'Sie können es jetzt in Ihrem Kundenportal einsehen und digital unterzeichnen.',
+    '',
+    `Zum Kundenportal: ${loginUrl}`,
+    '',
+    `Benachrichtigungen abbestellen: ${settingsUrl}`,
+    '',
+    '─'.repeat(52),
+    'TR Edelzaun & Tor GmbH · Kastanienplatz 2 · 06369 Großwülknitz',
+    'Tel: 03496-7005181 · info@edelzaun-tor.de · www.edelzaun-tor.de',
+  ].join('\n')
+
+  return { html, text }
+}
+
 // ── Passwort-Reset-E-Mail ─────────────────────────────────────────────────────
 
 export function buildPasswordResetEmail({

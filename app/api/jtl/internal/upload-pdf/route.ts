@@ -2,6 +2,7 @@
  * POST /api/jtl/internal/upload-pdf
  *
  * Nimmt ein PDF als Base64-JSON entgegen und speichert es in private/documents/.
+ * Sendet optional eine Benachrichtigungs-E-Mail an den Kunden.
  *
  * ── Authentifizierung ─────────────────────────────────────────────────────
  * Header: Authorization: Bearer <JTL_API_KEY>
@@ -9,7 +10,8 @@
  * ── Request (application/json) ────────────────────────────────────────────
  * {
  *   "filename": "A11104",        // Belegnummer ohne .pdf (required)
- *   "fileData": "<base64-string>" // PDF-Inhalt als Base64 (required)
+ *   "fileData": "<base64-string>", // PDF-Inhalt als Base64 (required)
+ *   "kKunde":  12345              // JTL-Kunden-ID für Benachrichtigung (optional)
  * }
  *
  * ── Antwort ───────────────────────────────────────────────────────────────
@@ -22,8 +24,35 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs   from 'fs'
 import path from 'path'
+import { findUserByKKunde }              from '@/src/lib/portal-db'
+import { getKundeVornameNachname }       from '@/src/lib/db-jtl'
+import { buildDocumentNotificationEmail, getLogoAttachment } from '@/src/lib/email-templates'
+import { sendMail }                      from '@/src/lib/mailer'
 
 const DOCS_DIR = path.join(process.cwd(), 'private', 'documents')
+
+async function dispatchNotification(kKunde: number, dokumentNummer: string): Promise<void> {
+  const user = findUserByKKunde(kKunde)
+  if (!user || user.notifications_enabled === 0) return
+
+  const appUrl      = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+  const loginUrl    = `${appUrl}/login`
+  const settingsUrl = `${appUrl}/dashboard`
+
+  const { vorname, nachname } = await getKundeVornameNachname(kKunde)
+  const { html, text }        = buildDocumentNotificationEmail({
+    vorname, nachname, dokumentNummer, loginUrl, settingsUrl,
+  })
+
+  await sendMail({
+    to:          user.email,
+    subject:     `Neues Dokument verfügbar: ${dokumentNummer} – TR Edelzaun & Tor`,
+    html,
+    text,
+    attachments: [getLogoAttachment()],
+  })
+  console.log(`[upload-pdf] Benachrichtigung gesendet an ${user.email} für Dokument ${dokumentNummer}`)
+}
 
 function sanitizeFilename(name: string): string {
   return path.basename(name).replace(/\.pdf$/i, '').replace(/[^A-Za-z0-9\-_.]/g, '_')
@@ -45,7 +74,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── JSON-Body lesen ───────────────────────────────────────────────────────
-  let body: { filename?: unknown; fileData?: unknown }
+  let body: { filename?: unknown; fileData?: unknown; kKunde?: unknown }
   try {
     body = await req.json()
   } catch {
@@ -54,6 +83,9 @@ export async function POST(req: NextRequest) {
 
   const rawName  = typeof body.filename === 'string' ? body.filename.trim() : ''
   const fileData = typeof body.fileData === 'string' ? body.fileData.trim()  : ''
+  const kKunde   = typeof body.kKunde   === 'number' && Number.isInteger(body.kKunde)
+    ? body.kKunde as number
+    : null
 
   if (!rawName) {
     return NextResponse.json({ error: 'Pflichtfeld "filename" fehlt.' }, { status: 400 })
@@ -93,6 +125,14 @@ export async function POST(req: NextRequest) {
   }
 
   console.log(`[upload-pdf] Gespeichert: ${filename} (${pdfBuffer.length} Bytes)`)
+
+  // ── E-Mail-Benachrichtigung (nicht fatal) ─────────────────────────────────
+  if (kKunde !== null) {
+    dispatchNotification(kKunde, safeName).catch((err: unknown) => {
+      console.warn('[upload-pdf] Benachrichtigung fehlgeschlagen:',
+        err instanceof Error ? err.message.split('\n')[0] : err)
+    })
+  }
 
   return NextResponse.json({ ok: true, filename, size: pdfBuffer.length })
 }

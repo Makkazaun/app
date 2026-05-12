@@ -1254,6 +1254,25 @@ export async function createKundeInJtl(
   return { kKunde: kKunde!, kundennummer }
 }
 
+/** Gibt Vorname und Nachname eines Kunden direkt aus tAdresse zurück (für E-Mails). */
+export async function getKundeVornameNachname(
+  kKunde: number,
+): Promise<{ vorname: string; nachname: string }> {
+  const pool = await getPool()
+  const res  = await pool.request()
+    .input('kKunde', sql.Int, kKunde)
+    .query<{ cVorname: string | null; cName: string | null }>(`
+      SELECT TOP 1 cVorname, cName
+      FROM dbo.tAdresse
+      WHERE kKunde = @kKunde AND nStandard = 1
+    `)
+  const row = res.recordset[0]
+  return {
+    vorname:  row?.cVorname?.trim() ?? '',
+    nachname: row?.cName?.trim()    ?? '',
+  }
+}
+
 /** Lädt den Namen des Kunden für ein Angebot (für E-Mail-Betreff). */
 export async function getKundeNameByAuftrag(kAuftrag: number): Promise<string> {
   const pool = await getPool()
